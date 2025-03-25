@@ -75,14 +75,16 @@ Ensure you have the following installed:
 - Backend: Hosted on a cloud service like AWS, Render, or Railway.
 - Database: Managed PostgreSQL instance.
 
-## Contribution
+## Contributors
 
-We welcome contributions! To contribute:
-
-1. Fork the repository.
-2. Create a new branch (`feature/your-feature`).
-3. Commit changes and push to GitHub.
-4. Create a pull request.
+| **Name**           | **Student ID**               | **Responsibilities**               |
+|---------------------|------------------------|---------------------------|
+| Duong Phuong Thao       | 20226001     | Will be updated |
+| Trinh Thi Thuy Duong     | |
+| Doan Thi Thu Quyen | |
+| Hoang Khai Manh | |
+| Nguyen Thi Thu Huyen | |
+| Anh Duy | |
 
 ## License
 
