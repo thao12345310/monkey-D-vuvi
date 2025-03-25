@@ -36,8 +36,8 @@ Ensure you have the following installed:
 
 1. Clone the repository:
    ```sh
-   git clone https://github.com/your-repo/vietnam-travel.git
-   cd vietnam-travel/backend
+   git clone https://github.com/thao12345310/monkey-D-luffy.git
+   cd monkey-D-luffy/backend
    ```
 2. Configure PostgreSQL in `application.properties`:
    ```properties
