@@ -1,0 +1,9 @@
+ncduy:
+- handle long description, rooms, ratings
+- get features for ship
+
+- blog có dùng đc ảnh web nhé có url
+- api features cho ship
+https://mixivivu.com/api/features/get-list
+
+- lộ ttin kh mixivivu hài vl
