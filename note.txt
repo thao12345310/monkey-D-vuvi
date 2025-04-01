@@ -1,0 +1,12 @@
+ncduy:
+- handle long description
+- lấy image
+- thêm chi tiết cho database
+
+
+should we:
+- add ratings
+- add amount of each room - thường thì k có cái này mà ksan sẽ tự check lại ý
+- change type of price
+
+
