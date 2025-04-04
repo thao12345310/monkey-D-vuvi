@@ -759,7 +759,7 @@ room_id,hotel_id,room_name,room_price,room_features,size,max_persons,bed_type,vi
 758,134,Family Suite ,950000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",40,4,giường đôi và giường đơn,hướng thành phố
 759,134,Helen + vip ,800000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",34,2,giường đôi,hướng thành phố
 760,134,Superior ,600000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",25,2,giường đôi hoặc 2 giường đơn,hướng thành phố
-761,134,Deluxe,750000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",25,2,giường đôi hặc 2 giường đơn,hướng thành phố
+761,134,Deluxe Triple,750000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",25,2,1 giường đôi và 1 giường đơn,hướng thành phố
 762,135,Family,1300000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",45,4,giường đôi và giường đơn,hướng thành phố
 763,135,Grand,1200000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",30,2,giường đôi,hướng thành phố
 764,135,Deluxe,1050000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",25,2,giường đôi hoặc 2 giường đơn,hướng thành phố
