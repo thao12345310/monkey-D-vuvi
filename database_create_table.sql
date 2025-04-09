@@ -119,14 +119,6 @@ CREATE TABLE ship_long_description (
   FOREIGN KEY (ship_id) REFERENCES ship(ship_id)
 );
 
-CREATE TABLE blog (
-  blog_id INTEGER PRIMARY KEY,
-  title VARCHAR,
-  short_description TEXT,
-  long_description TEXT,
-  created_date TIMESTAMP
-);
-
 CREATE TABLE hotel_room_features (
   hotel_room_id INTEGER,
   feature_id INTEGER,
