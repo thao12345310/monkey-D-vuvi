@@ -11,6 +11,7 @@ import {
 } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { FaceSmileIcon } from "@heroicons/react/24/solid";
+import logo from "../assets/logo.webp";
 
 const NavBar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -31,8 +32,7 @@ const NavBar = () => {
       >
         <div className="flex lg:flex-1">
           <Link to="/" className="-m-1.5 p-1.5 flex items-center gap-2">
-            <span>🐒ĐI Luffy</span>
-            {/* <img className="h-8 w-auto" src="/images/logo.png" alt="Mixivivu" /> */}
+            <img className="h-10 w-auto" src={logo} alt="Đi VuVi" />
           </Link>
         </div>
         <div className="flex lg:hidden">

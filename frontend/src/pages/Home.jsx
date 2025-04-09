@@ -9,7 +9,7 @@ import {
   Button,
   Grid,
 } from "@mui/material";
-import backgroundImage from "../assets/hinhnen.webp";
+import backgroundImage from "../assets/luffy.jpg";
 
 const Home = () => {
   return (

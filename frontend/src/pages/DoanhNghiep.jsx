@@ -39,7 +39,7 @@ const DoanhNghiep = () => {
       {/* Hero Section */}
       <Box sx={{ mb: 8, textAlign: "center" }}>
         <Typography variant="h3" component="h1" gutterBottom>
-          Mixivivu - Tour Du thuyền Hạ Long cho Doanh Nghiệp
+          🐒D Luffy - Tour Du thuyền Hạ Long cho Doanh Nghiệp
         </Typography>
         <Typography variant="h6" color="text.secondary" paragraph>
           Kết nối doanh nghiệp, khám phá vẻ đẹp tự nhiên
@@ -49,7 +49,8 @@ const DoanhNghiep = () => {
       {/* Main Content */}
       <Box sx={{ mb: 6 }}>
         <Typography variant="body1" paragraph>
-          Với sự trải nghiệm thực tế, Công ty TNHH Du lịch và Dịch vụ MixiVivu
+          Với sự trải nghiệm thực tế,
+          <b> Công ty TNHH Du lịch và Dịch vụ 🐒D Luffy </b>
           mong muốn đưa du thuyền Hạ Long trở thành một lựa chọn đầu tiên cho
           doanh nghiệp. Nhiều chương trình du lịch hấp dẫn, đa dạng được kết hợp
           sẽ đem đến cho quý doanh nghiệp sự hài lòng và thuận tiện.

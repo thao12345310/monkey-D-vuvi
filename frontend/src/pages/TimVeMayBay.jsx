@@ -46,10 +46,10 @@ const TimVeMayBay = () => {
         {/* Hero Section */}
         <Box sx={{ mb: 6, textAlign: "center" }}>
           <Typography variant="h3" component="h1" gutterBottom>
-            Mở cánh cửa khám phá cùng Mixivivu
+            Mở cánh cửa khám phá cùng 🐒D Luffy
           </Typography>
           <Typography variant="h5" color="text.secondary">
-            Mixivivu - Đặt chân lên đỉnh mây với một bước nhảy
+            🐒D Luffy - Đặt chân lên đỉnh mây với một bước nhảy
           </Typography>
         </Box>
 
