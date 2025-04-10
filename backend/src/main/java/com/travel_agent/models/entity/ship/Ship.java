@@ -26,7 +26,8 @@ public class Ship {
     private Integer cabin;
     private String shell;
     private String trip;
-    private String admin;
+    @Column(name = "company_name")
+    private String companyName;
 
     @Column(name = "ship_price")
     private Integer shipPrice;
@@ -38,5 +39,5 @@ public class Ship {
 
     @ManyToOne
     @JoinColumn(name = "company_id")
-    private Company company_id;
+    private Company companyId;
 }
