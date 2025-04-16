@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Grid,
@@ -12,36 +12,34 @@ import {
   FormGroup,
   FormControlLabel,
   Checkbox,
+  Pagination,
+  Stack,
 } from "@mui/material";
 import { Search, LocationOn, CalendarToday, Person } from "@mui/icons-material";
 import KhachSanCard from "../components/KhachSanCard";
-
-const danhSachKhachSan = [
-  {
-    id: 1,
-    ten: "Vinpearl Resort & Spa Nha Trang",
-    hinhAnh:
-      "https://statics.vinpearl.com/styles/images/2021/07/28/Vinpearl-Nha-Trang.jpg.webp",
-    rating: 4.5,
-    soReview: 1234,
-    diaChi: "Đảo Hòn Tre, Nha Trang, Khánh Hòa",
-    gia: 2500000,
-    tienIch: ["Hồ bơi", "Wifi miễn phí", "Nhà hàng"],
-  },
-  {
-    id: 2,
-    ten: "Mường Thanh Luxury Đà Nẵng",
-    hinhAnh:
-      "https://muongthanh.com/wp-content/uploads/2023/03/muong-thanh-luxury-da-nang-hotel.jpg",
-    rating: 4.2,
-    soReview: 856,
-    diaChi: "Võ Nguyên Giáp, Đà Nẵng",
-    gia: 1800000,
-    tienIch: ["Hồ bơi", "Wifi miễn phí", "Nhà hàng"],
-  },
-];
+import SearchIcon from "@mui/icons-material/Search";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import axios from "axios";
 
 const TimKhachSan = () => {
+  const [hotels, setHotels] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
+  useEffect(() => {
+    axios
+      .get(
+        `http://localhost:8080/api/hotel?currentPage=${currentPage}&pageSize=6`
+      )
+      .then((response) => {
+        // Tùy cấu trúc dữ liệu của bạn, chỉnh lại nếu cần
+        setHotels(response.data.content || response.data);
+        setTotalPages(response.data.totalPages || 1);
+      })
+      .catch((error) => console.error("Lỗi khi gọi API:", error));
+  }, [currentPage]);
+
   const [searchParams, setSearchParams] = useState({
     diaDiem: "",
     ngayNhanPhong: "",
@@ -78,121 +76,97 @@ const TimKhachSan = () => {
     });
   };
 
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  };
+
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Typography variant="h4" component="h1" gutterBottom>
-        Tìm Khách Sạn
-      </Typography>
+      <div className="absolute inset-0 bg-[url('/background-pattern.svg')] bg-cover opacity-5 -z-10"></div>
 
-      {/* Form tìm kiếm */}
-      <Paper elevation={3} sx={{ p: 3, mb: 4 }}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={3}>
-            <TextField
-              fullWidth
-              label="Địa điểm"
-              value={searchParams.diaDiem}
-              onChange={(e) =>
-                setSearchParams({ ...searchParams, diaDiem: e.target.value })
-              }
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <LocationOn />
-                  </InputAdornment>
-                ),
-              }}
+      {/* Search Bar */}
+      <Paper elevation={3} sx={{ px: 4, py: 5, borderRadius: 5, mb: 4 }}>
+        <Typography variant="h4" fontWeight="bold" align="center" gutterBottom>
+          Bạn lựa chọn khách sạn nào?
+        </Typography>
+        <Typography align="center" color="text.secondary" mb={4}>
+          Hơn 100 khách sạn hạng sang giá tốt đang chờ bạn
+        </Typography>
+
+        <Box
+          display="flex"
+          flexDirection={{ xs: "column", lg: "row" }}
+          alignItems="center"
+          gap={2}
+        >
+          <Box
+            display="flex"
+            alignItems="center"
+            width={{ xs: "100%", lg: "40%" }}
+            bgcolor="grey.100"
+            px={2}
+            py={1.5}
+            borderRadius="50px"
+          >
+            <SearchIcon sx={{ color: "grey.500", mr: 1 }} />
+            <input
+              type="text"
+              placeholder="Nhập tên khách sạn"
+              className="bg-transparent outline-none w-full text-sm"
             />
-          </Grid>
-          <Grid item xs={12} md={3}>
-            <TextField
-              fullWidth
-              type="date"
-              label="Ngày nhận phòng"
-              value={searchParams.ngayNhanPhong}
-              onChange={(e) =>
-                setSearchParams({
-                  ...searchParams,
-                  ngayNhanPhong: e.target.value,
-                })
-              }
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <CalendarToday />
-                  </InputAdornment>
-                ),
-              }}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-          </Grid>
-          <Grid item xs={12} md={3}>
-            <TextField
-              fullWidth
-              type="date"
-              label="Ngày trả phòng"
-              value={searchParams.ngayTraPhong}
-              onChange={(e) =>
-                setSearchParams({
-                  ...searchParams,
-                  ngayTraPhong: e.target.value,
-                })
-              }
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <CalendarToday />
-                  </InputAdornment>
-                ),
-              }}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-          </Grid>
-          <Grid item xs={12} md={2}>
-            <TextField
-              fullWidth
-              type="number"
-              label="Số người"
-              value={searchParams.soNguoi}
-              onChange={(e) =>
-                setSearchParams({
-                  ...searchParams,
-                  soNguoi: parseInt(e.target.value),
-                })
-              }
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Person />
-                  </InputAdornment>
-                ),
-                inputProps: { min: 1 },
-              }}
-            />
-          </Grid>
-          <Grid item xs={12} md={1}>
-            <Button
-              fullWidth
-              variant="contained"
-              color="primary"
-              onClick={handleSearch}
-              sx={{ height: "100%" }}
-            >
-              <Search />
-            </Button>
-          </Grid>
-        </Grid>
+          </Box>
+
+          <Box
+            display="flex"
+            alignItems="center"
+            width={{ xs: "100%", lg: "20%" }}
+            bgcolor="grey.100"
+            px={2}
+            py={1.5}
+            borderRadius="50px"
+            sx={{ cursor: "pointer" }}
+          >
+            <LocationOnIcon sx={{ color: "grey.500", mr: 1 }} />
+            <Typography variant="body2">Tất cả địa điểm</Typography>
+          </Box>
+
+          <Box
+            display="flex"
+            alignItems="center"
+            width={{ xs: "100%", lg: "20%" }}
+            bgcolor="grey.100"
+            px={2}
+            py={1.5}
+            borderRadius="50px"
+            sx={{ cursor: "pointer" }}
+          >
+            <AttachMoneyIcon sx={{ color: "grey.500", mr: 1 }} />
+            <Typography variant="body2">Tất cả mức giá</Typography>
+          </Box>
+
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            sx={{
+              bgcolor: "#EC80B1",
+              borderRadius: "50px",
+              px: 4,
+              py: 1.5,
+              textTransform: "none",
+              width: { xs: "100%", lg: "20%" },
+            }}
+            onClick={handleSearch}
+          >
+            Tìm kiếm
+          </Button>
+        </Box>
       </Paper>
 
       {/* Kết quả tìm kiếm */}
       <Grid container spacing={3}>
-        {/* Bộ lọc */}
         <Grid item xs={12} md={3}>
-          <Paper elevation={3} sx={{ p: 2 }}>
+          <Paper elevation={3} sx={{ borderRadius: 5, p: 2 }}>
             <Typography variant="h6" gutterBottom>
               Bộ lọc
             </Typography>
@@ -264,15 +238,25 @@ const TimKhachSan = () => {
           </Paper>
         </Grid>
 
-        {/* Danh sách khách sạn */}
         <Grid item xs={12} md={9}>
-          <Paper elevation={3} sx={{ p: 2 }}>
+          <Paper elevation={3} sx={{ borderRadius: 5, p: 2 }}>
             <Typography variant="h6" gutterBottom>
               Danh sách khách sạn
             </Typography>
-            {danhSachKhachSan.map((khachSan) => (
-              <KhachSanCard key={khachSan.id} khachSan={khachSan} />
+            {hotels.map((hotel) => (
+              <KhachSanCard key={hotel.id} khachSan={hotel} />
             ))}
+
+            {/* Pagination */}
+            <Stack spacing={2} alignItems="center" mt={3}>
+              <Pagination
+                count={totalPages}
+                page={currentPage}
+                onChange={handlePageChange}
+                color="primary"
+                shape="rounded"
+              />
+            </Stack>
           </Paper>
         </Grid>
       </Grid>

@@ -17,8 +17,13 @@ const KhachSanCard = ({ khachSan }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/khach-san/${khachSan.id}`);
+    navigate(`/khach-san/${khachSan.hotelId}`);
   };
+
+  // Dữ liệu giả cho tiện ích và rating nếu chưa có trong DTO
+  const tienIchMock = ["Hồ bơi", "Wifi miễn phí", "Nhà hàng"];
+  const ratingMock = 4.2;
+  const soReviewMock = 320;
 
   return (
     <Card
@@ -36,36 +41,34 @@ const KhachSanCard = ({ khachSan }) => {
       <CardMedia
         component="img"
         sx={{ width: 280, height: 210 }}
-        image={khachSan.hinhAnh}
-        alt={khachSan.ten}
+        image={
+          khachSan.hinhAnh || // nếu có trường này ở backend
+          "https://picsum.photos/400/300" // ảnh mặc định
+        }
+        alt={khachSan.hotelName}
       />
       <Box sx={{ display: "flex", flexDirection: "column", flex: 1 }}>
         <CardContent>
           <Typography variant="h6" component="div" gutterBottom>
-            {khachSan.ten}
+            {khachSan.hotelName}
           </Typography>
 
           <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
-            <Rating
-              value={khachSan.rating}
-              readOnly
-              precision={0.5}
-              size="small"
-            />
+            <Rating value={ratingMock} readOnly precision={0.5} size="small" />
             <Typography variant="body2" color="text.secondary" sx={{ ml: 1 }}>
-              ({khachSan.soReview} đánh giá)
+              ({soReviewMock} đánh giá)
             </Typography>
           </Box>
 
           <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
             <LocationOn fontSize="small" color="action" />
             <Typography variant="body2" color="text.secondary" sx={{ ml: 0.5 }}>
-              {khachSan.diaChi}
+              {khachSan.address}
             </Typography>
           </Box>
 
           <Stack direction="row" spacing={1} sx={{ mb: 2 }}>
-            {khachSan.tienIch.map((tienIch, index) => (
+            {tienIchMock.map((tienIch, index) => (
               <Chip
                 key={index}
                 size="small"
@@ -95,7 +98,7 @@ const KhachSanCard = ({ khachSan }) => {
         >
           <Box>
             <Typography variant="h6" color="primary">
-              {khachSan.gia.toLocaleString("vi-VN")}đ
+              {khachSan.hotelPrice.toLocaleString("vi-VN")}đ
             </Typography>
             <Typography variant="caption" color="text.secondary">
               /đêm
@@ -103,10 +106,20 @@ const KhachSanCard = ({ khachSan }) => {
           </Box>
           <Button
             variant="contained"
-            color="primary"
             onClick={(e) => {
               e.stopPropagation();
-              navigate(`/khach-san/${khachSan.id}/dat-phong`);
+              navigate(`/khach-san/${khachSan.hotelId}/dat-phong`);
+            }}
+            sx={{
+              backgroundColor: "#EC80B1",
+              "&:hover": {
+                backgroundColor: "#d46f9d",
+              },
+              color: "#fff",
+              borderRadius: "20px",
+              textTransform: "none",
+              px: 3,
+              py: 1,
             }}
           >
             Đặt ngay
