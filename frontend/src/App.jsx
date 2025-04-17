@@ -9,6 +9,7 @@ import TimKhachSan from "./pages/TimKhachSan";
 import ChiTietKhachSan from "./pages/ChiTietKhachSan";
 import "./App.css";
 import DoanhNghiep from "./pages/DoanhNghiep";
+import Footer from "./components/Footer";
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
           <Route path="/blog" element={<div>Blog</div>} />
           <Route path="/lien-he" element={<div>Liên hệ</div>} />
         </Routes>
+        <Footer />
       </div>
     </Router>
   );

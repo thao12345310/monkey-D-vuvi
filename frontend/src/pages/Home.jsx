@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Typography,
@@ -9,9 +9,23 @@ import {
   Button,
   Grid,
 } from "@mui/material";
-import backgroundImage from "../assets/luffy.jpg";
-
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import backgroundImage from "../assets/hinhnen.webp";
+import KhachSanCardNho from "../components/KhachSanCardNho";
+import axios from "axios";
+import { Link } from "react-router-dom";
 const Home = () => {
+  const [hotels, setHotels] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/api/hotel?currentPage=1&pageSize=6")
+      .then((response) => {
+        setHotels(response.data);
+      })
+      .catch((error) => console.error("Lỗi khi gọi API:", error));
+  }, []);
+
   return (
     <Box>
       {/* Hero Section */}
@@ -51,24 +65,53 @@ const Home = () => {
             </Typography>
             <Button
               variant="contained"
-              size="large"
-              sx={{
-                mt: 4,
-                bgcolor: "primary.main",
-                color: "white",
-                "&:hover": {
-                  bgcolor: "primary.dark",
-                },
-              }}
+              className="!bg-[#EC80B1] text-white px-6 py-2 rounded-xl hover:opacity-90 shadow-md"
             >
               Khám phá ngay
             </Button>
           </Box>
         </Container>
       </Box>
+      <Container className="mt-8">
+        <Typography variant="h3" gutterBottom align="center">
+          Khách Sạn
+        </Typography>
+        <Grid container spacing={4}>
+          {hotels.map((hotel) => (
+            <Grid item xs={12} sm={6} md={4} key={hotel.hotelId}>
+              <KhachSanCardNho hotel={hotel} />
+            </Grid>
+          ))}
+        </Grid>
 
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "32px",
+          }}
+        >
+          <Button
+            component={Link}
+            to="/tim-khach-san"
+            variant="outlined"
+            endIcon={<ArrowForwardIcon />}
+            style={{
+              borderRadius: "999px",
+              textTransform: "none",
+              padding: "10px 24px",
+              fontWeight: "500",
+              fontSize: "16px",
+              color: "#EC80B1",
+              borderColor: "#EC80B1",
+            }}
+          >
+            Xem tất cả Khách Sạn
+          </Button>
+        </div>
+      </Container>
       {/* Popular Tours Section */}
-      <Box sx={{ py: 8 }}>
+      {/* <Box sx={{ py: 8 }}>
         <Container>
           <Typography variant="h3" gutterBottom align="center">
             Tour Nổi Bật
@@ -112,10 +155,9 @@ const Home = () => {
             ))}
           </Grid>
         </Container>
-      </Box>
-
+      </Box> */}
       {/* Popular Destinations */}
-      <Box sx={{ py: 8, bgcolor: "grey.100" }}>
+      {/* <Box sx={{ py: 8, bgcolor: "grey.100" }}>
         <Container>
           <Typography variant="h3" gutterBottom align="center">
             Điểm Đến Phổ Biến
@@ -141,10 +183,9 @@ const Home = () => {
             ))}
           </Grid>
         </Container>
-      </Box>
-
+      </Box> */}
       {/* Blog Section */}
-      <Box sx={{ py: 8 }}>
+      {/* <Box sx={{ py: 8 }}>
         <Container>
           <Typography variant="h3" gutterBottom align="center">
             Tin Tức & Blog Du Lịch
@@ -172,7 +213,7 @@ const Home = () => {
             ))}
           </Grid>
         </Container>
-      </Box>
+      </Box> */}
     </Box>
   );
 };

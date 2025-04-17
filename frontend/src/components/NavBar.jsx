@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import {
   Dialog,
   DialogPanel,
@@ -18,21 +18,21 @@ const NavBar = () => {
 
   const menuItems = [
     { text: "Tìm du thuyền", path: "/tim-du-thuyen" },
-    { text: "Tìm vé máy bay", path: "/tim-ve-may-bay" },
+    // { text: "Tìm vé máy bay", path: "/tim-ve-may-bay" },
     { text: "Tìm khách sạn", path: "/tim-khach-san" },
     { text: "Doanh nghiệp", path: "/doanh-nghiep" },
-    { text: "Blog", path: "/blog" },
+    // { text: "Blog", path: "/blog" },
   ];
 
   return (
-    <header className="bg-white sticky top-0 z-50 shadow-md">
+    <header className=" bg-[#FFECEC] sticky top-0 z-50 shadow-md">
       <nav
         className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8 "
         aria-label="Global"
       >
         <div className="flex lg:flex-1">
           <Link to="/" className="-m-1.5 p-1.5 flex items-center gap-2">
-            <img className="h-10 w-auto" src={logo} alt="Đi VuVi" />
+            <div className="w-12 h-12 rounded-full bg-pink-300"></div>
           </Link>
         </div>
         <div className="flex lg:hidden">
@@ -47,13 +47,13 @@ const NavBar = () => {
         </div>
         <div className="hidden lg:flex lg:gap-x-12">
           {menuItems.map((item) => (
-            <Link
+            <NavLink
               key={item.path}
               to={item.path}
-              className="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-600 transition-colors duration-200"
+              className="text-sm font-semibold leading-6 text-gray-900 hover:text-[#FFB8E5] aria-[current=page]:text-[#FFB8E5] transition-colors duration-200"
             >
               {item.text}
-            </Link>
+            </NavLink>
           ))}
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
@@ -61,7 +61,7 @@ const NavBar = () => {
             to="/lien-he"
             className="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-600 transition-colors duration-200"
           >
-            Liên hệ <span aria-hidden="true">&rarr;</span>
+            Login <span aria-hidden="true">&rarr;</span>
           </Link>
         </div>
       </nav>

@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "hotel")
 public class Hotel {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "hotel_id")
     private Integer hotelId;
 
