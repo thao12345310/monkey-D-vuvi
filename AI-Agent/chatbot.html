@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Assistant</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f6f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .chat-container {
+            width: 350px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #chatbox {
+            height: 400px;
+            overflow-y: auto;
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background-color: #fafafa;
+        }
+
+        .chat-message {
+            background-color: #e3f2fd;
+            padding: 10px 15px;
+            border-radius: 15px;
+            align-self: flex-start;
+            max-width: 80%;
+        }
+
+        .user-message {
+            background-color: #d1e7dd;
+            align-self: flex-end;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 10px;
+            background-color: #fff;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        button {
+            margin-left: 10px;
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Optional scrollbar style */
+        #chatbox::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #chatbox::-webkit-scrollbar-thumb {
+            background-color: #ccc;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Chatbot Assistant</h2>
+    <div id="chatbox"></div>
+    <input type="text" id="user_input" placeholder="Type your question..." />
+    <button onclick="sendMessage()">Send</button>
+
+    <script>
+        async function sendMessage() {
+            const userMessage = document.getElementById("user_input").value;
+            if (!userMessage) return;
+
+            // Hiển thị câu hỏi của người dùng trong chatbox
+            const chatbox = document.getElementById("chatbox");
+            chatbox.innerHTML += "<b>You:</b> " + userMessage + "<br>";
+
+            // Gửi yêu cầu đến API backend FastAPI với message là chuỗi
+            const response = await fetch("http://127.0.0.1:8000/chat", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(userMessage)  // Gửi chuỗi trực tiếp
+            });
+            const data = await response.json();
+
+            // Hiển thị câu trả lời từ chatbot
+            const botMessage = document.createElement("div");
+            botMessage.classList.add("chat-message");
+
+            const markdownHTML = marked.parse(data.answer.content);  // Chuyển Markdown thành HTML
+            botMessage.innerHTML = "<b>Bot:</b><br>" + markdownHTML;
+
+            chatbox.appendChild(botMessage);
+            document.getElementById("user_input").value = "";  // Xóa ô nhập liệu
+            chatbox.scrollTop = chatbox.scrollHeight;
+        }
+    </script>
+</body>
+
+
+</html>
