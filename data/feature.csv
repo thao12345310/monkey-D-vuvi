@@ -1,44 +1,44 @@
 feature_id,default_id,feature_description
-1,667054eddc8814b1abb97674,Máy sấy tóc
-2,64c91fd89a452d40133ae80b,Bể bơi ngoài trời
-3,64c8ef452aff7399f08f6cf7,Miễn phí kayaking
-4,66705499dc8814b1abb9766c,Bể bơi ngoài trời
-5,64fc178b35b33132034fa42c,Sạc điện thoại
-6,667054eddc8814b1abb97677,Bàn làm việc
-7,64c8ef455aef6fc457011c19,Bao gồm tất cả các bữa ăn
-8,64fc179435b33132034fa42e,Ban công riêng
-9,64c916fe75140e2d4ef137d4,Phòng không hút thuốc
-10,64c8ef127401811bc06aaed7,Wi-Fi miễn phí
-11,667054eddc8814b1abb97673,Bồn tắm/Cabin tắm đứng
-12,66797d5107727ec3b5a53a17,Ban công/Cửa sổ
-13,64c916fec05f92f97bf6cd4d,Quầy bar
-14,667054eddc8814b1abb97675,Minibar
-15,64c92042b4d8adf7af61eb9b,Miễn phí xe đưa đón
-16,64c8ef457401811bc06aaedd,Du thuyền 5 sao
-17,64fc17d835b33132034fa43a,Két an toàn
-18,667054eddc8814b1abb97676,Tivi
-19,64c8ef115aef6fc457011c11,Phòng gia đình
-20,64c92042f7cf3c8dc101e0ab,Phòng có bồn tắm
-21,66705499dc8814b1abb9766d,Nhà hàng
-22,64fc178335b33132034fa42a,Cửa sổ từ sàn đến trần
-23,64c916fe94501541ccaaabed,Giáp biển
-24,66705499dc8814b1abb9766f,Lễ tân 24h
-25,64c91fcbd143a3573caca7ab,Lễ tân 24 giờ
-26,64fc175735b33132034fa427,Nhìn ra biển
-27,64c8ef4c19ceac9ab2856439,Đi tuyến Lan Hạ
-28,66705499dc8814b1abb9766e,Wifi miễn phí
-29,64c91fccb4d8adf7af61eb8b,Trung tâm Spa & chăm sóc sức khoẻ
-30,64c91fe51656b0bc3077fdf5,Khu vực bãi tắm riêng
-31,64c91fe4f7cf3c8dc101e073,Trà/cà phê trong tất cả các phòng
-32,64c920221656b0bc3077fe19,Trung tâm thể dục
-33,64c916fb3a574e703c3c0885,Chỗ đỗ xe
-34,64c920439a452d40133ae849,Có bể bơi ngoài trời
-35,64fc17d535b33132034fa439,Wi-Fi
-36,64fc179035b33132034fa42d,Hồ bơi có tầm nhìn
-37,667054eddc8814b1abb97672,Điều hòa
-38,64c8ef112aff7399f08f6cf1,Có bể sục
-39,66705499dc8814b1abb97670,Phòng có bồn tắm
-40,667054eddc8814b1abb97678,Nước đóng chai miễn phí
-41,64fc176f35b33132034fa428,Điều hòa
-42,64c92007f7cf3c8dc101e086,Nhà hàng
-43,64c91fd37a2d1c418bbd20c7,Chỗ đỗ xe miễn phí
+1,66797d5107727ec3b5a53a17,Ban công/Cửa sổ
+2,64c91fe51656b0bc3077fdf5,Khu vực bãi tắm riêng
+3,64c8ef127401811bc06aaed7,Wi-Fi miễn phí
+4,667054eddc8814b1abb97677,Bàn làm việc
+5,64c91fd89a452d40133ae80b,Bể bơi ngoài trời
+6,64fc176f35b33132034fa428,Điều hòa
+7,66705499dc8814b1abb9766f,Lễ tân 24h
+8,64c8ef455aef6fc457011c19,Bao gồm tất cả các bữa ăn
+9,64c92007f7cf3c8dc101e086,Nhà hàng
+10,64c8ef112aff7399f08f6cf1,Có bể sục
+11,667054eddc8814b1abb97672,Điều hòa
+12,64c916fe94501541ccaaabed,Giáp biển
+13,64c8ef452aff7399f08f6cf7,Miễn phí kayaking
+14,64c91fe4f7cf3c8dc101e073,Trà/cà phê trong tất cả các phòng
+15,66705499dc8814b1abb9766c,Bể bơi ngoài trời
+16,64fc179035b33132034fa42d,Hồ bơi có tầm nhìn
+17,64fc175735b33132034fa427,Nhìn ra biển
+18,64c91fd37a2d1c418bbd20c7,Chỗ đỗ xe miễn phí
+19,64c8ef4c19ceac9ab2856439,Đi tuyến Lan Hạ
+20,64c8ef115aef6fc457011c11,Phòng gia đình
+21,64c920439a452d40133ae849,Có bể bơi ngoài trời
+22,64fc17d535b33132034fa439,Wi-Fi
+23,667054eddc8814b1abb97673,Bồn tắm/Cabin tắm đứng
+24,64c916fb3a574e703c3c0885,Chỗ đỗ xe
+25,64c916fe75140e2d4ef137d4,Phòng không hút thuốc
+26,64c916fec05f92f97bf6cd4d,Quầy bar
+27,667054eddc8814b1abb97674,Máy sấy tóc
+28,66705499dc8814b1abb97670,Phòng có bồn tắm
+29,64fc179435b33132034fa42e,Ban công riêng
+30,64c8ef457401811bc06aaedd,Du thuyền 5 sao
+31,667054eddc8814b1abb97676,Tivi
+32,667054eddc8814b1abb97675,Minibar
+33,66705499dc8814b1abb9766d,Nhà hàng
+34,64fc178b35b33132034fa42c,Sạc điện thoại
+35,64fc17d835b33132034fa43a,Két an toàn
+36,64c91fccb4d8adf7af61eb8b,Trung tâm Spa & chăm sóc sức khoẻ
+37,64fc178335b33132034fa42a,Cửa sổ từ sàn đến trần
+38,64c92042f7cf3c8dc101e0ab,Phòng có bồn tắm
+39,64c91fcbd143a3573caca7ab,Lễ tân 24 giờ
+40,66705499dc8814b1abb9766e,Wifi miễn phí
+41,64c920221656b0bc3077fe19,Trung tâm thể dục
+42,64c92042b4d8adf7af61eb9b,Miễn phí xe đưa đón
+43,667054eddc8814b1abb97678,Nước đóng chai miễn phí
