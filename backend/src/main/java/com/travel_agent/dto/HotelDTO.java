@@ -27,6 +27,7 @@ public class HotelDTO {
     private String address;
 
     private String mapLink;
+    private String thumbnail;
 
     private Integer companyId;
 

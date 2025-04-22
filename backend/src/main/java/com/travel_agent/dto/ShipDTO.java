@@ -18,5 +18,6 @@ public class ShipDTO {
     private String address;
 
     private String mapLink;
+    private String thumbnail;
     private Integer companyId;
 }

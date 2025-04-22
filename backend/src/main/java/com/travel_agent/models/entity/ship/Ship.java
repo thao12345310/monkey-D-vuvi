@@ -37,6 +37,8 @@ public class Ship {
     @Column(name = "map_link")
     private String mapLink;
 
+    private String thumbnail;
+
     @ManyToOne
     @JoinColumn(name = "company_id")
     private Company companyId;
