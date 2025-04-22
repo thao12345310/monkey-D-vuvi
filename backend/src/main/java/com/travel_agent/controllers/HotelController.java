@@ -56,19 +56,19 @@ public class HotelController {
     }
 
     // Add hotel
-    @PostMapping("/add")
-    public ResponseEntity<ResponseObject> addHotel(@RequestBody HotelDTO hotelDto) {
-        HotelDTO addedHotel = hotelService.addHotel(hotelDto);
-
-        if (addedHotel != null) {
-            return ResponseEntity.ok(ResponseObject.builder()
-                    .message("Hotel added successfully")
-                    .data(addedHotel)
-                    .responseCode(HttpStatus.OK.value())
-                    .build());
-        } else {
-            return ResponseEntity.badRequest().build();
-        }
-    }
+//    @PostMapping("/add")
+//    public ResponseEntity<ResponseObject> addHotel(@RequestBody HotelDTO hotelDto) {
+//        HotelDTO addedHotel = hotelService.addHotel(hotelDto);
+//
+//        if (addedHotel != null) {
+//            return ResponseEntity.ok(ResponseObject.builder()
+//                    .message("Hotel added successfully")
+//                    .data(addedHotel)
+//                    .responseCode(HttpStatus.OK.value())
+//                    .build());
+//        } else {
+//            return ResponseEntity.badRequest().build();
+//        }
+//    }
 
 }

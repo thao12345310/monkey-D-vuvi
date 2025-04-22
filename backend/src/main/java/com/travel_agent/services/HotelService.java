@@ -45,22 +45,28 @@ public class HotelService {
         hotelDto.setAddress(hotelEntity.getAddress());
         hotelDto.setMapLink(hotelEntity.getMapLink());
         hotelDto.setThumbnail(hotelEntity.getThumbnail());
+        if (hotelEntity.getCompanyId() != null) {
+            hotelDto.setCompanyId(hotelEntity.getCompanyId().getCompanyId());
+        } else {
+            hotelDto.setCompanyId(null);
+        }
         return hotelDto;
     }
 
-    private HotelEntity convertToEntity(HotelDTO hotelDto) {
-        HotelEntity hotelEntity = new HotelEntity();
-        hotelEntity.setHotelId(hotelDto.getHotelId());
-        hotelEntity.setHotelName(hotelDto.getHotelName());
-        hotelEntity.setTotalRooms(hotelDto.getTotalRooms());
-        hotelEntity.setCompanyName(hotelDto.getCompanyName());
-        hotelEntity.setHotelPrice(hotelDto.getHotelPrice());
-        hotelEntity.setCity(hotelDto.getCity());
-        hotelEntity.setAddress(hotelDto.getAddress());
-        hotelEntity.setMapLink(hotelDto.getMapLink());
-        hotelEntity.setThumbnail(hotelDto.getThumbnail());
-        return hotelEntity;
-    }
+//    private HotelEntity convertToEntity(HotelDTO hotelDto) {
+//        HotelEntity hotelEntity = new HotelEntity();
+//        hotelEntity.setHotelId(hotelDto.getHotelId());
+//        hotelEntity.setHotelName(hotelDto.getHotelName());
+//        hotelEntity.setTotalRooms(hotelDto.getTotalRooms());
+//        hotelEntity.setCompanyName(hotelDto.getCompanyName());
+//        hotelEntity.setHotelPrice(hotelDto.getHotelPrice());
+//        hotelEntity.setCity(hotelDto.getCity());
+//        hotelEntity.setAddress(hotelDto.getAddress());
+//        hotelEntity.setMapLink(hotelDto.getMapLink());
+//        hotelEntity.setThumbnail(hotelDto.getThumbnail());
+//        hotelEntity.setCompanyId(hotelDto.getCompanyId());
+//        return hotelEntity;
+//    }
 
 
     public HotelDTO getHotelDetails(Integer hotelId) {
@@ -70,20 +76,20 @@ public class HotelService {
         return convertToDto(hotelEntity);
     }
 
-    public HotelDTO addHotel(HotelDTO hotelDto) {
-        HotelEntity hotelEntity = convertToEntity(hotelDto);
-        hotelEntity = new HotelEntity();
-        hotelEntity.setHotelName(hotelDto.getHotelName());
-        hotelEntity.setTotalRooms(hotelDto.getTotalRooms());
-        hotelEntity.setCompanyName(hotelDto.getCompanyName());
-        hotelEntity.setHotelPrice(hotelDto.getHotelPrice());
-        hotelEntity.setCity(hotelDto.getCity());
-        hotelEntity.setAddress(hotelDto.getAddress());
-        hotelEntity.setMapLink(hotelDto.getMapLink());
-        hotelEntity.setThumbnail(hotelDto.getThumbnail());
-        hotelEntity = hotelRepository.save(hotelEntity);
-        return convertToDto(hotelEntity);
-    }
+//    public HotelDTO addHotel(HotelDTO hotelDto) {
+//        HotelEntity hotelEntity = convertToEntity(hotelDto);
+//        hotelEntity = new HotelEntity();
+//        hotelEntity.setHotelName(hotelDto.getHotelName());
+//        hotelEntity.setTotalRooms(hotelDto.getTotalRooms());
+//        hotelEntity.setCompanyName(hotelDto.getCompanyName());
+//        hotelEntity.setHotelPrice(hotelDto.getHotelPrice());
+//        hotelEntity.setCity(hotelDto.getCity());
+//        hotelEntity.setAddress(hotelDto.getAddress());
+//        hotelEntity.setMapLink(hotelDto.getMapLink());
+//        hotelEntity.setThumbnail(hotelDto.getThumbnail());
+//        hotelEntity = hotelRepository.save(hotelEntity);
+//        return convertToDto(hotelEntity);
+//    }
 
 
 }
