@@ -19,13 +19,13 @@ const Home = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/api/hotel?currentPage=1&pageSize=6")
+      .get(`http://localhost:8080/api/hotel?page=1&pageSize=6`)
       .then((response) => {
-        setHotels(response.data);
+        const data = response.data;
+        setHotels(data.result || []);
       })
       .catch((error) => console.error("Lỗi khi gọi API:", error));
-  }, []);
-
+  });
   return (
     <Box>
       {/* Hero Section */}
@@ -72,6 +72,89 @@ const Home = () => {
           </Box>
         </Container>
       </Box>
+
+      <div className="bg-white p-8 md:flex gap-6">
+        {/* Left side */}
+        <div className="bg-pink-100 p-6 rounded-xl md:w-1/2 mb-6 md:mb-0">
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">
+            <span className="italic font-signature text-pink-500">
+              Doanh nghiệp & Du lịch –{" "}
+            </span>
+            Tour Du thuyền Hạ Long: Kết nối doanh nghiệp, khám phá vẻ đẹp tự
+            nhiên.
+          </h2>
+          <p className="text-sm text-gray-700 mb-6">
+            Với sự trải nghiệm thực tế, chúng tôi mong muốn đưa du thuyền Hạ
+            Long trở thành một lựa chọn đầu tiên cho doanh nghiệp. Nhiều chương
+            trình du lịch hấp dẫn, đa dạng được kết hợp sẽ đem đến cho quý doanh
+            nghiệp sự hài lòng và thuận tiện. Du thuyền Hạ Long cũng sẽ là nơi
+            mở ra giá trị và ấn tượng ý nghĩa dành cho nhân viên của quý doanh
+            nghiệp. Bên cạnh đó, du thuyền Hạ Long còn rất phù hợp cho những
+            cuộc hội thảo, hợp tác đầu tư hay giao lưu của quý doanh nghiệp.
+          </p>
+          <button className="bg-pink-400 text-white px-5 py-2 rounded-full hover:bg-pink-500 transition">
+            Liên hệ với chúng tôi →
+          </button>
+        </div>
+
+        {/* Right side */}
+        <div className="md:w-1/2 flex flex-col gap-4">
+          {/* Card 1 */}
+          <div className="flex items-start bg-pink-50 p-4 rounded-lg shadow-sm">
+            <img
+              src="https://picsum.photos/400/300" // Thay bằng ảnh thực tế
+              alt="Lịch trình"
+              className="w-16 h-16 object-cover rounded mr-4"
+            />
+            <div>
+              <h3 className="font-semibold text-gray-800">
+                Lịch trình phù hợp với doanh nghiệp
+              </h3>
+              <p className="text-sm text-gray-600">
+                Du thuyền sẽ sắp xếp lịch trình phù hợp với từng sự kiện của
+                doanh nghiệp: du lịch của công ty...
+              </p>
+            </div>
+          </div>
+
+          {/* Card 2 */}
+          <div className="flex items-start bg-pink-50 p-4 rounded-lg shadow-sm">
+            <img
+              src="https://picsum.photos/400/300" // Thay bằng ảnh thực tế
+              alt="Đa dạng"
+              className="w-16 h-16 object-cover rounded mr-4"
+            />
+            <div>
+              <h3 className="font-semibold text-gray-800">
+                Đa dạng trong sự lựa chọn du thuyền
+              </h3>
+              <p className="text-sm text-gray-600">
+                Tùy vào nhu cầu của doanh nghiệp, chúng tôi sẽ tư vấn cung cấp
+                du thuyền phù hợp ...
+              </p>
+            </div>
+          </div>
+
+          {/* Card 3 */}
+          <div className="flex items-start bg-pink-50 p-4 rounded-lg shadow-sm">
+            <img
+              src="https://picsum.photos/400/300" // Thay bằng ảnh thực tế
+              alt="Linh hoạt"
+              className="w-16 h-16 object-cover rounded mr-4"
+            />
+            <div>
+              <h3 className="font-semibold text-gray-800">
+                Thời gian linh hoạt
+              </h3>
+              <p className="text-sm text-gray-600">
+                Chúng tôi sẽ tư vấn thời gian linh hoạt nhất phù hợp với tính
+                chất của sự kiện và lịch làm việc trước và sau du chuyến...
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <Container className="mt-8">
         <Typography variant="h3" gutterBottom align="center">
           Khách Sạn

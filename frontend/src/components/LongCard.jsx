@@ -13,15 +13,25 @@ import {
 } from "@mui/material";
 import { LocationOn, Pool, Wifi, Restaurant } from "@mui/icons-material";
 
-const KhachSanCard = ({ khachSan }) => {
+const LongCard = ({
+  data,
+  idField = "hotelId",
+  nameField = "hotelName",
+  priceField = "hotelPrice",
+  type = "khach-san", // hoặc "du-thuyen"
+  imageField = "hinhAnh",
+  tienIch = ["Hồ bơi", "Wifi miễn phí", "Nhà hàng"],
+}) => {
   const navigate = useNavigate();
+  const id = data[idField];
+  const name = data[nameField];
+  const price = data[priceField];
+  const image = data[imageField] || "https://picsum.photos/400/300";
 
   const handleClick = () => {
-    navigate(`/khach-san/${khachSan.hotelId}`);
+    navigate(`/${type}/${id}`);
   };
 
-  // Dữ liệu giả cho tiện ích và rating nếu chưa có trong DTO
-  const tienIchMock = ["Hồ bơi", "Wifi miễn phí", "Nhà hàng"];
   const ratingMock = 4.2;
   const soReviewMock = 320;
 
@@ -41,34 +51,31 @@ const KhachSanCard = ({ khachSan }) => {
       <CardMedia
         component="img"
         sx={{ width: 280, height: 210 }}
-        image={
-          khachSan.hinhAnh || // nếu có trường này ở backend
-          "https://picsum.photos/400/300" // ảnh mặc định
-        }
-        alt={khachSan.hotelName}
+        image={image}
+        alt={name}
       />
       <Box sx={{ display: "flex", flexDirection: "column", flex: 1 }}>
         <CardContent>
-          <Typography variant="h6" component="div" gutterBottom>
-            {khachSan.hotelName}
+          <Typography variant="h6" gutterBottom>
+            {name}
           </Typography>
 
           <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
             <Rating value={ratingMock} readOnly precision={0.5} size="small" />
-            <Typography variant="body2" color="text.secondary" sx={{ ml: 1 }}>
+            <Typography variant="body2" sx={{ ml: 1 }} color="text.secondary">
               ({soReviewMock} đánh giá)
             </Typography>
           </Box>
 
           <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
             <LocationOn fontSize="small" color="action" />
-            <Typography variant="body2" color="text.secondary" sx={{ ml: 0.5 }}>
-              {khachSan.address}
+            <Typography variant="body2" sx={{ ml: 0.5 }} color="text.secondary">
+              {data.address}
             </Typography>
           </Box>
 
           <Stack direction="row" spacing={1} sx={{ mb: 2 }}>
-            {tienIchMock.map((tienIch, index) => (
+            {tienIch.map((tienIch, index) => (
               <Chip
                 key={index}
                 size="small"
@@ -98,7 +105,7 @@ const KhachSanCard = ({ khachSan }) => {
         >
           <Box>
             <Typography variant="h6" color="primary">
-              {khachSan.hotelPrice.toLocaleString("vi-VN")}đ
+              {price.toLocaleString("vi-VN")}đ
             </Typography>
             <Typography variant="caption" color="text.secondary">
               /đêm
@@ -108,7 +115,7 @@ const KhachSanCard = ({ khachSan }) => {
             variant="contained"
             onClick={(e) => {
               e.stopPropagation();
-              navigate(`/khach-san/${khachSan.hotelId}/dat-phong`);
+              navigate(`/${type}/${id}/dat-phong`);
             }}
             sx={{
               backgroundColor: "#EC80B1",
@@ -130,4 +137,4 @@ const KhachSanCard = ({ khachSan }) => {
   );
 };
 
-export default KhachSanCard;
+export default LongCard;

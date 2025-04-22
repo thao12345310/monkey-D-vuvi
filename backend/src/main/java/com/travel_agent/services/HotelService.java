@@ -7,6 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.travel_agent.dto.HotelDTO;
+import com.travel_agent.dto.Meta;
+import com.travel_agent.dto.ResultPaginationDTO;
 import com.travel_agent.mapper.HotelMapper;
 import com.travel_agent.models.entity.hotel.Hotel;
 import com.travel_agent.repositories.HotelRepository;
@@ -19,10 +21,18 @@ public class HotelService {
     private final HotelRepository hotelRepository;
     private final HotelMapper hotelMapper;
 
-    public List<HotelDTO> getAllHotels(Pageable pageable) {
+    public ResultPaginationDTO getAllHotels(Pageable pageable) {
         Page<Hotel> pageHotel= hotelRepository.findAll(pageable);
-        List<Hotel> hotels = pageHotel.getContent();
-        List<HotelDTO> hotelDTOs = hotelMapper.hotelsToHotelDTOs(hotels);
-        return hotelDTOs;
+        ResultPaginationDTO rs = new ResultPaginationDTO();
+        Meta mt = new Meta();
+
+        mt.setPage(pageHotel.getNumber());
+        mt.setPageSize(pageHotel.getSize());
+        mt.setPages(pageHotel.getTotalPages());
+        mt.setTotal(pageHotel.getTotalElements());
+        
+        rs.setMeta((mt));
+        rs.setResult(pageHotel.getContent());
+        return rs;
     }
 }

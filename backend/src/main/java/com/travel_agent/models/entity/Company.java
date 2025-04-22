@@ -1,3 +1,4 @@
+
 package com.travel_agent.models.entity;
 
 import jakarta.persistence.Column;

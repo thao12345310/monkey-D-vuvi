@@ -16,29 +16,18 @@ import {
   Stack,
 } from "@mui/material";
 import { Search, LocationOn, CalendarToday, Person } from "@mui/icons-material";
-import KhachSanCard from "../components/KhachSanCard";
+import KhachSanCard from "../components/LongCard";
 import SearchIcon from "@mui/icons-material/Search";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import axios from "axios";
+import LongCard from "../components/LongCard";
 
 const TimKhachSan = () => {
   const [hotels, setHotels] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-
-  useEffect(() => {
-    axios
-      .get(
-        `http://localhost:8080/api/hotel?currentPage=${currentPage}&pageSize=6`
-      )
-      .then((response) => {
-        // Tùy cấu trúc dữ liệu của bạn, chỉnh lại nếu cần
-        setHotels(response.data.content || response.data);
-        setTotalPages(response.data.totalPages || 1);
-      })
-      .catch((error) => console.error("Lỗi khi gọi API:", error));
-  }, [currentPage]);
+  const [loading, setLoading] = useState(false);
 
   const [searchParams, setSearchParams] = useState({
     diaDiem: "",
@@ -58,8 +47,32 @@ const TimKhachSan = () => {
     },
   });
 
+  const fetchHotels = async (page) => {
+    try {
+      setLoading(true);
+      console.log("Đang tải dữ liệu cho trang:", page);
+      const response = await axios.get(
+        `http://localhost:8080/api/hotel?currentPage=${page}&pageSize=6`
+      );
+      const data = response.data;
+      console.log("Dữ liệu nhận được:", data);
+      setHotels(data.result || []);
+      setTotalPages(data.meta?.pages || 1);
+    } catch (error) {
+      console.error("Lỗi khi gọi API:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchHotels(currentPage);
+  }, [currentPage]);
+
   const handleSearch = () => {
     console.log("Tìm kiếm với params:", searchParams);
+    setCurrentPage(1); // Reset về trang 1 khi tìm kiếm
+    fetchHotels(1);
   };
 
   const handleGiaRangeChange = (event, newValue) => {
@@ -77,6 +90,7 @@ const TimKhachSan = () => {
   };
 
   const handlePageChange = (event, value) => {
+    console.log("Chuyển sang trang:", value);
     setCurrentPage(value);
   };
 
@@ -113,6 +127,12 @@ const TimKhachSan = () => {
               type="text"
               placeholder="Nhập tên khách sạn"
               className="bg-transparent outline-none w-full text-sm"
+              onChange={(e) =>
+                setSearchParams({
+                  ...searchParams,
+                  tenKhachSan: e.target.value,
+                })
+              }
             />
           </Box>
 
@@ -157,8 +177,9 @@ const TimKhachSan = () => {
               width: { xs: "100%", lg: "20%" },
             }}
             onClick={handleSearch}
+            disabled={loading}
           >
-            Tìm kiếm
+            {loading ? "Đang tìm..." : "Tìm kiếm"}
           </Button>
         </Box>
       </Paper>
@@ -241,22 +262,36 @@ const TimKhachSan = () => {
         <Grid item xs={12} md={9}>
           <Paper elevation={3} sx={{ borderRadius: 5, p: 2 }}>
             <Typography variant="h6" gutterBottom>
-              Danh sách khách sạn
+              Danh sách khách sạn {loading && "(Đang tải...)"}
             </Typography>
+            {!loading && hotels.length === 0 && (
+              <Typography align="center" color="text.secondary" py={4}>
+                Không tìm thấy khách sạn nào phù hợp
+              </Typography>
+            )}
             {hotels.map((hotel) => (
-              <KhachSanCard key={hotel.id} khachSan={hotel} />
+              <LongCard
+                data={hotel}
+                type="khach-san"
+                idField="hotelId"
+                nameField="hotelName"
+                priceField="hotelPrice"
+              />
             ))}
 
             {/* Pagination */}
-            <Stack spacing={2} alignItems="center" mt={3}>
-              <Pagination
-                count={totalPages}
-                page={currentPage}
-                onChange={handlePageChange}
-                color="primary"
-                shape="rounded"
-              />
-            </Stack>
+            {totalPages > 1 && (
+              <Stack spacing={2} alignItems="center" mt={3}>
+                <Pagination
+                  count={totalPages}
+                  page={currentPage}
+                  onChange={handlePageChange}
+                  color="primary"
+                  shape="rounded"
+                  disabled={loading}
+                />
+              </Stack>
+            )}
           </Paper>
         </Grid>
       </Grid>

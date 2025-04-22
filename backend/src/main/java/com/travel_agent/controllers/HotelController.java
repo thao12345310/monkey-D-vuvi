@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.travel_agent.dto.HotelDTO;
+import com.travel_agent.dto.ResultPaginationDTO;
 import com.travel_agent.services.HotelService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
@@ -28,12 +29,12 @@ public class HotelController {
     }
 
     @GetMapping
-    public List<HotelDTO> getAllHotels(
+    public ResultPaginationDTO getAllHotels(
         @RequestParam("currentPage") Optional<Integer> currentPageOptional,
         @RequestParam("pageSize") Optional<Integer> pageSizeOptional
     ) {
         int currentPage = currentPageOptional.orElse(1); // Mặc định là trang 1
-    int pageSize = pageSizeOptional.orElse(10);      // Mặc định 10 phần tử mỗi trang
+        int pageSize = pageSizeOptional.orElse(10);      // Mặc định 10 phần tử mỗi trang
  
     Pageable pageable = PageRequest.of(currentPage - 1, pageSize);
 
