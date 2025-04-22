@@ -1,7 +1,5 @@
 package com.travel_agent.dto;
 
-import com.travel_agent.models.entity.hotel.Hotel;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
