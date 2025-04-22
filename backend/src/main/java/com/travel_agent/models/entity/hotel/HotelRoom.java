@@ -15,7 +15,7 @@ public class HotelRoom {
 
     @ManyToOne
     @JoinColumn(name = "hotel_id")
-    private Hotel hotel;
+    private HotelEntity hotel;
 
     @Column(name = "room_name")
     private String roomName;
