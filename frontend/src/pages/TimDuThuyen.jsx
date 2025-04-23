@@ -91,6 +91,12 @@ const TimDuThuyen = () => {
   const handlePageChange = (event, value) => {
     console.log("Chuyển sang trang:", value);
     setCurrentPage(value);
+
+    // Cuộn lên đầu danh sách du thuyền
+    const element = document.getElementById("danh-sach-du-thuyen");
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   };
 
   return (
@@ -258,7 +264,7 @@ const TimDuThuyen = () => {
           </Paper>
         </Grid>
 
-        <Grid item xs={12} md={9}>
+        <Grid item xs={12} md={9} id="danh-sach-du-thuyen">
           <Paper elevation={3} sx={{ borderRadius: 5, p: 2 }}>
             <Typography variant="h6" gutterBottom>
               Danh sách du thuyền {loading && "(Đang tải...)"}
@@ -275,6 +281,7 @@ const TimDuThuyen = () => {
                 idField="shipId"
                 nameField="shipName"
                 priceField="shipPrice"
+                imageField="thumbnail"
               />
             ))}
 

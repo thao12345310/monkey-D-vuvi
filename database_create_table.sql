@@ -42,6 +42,7 @@ CREATE TABLE hotel (
   city VARCHAR,
   address VARCHAR,
   map_link VARCHAR,
+  thumbnail VARCHAR,
   company_id INTEGER,
   FOREIGN KEY (company_id) REFERENCES company(company_id)
 );
