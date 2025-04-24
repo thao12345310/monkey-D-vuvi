@@ -19,7 +19,7 @@ public class ShipRoom {
 
     @ManyToOne
     @JoinColumn(name = "ship_id")
-    private Ship ship;
+    private ShipEntity ship;
 
     @Column(name = "room_name")
     private String roomName;

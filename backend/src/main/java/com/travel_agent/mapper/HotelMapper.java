@@ -14,7 +14,4 @@ public interface HotelMapper {
     HotelDTO hotelToHotelDTO(HotelEntity hotel);
 
     List<HotelDTO> hotelsToHotelDTOs(List<HotelEntity> hotels);
-
-    @Mapping(source = "companyId", target = "companyId.companyId")
-    HotelEntity hotelDTOToHotel(HotelDTO dto);
 }
