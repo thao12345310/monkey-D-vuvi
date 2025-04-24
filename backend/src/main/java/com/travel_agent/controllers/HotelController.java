@@ -29,15 +29,15 @@ public class HotelController {
 
     @GetMapping
     public ResultPaginationDTO getAllHotels(
-        @RequestParam("currentPage") Optional<Integer> currentPageOptional,
-        @RequestParam("pageSize") Optional<Integer> pageSizeOptional
+            @RequestParam("currentPage") Optional<Integer> currentPageOptional,
+            @RequestParam("pageSize") Optional<Integer> pageSizeOptional
     ) {
-        int currentPage = currentPageOptional.orElse(1); // Mặc định là trang 1
-        int pageSize = pageSizeOptional.orElse(10);      // Mặc định 10 phần tử mỗi trang
- 
-    Pageable pageable = PageRequest.of(currentPage - 1, pageSize);
+        int currentPage = currentPageOptional.orElse(1);
+        int pageSize = pageSizeOptional.orElse(10);
 
-    return hotelService.getAllHotels(pageable);
+        Pageable pageable = PageRequest.of(currentPage - 1, pageSize);
+
+        return hotelService.getAllHotels(pageable);
     }
 
     // View hotel details

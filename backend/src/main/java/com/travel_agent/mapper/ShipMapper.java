@@ -6,13 +6,13 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import com.travel_agent.dto.ShipDTO;
-import com.travel_agent.models.entity.ship.Ship;
+import com.travel_agent.models.entity.ship.ShipEntity;
 
 @Mapper(componentModel = "spring")
 public interface ShipMapper {
 
     @Mapping(source = "companyId.companyId", target = "companyId")
-    ShipDTO shipToShipDTO(Ship ship);
+    ShipDTO shipToShipDTO(ShipEntity ship);
 
-    List<ShipDTO> shipsToShipDTOs(List<Ship> ships);
+    List<ShipDTO> shipsToShipDTOs(List<ShipEntity> ships);
 }
