@@ -10,6 +10,7 @@ import ChiTietKhachSan from "./pages/ChiTietKhachSan";
 import "./App.css";
 import DoanhNghiep from "./pages/DoanhNghiep";
 import Footer from "./components/Footer";
+import DuThuyen from "./pages/DuThuyen"
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
           <Route path="/doanh-nghiep" element={<DoanhNghiep />} />
           <Route path="/blog" element={<div>Blog</div>} />
           <Route path="/lien-he" element={<div>Liên hệ</div>} />
+          <Route path="/du-thuyen" element={<DuThuyen />} />
         </Routes>
         <Footer />
       </div>
