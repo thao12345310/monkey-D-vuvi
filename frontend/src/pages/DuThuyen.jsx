@@ -1,35 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Thumbs } from 'swiper/modules';
-import { useState } from 'react';
+import { FaStar, FaSwimmingPool, FaCocktail, FaUtensils, FaConciergeBell, FaBath } from 'react-icons/fa';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 
+// Fake data
+import RoomItem from '../components/RoomItem';
+import roomsData from '../pages/roomsData';
+import AboutSection from '../components/AboutSection';
+
+// ================= GALLERY SLIDER =================
 const GallerySlider = ({ images }) => {
-  const [thumbsSwiper, setThumbsSwiper] = React.useState(null);
+  const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
   return (
     <div className="w-full">
       {/* Main Gallery */}
       <Swiper
-        onSwiper={setThumbsSwiper}
         spaceBetween={10}
-        slidesPerView={4}
-        freeMode={true}
-        watchSlidesProgress={true}
-        modules={[Thumbs]}
-        className="mt-4"
-    >
-
+        navigation
+        thumbs={{ swiper: thumbsSwiper }}
+        modules={[Navigation, Thumbs]}
+        className="mb-6 rounded-xl overflow-hidden"
+      >
         {images.map((img, index) => (
           <SwiperSlide key={index}>
-            <img
-              src={img}
-              alt={`Slide ${index}`}
-              className="w-full h-[500px] object-cover rounded-xl"
-            />
+            <img src={img} alt={`Slide ${index}`} className="w-full h-[500px] object-cover" />
           </SwiperSlide>
         ))}
       </Swiper>
@@ -58,116 +57,100 @@ const GallerySlider = ({ images }) => {
   );
 };
 
+// ================= TAB NAVIGATION =================
 const tabs = [
-    { id: 1, label: 'Đặc điểm' },
-    { id: 2, label: 'Phòng & giá' },
-    { id: 3, label: 'Giới thiệu' },
-  ];
-  
-  const TabNav = ({ activeTab, setActiveTab }) => {
-    return (
-      <div className="flex space-x-6 border-b pb-2">
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            className={`pb-2 border-b-2 ${
-              activeTab === tab.id
-                ? 'border-primary text-primary font-semibold'
-                : 'border-transparent text-gray-500'
-            } transition-all`}
-            onClick={() => setActiveTab(tab.id)}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
-    );
-  };
-  const CruiseDetail = () => {
-    const [activeTab, setActiveTab] = useState(1);
-  
-    return (
-      <div className="max-w-6xl mx-auto p-4">
-        <TabNav activeTab={activeTab} setActiveTab={setActiveTab} />
-  
-        {activeTab === 1 && <Highlights />}
-        {activeTab === 2 && <Rooms />}
-        {activeTab === 3 && <Introduction />}
-      </div>
-    );
-  };
-  
-  export default CruiseDetail;
-  
-  import { FaSwimmingPool, FaCocktail, FaUtensils, FaConciergeBell, FaBath } from 'react-icons/fa';
+  { id: 1, label: 'Đặc điểm' },
+  { id: 2, label: 'Phòng & giá' },
+  { id: 3, label: 'Giới thiệu' },
+];
 
-  const features = [
-    { icon: <FaSwimmingPool size={24} />, text: 'Có bể sục' },
-    { icon: <FaCocktail size={24} />, text: 'Quầy bar' },
-    { icon: <FaUtensils size={24} />, text: 'Nhà hàng' },
-    { icon: <FaConciergeBell size={24} />, text: 'Lễ tân 24 giờ' },
-    { icon: <FaBath size={24} />, text: 'Phòng có bồn tắm' },
-  ];
-  
-  const descriptionList = [
-    'Du thuyền thiết kế sang trọng và truyền thống',
-    'Phòng ngủ tiện nghi sang trọng với bồn tắm view vịnh',
-    'Bể bơi 4 mùa rộng lớn checkin cực đẹp',
-    'Nhiều lịch trình 2N1Đ, 3N2Đ, 4N3Đ trên vịnh Lan Hạ',
-  ];
-  
-  const cruiseInfo = [
-    { label: 'Hạ thủy', value: '2019' },
-    { label: 'Cabin', value: '20' },
-    { label: 'Thân vỏ', value: 'Kim loại' },
-    { label: 'Hành trình', value: 'Vịnh Lan Hạ - Bãi tắm Ba Trái Đào - Hang Sáng Tối' },
-    { label: 'Điều hành', value: 'Công ty cổ phần Heritage Cruises' },
-  ];
-  
-  const Highlights = () => {
-    return (
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-6">
-        {/* Left */}
-        <div className="md:col-span-2 space-y-6">
-          {/* Features */}
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-            {features.map((item, index) => (
-              <div key={index} className="flex items-center space-x-2">
-                <div className="text-primary">{item.icon}</div>
-                <span>{item.text}</span>
-              </div>
-            ))}
-          </div>
-  
-          {/* Description */}
-          <div className="space-y-3">
-            {descriptionList.map((desc, idx) => (
-              <div key={idx} className="flex items-start space-x-2">
-                <span className="text-primary">✔️</span>
-                <p>{desc}</p>
-              </div>
-            ))}
-          </div>
+const TabNav = ({ activeTab, setActiveTab }) => {
+  return (
+    <div className="flex space-x-6 border-b pb-2">
+      {tabs.map((tab) => (
+        <button
+          key={tab.id}
+          className={`pb-2 border-b-2 ${
+            activeTab === tab.id
+              ? 'border-primary text-primary font-semibold'
+              : 'border-transparent text-gray-500'
+          } transition-all`}
+          onClick={() => setActiveTab(tab.id)}
+        >
+          {tab.label}
+        </button>
+      ))}
+    </div>
+  );
+};
+
+// ================= HIGHLIGHTS TAB =================
+const features = [
+  { icon: <FaSwimmingPool size={24} />, text: 'Có bể sục' },
+  { icon: <FaCocktail size={24} />, text: 'Quầy bar' },
+  { icon: <FaUtensils size={24} />, text: 'Nhà hàng' },
+  { icon: <FaConciergeBell size={24} />, text: 'Lễ tân 24 giờ' },
+  { icon: <FaBath size={24} />, text: 'Phòng có bồn tắm' },
+];
+
+const descriptionList = [
+  'Du thuyền thiết kế sang trọng và truyền thống',
+  'Phòng ngủ tiện nghi sang trọng với bồn tắm view vịnh',
+  'Bể bơi 4 mùa rộng lớn checkin cực đẹp',
+  'Nhiều lịch trình 2N1Đ, 3N2Đ, 4N3Đ trên vịnh Lan Hạ',
+];
+
+const cruiseInfo = [
+  { label: 'Hạ thủy', value: '2019' },
+  { label: 'Cabin', value: '20' },
+  { label: 'Thân vỏ', value: 'Kim loại' },
+  { label: 'Hành trình', value: 'Vịnh Lan Hạ - Bãi tắm Ba Trái Đào - Hang Sáng Tối' },
+  { label: 'Điều hành', value: 'Công ty cổ phần Heritage Cruises' },
+];
+
+const Highlights = () => {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-6">
+      {/* Left */}
+      <div className="md:col-span-2 space-y-6">
+        {/* Features */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+          {features.map((item, index) => (
+            <div key={index} className="flex items-center space-x-2">
+              <div className="text-primary">{item.icon}</div>
+              <span>{item.text}</span>
+            </div>
+          ))}
         </div>
-  
-        {/* Right */}
-        <div className="border p-4 rounded-xl shadow-md bg-gray-50">
-          <h3 className="text-lg font-semibold mb-4">Thông tin du thuyền</h3>
-          <div className="space-y-3">
-            {cruiseInfo.map((info, idx) => (
-              <div key={idx} className="flex justify-between text-sm">
-                <span className="text-gray-600">{info.label}</span>
-                <span className="font-semibold">{info.value}</span>
-              </div>
-            ))}
-          </div>
+
+        {/* Description */}
+        <div className="space-y-3">
+          {descriptionList.map((desc, idx) => (
+            <div key={idx} className="flex items-start space-x-2">
+              <span className="text-primary">✔️</span>
+              <p>{desc}</p>
+            </div>
+          ))}
         </div>
       </div>
-    );
-  };
-import RoomItem from '../components/RoomItem'; // Import component
-import roomsData from '../pages/roomsData'; // Giả sử dữ liệu nằm riêng
 
+      {/* Right */}
+      <div className="border p-4 rounded-xl shadow-md bg-gray-50">
+        <h3 className="text-lg font-semibold mb-4">Thông tin du thuyền</h3>
+        <div className="space-y-3">
+          {cruiseInfo.map((info, idx) => (
+            <div key={idx} className="flex justify-between text-sm">
+              <span className="text-gray-600">{info.label}</span>
+              <span className="font-semibold">{info.value}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ================= ROOMS TAB =================
 const Rooms = () => {
   const [quantities, setQuantities] = useState({});
 
@@ -180,9 +163,8 @@ const Rooms = () => {
 
   const totalPrice = roomsData.reduce((sum, room) => {
     const qty = quantities[room.id] || 0;
-    return sum + qty * room.price; // Kiểm tra xem room.price có phải là số không
+    return sum + qty * room.price;
   }, 0);
-  
 
   const resetSelections = () => {
     setQuantities({});
@@ -229,8 +211,8 @@ const Rooms = () => {
     </div>
   );
 };
-import AboutSection from '../components/AboutSection';
 
+// ================= INTRODUCTION TAB =================
 const aboutSections = [
   {
     title: 'Du thuyền tuyệt đẹp về đêm',
@@ -249,7 +231,7 @@ const aboutSections = [
   },
 ];
 
-const About = () => {
+const Introduction = () => {
   return (
     <div className="py-10 space-y-8">
       <h2 className="text-3xl font-bold mb-6">Giới thiệu</h2>
@@ -266,3 +248,47 @@ const About = () => {
     </div>
   );
 };
+
+// ================= MAIN PAGE =================
+const DuThuyen = () => {
+  const [activeTab, setActiveTab] = useState(1);
+
+  return (
+    <div className="max-w-6xl mx-auto p-4">
+      {/* ===== Title + Rating Section ===== */}
+      <div className="mb-10">
+        <h1 className="text-3xl font-bold mb-2">Heritage Cruises Binh Chuan</h1>
+        <div className="flex items-center space-x-4 text-gray-600 text-sm">
+          <div className="flex items-center space-x-1 text-yellow-400">
+            {[...Array(5)].map((_, idx) => (
+              <FaStar key={idx} />
+            ))}
+          </div>
+          <span>5.0</span>
+          <span>• 200 đánh giá</span>
+          <span>• Vịnh Lan Hạ, Việt Nam</span>
+        </div>
+      </div>
+
+      {/* ===== GallerySlider Section ===== */}
+      <div className="mb-10">
+        <GallerySlider images={[
+          'https://link1.jpg',
+          'https://link2.jpg',
+          'https://link3.jpg',
+        ]} />
+      </div>
+
+      {/* ===== Tab Navigation and Content ===== */}
+      <TabNav activeTab={activeTab} setActiveTab={setActiveTab} />
+
+      <div className="mt-6">
+        {activeTab === 1 && <Highlights />}
+        {activeTab === 2 && <Rooms />}
+        {activeTab === 3 && <Introduction />}
+      </div>
+    </div>
+  );
+};
+
+export default DuThuyen;
