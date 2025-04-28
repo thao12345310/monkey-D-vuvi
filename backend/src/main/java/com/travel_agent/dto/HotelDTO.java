@@ -33,4 +33,6 @@ public class HotelDTO {
 
     private List<Integer> featureIds;
     private List<String> features;
+
+    private List<String> shortDescriptions;
 }

@@ -1,7 +1,7 @@
 package com.travel_agent.services;
 
 import com.travel_agent.models.entity.hotel.HotelFeatureEntity;
-import com.travel_agent.repositories.HotelFeatureRepository;
+import com.travel_agent.repositories.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -11,10 +11,8 @@ import com.travel_agent.dto.Meta;
 import com.travel_agent.dto.ResultPaginationDTO;
 import com.travel_agent.mapper.HotelMapper;
 import com.travel_agent.models.entity.hotel.HotelEntity;
-import com.travel_agent.repositories.HotelRepository;
+import com.travel_agent.models.entity.hotel.HotelShortDescriptionEntity;
 import com.travel_agent.models.entity.Company;
-import com.travel_agent.repositories.CompanyRepository;
-import com.travel_agent.repositories.FeatureRepository;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -27,6 +25,7 @@ public class HotelService {
     private final CompanyRepository companyRepository;
     private final FeatureRepository featureRepository;
     private final HotelFeatureRepository hotelFeatureRepository;
+    private final HotelShortDescriptionRepository hotelShortDescriptionRepository;
 
     public ResultPaginationDTO getAllHotels(Pageable pageable) {
         Page<HotelEntity> pageHotel= hotelRepository.findAll(pageable);
@@ -62,6 +61,13 @@ public class HotelService {
 
         hotelDto.setFeatureIds(featureIds.isEmpty() ? null : featureIds);
         hotelDto.setFeatures(featureDescriptions.isEmpty() ? null : featureDescriptions);
+
+        // Fetch short descriptions
+        List<String> shortDescriptions = hotelShortDescriptionRepository.findByHotelId(hotelId)
+                .stream()
+                .map(HotelShortDescriptionEntity::getDescription)
+                .toList();
+        hotelDto.setShortDescriptions(shortDescriptions.isEmpty() ? null : shortDescriptions);
 
         return hotelDto;
     }
@@ -103,6 +109,17 @@ public class HotelService {
         populateHotelEntity(hotelEntity, hotelDto);
         hotelEntity = hotelRepository.save(hotelEntity);
 
+        if (hotelDto.getShortDescriptions() != null) {
+            int blockId = 1;
+            for (String description : hotelDto.getShortDescriptions()) {
+                HotelShortDescriptionEntity shortDescription = new HotelShortDescriptionEntity();
+                shortDescription.setHotelId(hotelEntity.getHotelId());
+                shortDescription.setBlockId(blockId++);
+                shortDescription.setDescription(description);
+                hotelShortDescriptionRepository.save(shortDescription);
+            }
+        }
+
         // Map the saved hotel entity to DTO
         HotelDTO savedHotelDto = hotelMapper.hotelToHotelDTO(hotelEntity);
 
@@ -119,6 +136,8 @@ public class HotelService {
 
         savedHotelDto.setFeatureIds(featureIds.isEmpty() ? null : featureIds);
         savedHotelDto.setFeatures(features.isEmpty() ? null : features);
+
+        savedHotelDto.setShortDescriptions(hotelDto.getShortDescriptions());
 
         return savedHotelDto;
     }
@@ -147,7 +166,21 @@ public class HotelService {
                 hotelFeatureRepository.save(hotelFeature);
             }
         }
+        // Clear existing short descriptions
+        List<HotelShortDescriptionEntity> existingDescriptions = hotelShortDescriptionRepository.findByHotelId(hotelId);
+        hotelShortDescriptionRepository.deleteAll(existingDescriptions);
 
+        // Add new short descriptions
+        if (hotelDto.getShortDescriptions() != null) {
+            int blockId = 1;
+            for (String description : hotelDto.getShortDescriptions()) {
+                HotelShortDescriptionEntity shortDescription = new HotelShortDescriptionEntity();
+                shortDescription.setHotelId(hotelId);
+                shortDescription.setBlockId(blockId++);
+                shortDescription.setDescription(description);
+                hotelShortDescriptionRepository.save(shortDescription);
+            }
+        }
         // Save updated hotel entity
         hotelEntity = hotelRepository.save(hotelEntity);
 
@@ -165,6 +198,14 @@ public class HotelService {
                         .getFeatureDescription())
                 .toList();
 
+        // Fetch and set updated short descriptions
+        List<String> shortDescriptions = hotelShortDescriptionRepository.findByHotelId(hotelId)
+                .stream()
+                .map(HotelShortDescriptionEntity::getDescription)
+                .toList();
+        updatedHotelDto.setShortDescriptions(shortDescriptions.isEmpty() ? null : shortDescriptions);
+
+
         updatedHotelDto.setFeatureIds(featureIds.isEmpty() ? null : featureIds);
         updatedHotelDto.setFeatures(features.isEmpty() ? null : features);
 
@@ -174,15 +215,15 @@ public class HotelService {
     // Delete hotel
     public void deleteHotels(List<Integer> hotelIds) {
         for (Integer hotelId : hotelIds) {
-            // Check if the hotel exists
             HotelEntity hotelEntity = hotelRepository.findById(hotelId)
                     .orElseThrow(() -> new IllegalArgumentException("Hotel not found with ID: " + hotelId));
 
-            // Delete associated features
             List<HotelFeatureEntity> hotelFeatures = hotelFeatureRepository.findByHotelId(hotelId);
             hotelFeatureRepository.deleteAll(hotelFeatures);
 
-            // Delete the hotel
+            List<HotelShortDescriptionEntity> hotelShortDescriptions = hotelShortDescriptionRepository.findByHotelId(hotelId);
+            hotelShortDescriptionRepository.deleteAll(hotelShortDescriptions);
+
             hotelRepository.delete(hotelEntity);
         }
     }

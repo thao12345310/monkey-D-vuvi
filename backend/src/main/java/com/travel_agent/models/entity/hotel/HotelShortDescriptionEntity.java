@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Table(name = "hotel_short_description")
 @IdClass(HotelDescriptionId.class)
-public class HotelShortDescription {
+public class HotelShortDescriptionEntity {
     @Id
     @Column(name = "hotel_id")
     private Integer hotelId;
