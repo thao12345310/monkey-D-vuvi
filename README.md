@@ -84,7 +84,7 @@ Ensure you have the following installed:
 | Doan Thi Thu Quyen | |
 | Hoang Khai Manh | |
 | Nguyen Thi Thu Huyen | |
-| Anh Duy | |
+| Nguyen Cong Duy | 20215188 |
 
 ## License
 
