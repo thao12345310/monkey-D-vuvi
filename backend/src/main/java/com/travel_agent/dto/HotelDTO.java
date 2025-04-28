@@ -37,4 +37,6 @@ public class HotelDTO {
     private List<String> shortDescriptions;
 
     private List<HotelLongDescriptionDTO> longDescriptions;
+
+    private List<HotelRoomDTO> rooms;
 }
