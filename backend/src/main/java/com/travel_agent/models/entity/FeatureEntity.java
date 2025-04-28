@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "features")
-public class Features {
+public class FeatureEntity {
     @Id
     @Column(name = "feature_id")
     private Integer featureId;

@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -29,4 +31,6 @@ public class HotelDTO {
 
     private Integer companyId;
 
+    private List<Integer> featureIds;
+    private List<String> features;
 }
