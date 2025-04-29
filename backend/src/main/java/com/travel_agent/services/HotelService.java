@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.travel_agent.mapper.HotelMapper;
-import com.travel_agent.models.entity.Company;
+import com.travel_agent.models.entity.CompanyEntity;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -104,7 +104,7 @@ public class HotelService {
         hotelEntity.setThumbnail(hotelDto.getThumbnail());
 
         if (hotelDto.getCompanyId() != null) {
-            Company company = companyRepository.findById(hotelDto.getCompanyId())
+            CompanyEntity company = companyRepository.findById(hotelDto.getCompanyId())
                     .orElseThrow(() -> new IllegalArgumentException("Company not found with ID: " + hotelDto.getCompanyId()));
             hotelEntity.setCompanyId(company);
         }
@@ -321,7 +321,7 @@ public class HotelService {
     }
 
     public HotelRoomDTO updateHotelRoom(Integer hotelId, Integer roomId, HotelRoomDTO roomDto) {
-        HotelEntity hotelEntity = hotelRepository.findById(hotelId)
+        hotelRepository.findById(hotelId)
                 .orElseThrow(() -> new IllegalArgumentException("Hotel not found with ID: " + hotelId));
 
         HotelRoom hotelRoom = hotelRoomRepository.findById(roomId)
@@ -356,7 +356,7 @@ public class HotelService {
 
     // Delete room
     public void deleteHotelRooms(Integer hotelId, List<Integer> roomIds) {
-        HotelEntity hotelEntity = hotelRepository.findById(hotelId)
+        hotelRepository.findById(hotelId)
                 .orElseThrow(() -> new IllegalArgumentException("Hotel not found with ID: " + hotelId));
 
         List<HotelRoom> roomsToDelete = hotelRoomRepository.findAllById(roomIds);

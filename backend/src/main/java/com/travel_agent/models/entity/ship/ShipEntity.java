@@ -1,6 +1,6 @@
 package com.travel_agent.models.entity.ship;
 
-import com.travel_agent.models.entity.Company;
+import com.travel_agent.models.entity.CompanyEntity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -42,5 +42,5 @@ public class ShipEntity {
 
     @ManyToOne
     @JoinColumn(name = "company_id")
-    private Company companyId;
+    private CompanyEntity companyId;
 }

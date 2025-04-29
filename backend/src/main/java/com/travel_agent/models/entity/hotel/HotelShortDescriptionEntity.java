@@ -14,11 +14,9 @@ import lombok.NoArgsConstructor;
 @Table(name = "hotel_short_description")
 @IdClass(HotelDescriptionId.class)
 public class HotelShortDescriptionEntity {
-    @Id
     @Column(name = "hotel_id")
     private Integer hotelId;
 
-    @Id
     @Column(name = "block_id")
     private Integer blockId;
 

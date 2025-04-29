@@ -1,6 +1,6 @@
 package com.travel_agent.models.entity.hotel;
 
-import com.travel_agent.models.entity.User;
+import com.travel_agent.models.entity.UserEntity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -23,7 +23,7 @@ public class BookingHotelRoom {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private UserEntity user;
 
     private String state;
 }
