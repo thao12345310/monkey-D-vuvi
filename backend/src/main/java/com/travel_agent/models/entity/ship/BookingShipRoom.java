@@ -2,7 +2,7 @@ package com.travel_agent.models.entity.ship;
 
 import java.time.LocalDateTime;
 
-import com.travel_agent.models.entity.User;
+import com.travel_agent.models.entity.UserEntity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -25,7 +25,7 @@ public class BookingShipRoom {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private UserEntity user;
 
     private String state;
 
