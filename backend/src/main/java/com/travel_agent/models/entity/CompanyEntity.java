@@ -3,6 +3,8 @@ package com.travel_agent.models.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
@@ -15,9 +17,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Company")
+@Table(name = "company")
 public class CompanyEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column (name = "company_id")
     private Integer companyId;
 

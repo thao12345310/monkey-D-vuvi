@@ -1,11 +1,6 @@
-
 package com.travel_agent.models.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,10 +13,10 @@ import java.security.NoSuchAlgorithmException;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Accounts")
+@Table(name = "account")
 public class AccountEntity {
     @Id
-    @Column(name = "id")
+    @Column(name = "account_id")
     private String accountId;
 
     private String username;
