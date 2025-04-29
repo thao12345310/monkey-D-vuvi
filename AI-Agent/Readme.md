@@ -36,4 +36,19 @@ Answers questions related to travel tips, transportation, weather, and more.
 - Custom Recommendation System using multi-agent architecture
 
 ## 📸 Screenshot (Demo)
-(Insert the demo image here.)
+![](image/anh1.jpg)
+![](image/anh2.jpg)
+![](image/anh3.jpg)
+![](image/anh4.jpg)
+![](image/anh5.jpg)
+![](image/anh6.jpg)
+![](image/anh7.jpg)
+![](image/anh8.jpg)
+![](image/anh9.jpg)
+![](image/anh10.jpg)
+![](image/anh11.jpg)
+![](image/anh12.jpg)
+![](image/anh13.jpg)
+![](image/anh14.jpg)
+![](image/anh15.jpg)
+
