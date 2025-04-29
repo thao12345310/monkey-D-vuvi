@@ -36,19 +36,21 @@ Answers questions related to travel tips, transportation, weather, and more.
 - Custom Recommendation System using multi-agent architecture
 
 ## 📸 Screenshot (Demo)
-![](image/anh1.jpg)
-![](image/anh2.jpg)
-![](image/anh3.jpg)
-![](image/anh4.jpg)
-![](image/anh5.jpg)
-![](image/anh6.jpg)
-![](image/anh7.jpg)
-![](image/anh8.jpg)
-![](image/anh9.jpg)
-![](image/anh10.jpg)
-![](image/anh11.jpg)
-![](image/anh12.jpg)
-![](image/anh13.jpg)
-![](image/anh14.jpg)
-![](image/anh15.jpg)
+<p align="center">
+  <img src="image/anh1.jpg" alt="Demo 1" width="200"/>
+  <img src="image/anh1.jpg" alt="Demo 2" width="200"/>
+  <img src="image/anh1.jpg" alt="Demo 3" width="200"/>
+  <img src="image/anh1.jpg" alt="Demo 4" width="200"/>
+  <img src="image/anh1.jpg" alt="Demo 5" width="200"/>
+  <img src="image/anh1.jpg" alt="Demo 6" width="200"/>
+  <img src="image/anh1.jpg" alt="Demo 7" width="200"/>
+  <img src="image/anh1.jpg" alt="Demo 8" width="200"/>
+  <img src="image/anh1.jpg" alt="Demo 9" width="200"/>
+  <img src="image/anh1.jpg" alt="Demo 10" width="200"/>
+  <img src="image/anh1.jpg" alt="Demo 11" width="200"/>
+  <img src="image/anh1.jpg" alt="Demo 12" width="200"/>
+  <img src="image/anh1.jpg" alt="Demo 13" width="200"/>
+  <img src="image/anh1.jpg" alt="Demo 14" width="200"/>
+  <img src="image/anh1.jpg" alt="Demo 15" width="200"/>
+</p>
 
