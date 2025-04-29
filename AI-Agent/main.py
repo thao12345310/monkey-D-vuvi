@@ -7,7 +7,7 @@ from your_graph import graph  # Chỉnh lại đúng tên file graph nhé
 
 # Lấy TELEGRAM_TOKEN từ biến môi trường
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
-WEBHOOK_URL = "https://93c5-116-96-46-100.ngrok-free.app/webhook"  # Đảm bảo URL này chính xác
+WEBHOOK_URL =   # Đảm bảo URL này chính xác
 
 # Thiết lập Webhook khi ứng dụng khởi động
 def set_telegram_webhook():
