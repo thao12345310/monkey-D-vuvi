@@ -1,12 +1,12 @@
-CREATE TABLE account {
+CREATE TABLE account (
   account_id VARCHAR PRIMARY KEY,
   username VARCHAR,
   password VARCHAR,
   role VARCHAR
-};
+);
 
 CREATE TABLE "user" (
-  user_id INTEGER PRIMARY KEY,
+  user_id SERIAL INTEGER PRIMARY KEY,
   account_id VARCHAR
   dob DATE,
   role VARCHAR
@@ -33,7 +33,7 @@ CREATE TABLE features (
 );
 
 CREATE TABLE company (
-  company_id INTEGER PRIMARY KEY,
+  company_id SERIAL INTEGER PRIMARY KEY,
   company_name VARCHAR,
   account_id VARCHAR
   FOREIGN KEY (account_id) REFERENCES account(account_id)
