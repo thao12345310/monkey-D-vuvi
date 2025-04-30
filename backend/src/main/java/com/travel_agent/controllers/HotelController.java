@@ -3,6 +3,7 @@ package com.travel_agent.controllers;
 import java.util.List;
 import java.util.Optional;
 
+import com.travel_agent.dto.HotelRoomDTO;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
@@ -100,6 +101,59 @@ public class HotelController {
         hotelService.deleteHotels(hotelIds);
         return ResponseEntity.ok(ResponseObject.builder()
                 .message("Hotels deleted successfully")
+                .responseCode(HttpStatus.OK.value())
+                .build());
+    }
+
+    // Add room to hotel
+    @PostMapping("/{hotelId}/add-room")
+    public ResponseEntity<ResponseObject> addHotelRoom(@PathVariable("hotelId") Integer hotelId, @RequestBody HotelRoomDTO roomDto) {
+        HotelRoomDTO addedRoom = hotelService.addHotelRoom(hotelId, roomDto);
+
+        if (addedRoom != null) {
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .message("Room added successfully")
+                    .data(addedRoom)
+                    .responseCode(HttpStatus.OK.value())
+                    .build());
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    // Update room in hotel
+    @PutMapping("/{hotelId}/update-room/{roomId}")
+    public ResponseEntity<ResponseObject> updateHotelRoom(
+            @PathVariable("hotelId") Integer hotelId,
+            @PathVariable("roomId") Integer roomId,
+            @RequestBody HotelRoomDTO roomDto) {
+        HotelRoomDTO updatedRoom = hotelService.updateHotelRoom(hotelId, roomId, roomDto);
+
+        if (updatedRoom != null) {
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .message("Room updated successfully")
+                    .data(updatedRoom)
+                    .responseCode(HttpStatus.OK.value())
+                    .build());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // Delete room from hotel
+    @DeleteMapping("/{hotelId}/delete-room")
+    public ResponseEntity<ResponseObject> deleteHotelRooms(
+            @PathVariable("hotelId") Integer hotelId,
+            @RequestBody List<Integer> roomIds) {
+        if (roomIds.size() > 10) {
+            return ResponseEntity.badRequest().body(ResponseObject.builder()
+                    .message("Cannot delete more than 10 rooms at once")
+                    .responseCode(HttpStatus.BAD_REQUEST.value())
+                    .build());
+        }
+        hotelService.deleteHotelRooms(hotelId, roomIds);
+        return ResponseEntity.ok(ResponseObject.builder()
+                .message("Rooms deleted successfully")
                 .responseCode(HttpStatus.OK.value())
                 .build());
     }

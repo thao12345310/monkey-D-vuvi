@@ -13,7 +13,7 @@ import com.travel_agent.dto.Meta;
 import com.travel_agent.dto.ResultPaginationDTO;
 import com.travel_agent.mapper.ShipMapper;
 import com.travel_agent.models.entity.ship.ShipEntity;
-import com.travel_agent.models.entity.Company;
+import com.travel_agent.models.entity.CompanyEntity;
 import com.travel_agent.repositories.CompanyRepository;
 
 import java.util.List;
@@ -62,7 +62,7 @@ public class ShipService {
         shipEntity.setThumbnail(shipDto.getThumbnail());
 
         if (shipDto.getCompanyId() != null) {
-            Company company = companyRepository.findById(shipDto.getCompanyId())
+            CompanyEntity company = companyRepository.findById(shipDto.getCompanyId())
                     .orElseThrow(() -> new IllegalArgumentException("Company not found with ID: " + shipDto.getCompanyId()));
             shipEntity.setCompanyId(company);
         }

@@ -10,6 +10,7 @@ import lombok.*;
 @Table(name = "hotel_room")
 public class HotelRoom {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "hotel_room_id")
     private Integer hotelRoomId;
 

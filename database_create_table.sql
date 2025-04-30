@@ -1,9 +1,16 @@
-CREATE TABLE "user" (
-  user_id INTEGER PRIMARY KEY,
+CREATE TABLE account {
+  account_id VARCHAR PRIMARY KEY,
   username VARCHAR,
   password VARCHAR,
+  role VARCHAR
+};
+
+CREATE TABLE "user" (
+  user_id INTEGER PRIMARY KEY,
+  account_id VARCHAR
   dob DATE,
   role VARCHAR
+  FOREIGN KEY (account_id) REFERENCES account(account_id)
 );
 
 CREATE TABLE hotel_short_description (
@@ -28,9 +35,8 @@ CREATE TABLE features (
 CREATE TABLE company (
   company_id INTEGER PRIMARY KEY,
   company_name VARCHAR,
-  username VARCHAR,
-  password VARCHAR,
-  role VARCHAR
+  account_id VARCHAR
+  FOREIGN KEY (account_id) REFERENCES account(account_id)
 );
 
 CREATE TABLE hotel (
