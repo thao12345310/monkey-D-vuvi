@@ -1,25 +1,23 @@
 package com.travel_agent.controllers;
 
-import java.util.List;
-import java.util.Optional;
-
-import com.travel_agent.dto.HotelRoomDTO;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.HttpStatus;
-
 import com.travel_agent.dto.HotelDTO;
+import com.travel_agent.dto.HotelRoomDTO;
 import com.travel_agent.dto.ResponseObject;
 import com.travel_agent.dto.ResultPaginationDTO;
 import com.travel_agent.services.HotelService;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/hotel")
-
 public class HotelController {
 
     private final HotelService hotelService;

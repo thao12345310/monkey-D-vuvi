@@ -42,5 +42,5 @@ public class ShipEntity {
 
     @ManyToOne
     @JoinColumn(name = "company_id")
-    private CompanyEntity companyId;
+    private CompanyEntity company;
 }

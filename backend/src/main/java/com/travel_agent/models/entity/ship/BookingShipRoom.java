@@ -1,6 +1,6 @@
 package com.travel_agent.models.entity.ship;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import com.travel_agent.models.entity.UserEntity;
 
@@ -30,8 +30,8 @@ public class BookingShipRoom {
     private String state;
 
     @Column(name = "start_date")
-    private LocalDateTime startDate;
+    private LocalDate startDate;
 
     @Column(name = "end_date")
-    private LocalDateTime endDate;
+    private LocalDate endDate;
 }

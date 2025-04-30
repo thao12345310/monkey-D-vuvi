@@ -3,6 +3,9 @@ package com.travel_agent.services;
 import com.travel_agent.models.entity.AccountEntity;
 import com.travel_agent.repositories.AccountRepository;
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -54,7 +57,7 @@ public class AccountService {
     }
 
     // LIST ALL: Find all accounts
-    public Iterable<AccountEntity> getAllAccounts() {
+    public List<AccountEntity> getAllAccounts() {
         return accountRepository.findAll();
     }
 }

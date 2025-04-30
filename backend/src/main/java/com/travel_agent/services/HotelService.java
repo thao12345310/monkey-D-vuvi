@@ -106,7 +106,7 @@ public class HotelService {
         if (hotelDto.getCompanyId() != null) {
             CompanyEntity company = companyRepository.findById(hotelDto.getCompanyId())
                     .orElseThrow(() -> new IllegalArgumentException("Company not found with ID: " + hotelDto.getCompanyId()));
-            hotelEntity.setCompanyId(company);
+            hotelEntity.setCompany(company);
         }
 
         hotelEntity = hotelRepository.save(hotelEntity);

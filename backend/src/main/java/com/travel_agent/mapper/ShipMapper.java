@@ -11,7 +11,7 @@ import com.travel_agent.models.entity.ship.ShipEntity;
 @Mapper(componentModel = "spring")
 public interface ShipMapper {
 
-    @Mapping(source = "companyId.companyId", target = "companyId")
+    @Mapping(source = "company.companyId", target = "companyId")
     ShipDTO shipToShipDTO(ShipEntity ship);
 
     List<ShipDTO> shipsToShipDTOs(List<ShipEntity> ships);
