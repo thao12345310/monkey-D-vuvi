@@ -276,6 +276,7 @@ const TimKhachSan = () => {
                 idField="hotelId"
                 nameField="hotelName"
                 priceField="hotelPrice"
+                imageField="thumbnail"
               />
             ))}
 
