@@ -3,7 +3,6 @@ package com.travel_agent.services;
 import com.travel_agent.dto.CompanyDTO;
 import com.travel_agent.exceptions.ReflectionException;
 import com.travel_agent.mapper.CompanyMapper;
-import com.travel_agent.models.entity.AccountEntity;
 import com.travel_agent.models.entity.CompanyEntity;
 import com.travel_agent.repositories.CompanyRepository;
 import com.travel_agent.utils.ReflectionUtils;
@@ -16,19 +15,17 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CompanyService {
-    private final AccountService accountService;
     private final CompanyRepository companyRepository;
     private final CompanyMapper companyMapper;
 
     // CREATE: Create a new Company
     public CompanyDTO createCompany(String username, String password, String role, String companyName) {
-        // Tạo Account thông qua AccountService
-        AccountEntity account = accountService.createAccount(username, password, role);
-
         // Tạo CompanyEntity liên kết với Account
         CompanyEntity company = new CompanyEntity();
-        company.setAccount(account);
+        company.setUsername(username);
+        company.setPassword(password);
         company.setCompanyName(companyName);
+        company.setRole(role);
 
         companyRepository.save(company);
         return companyMapper.companyToCompanyDTO(company);

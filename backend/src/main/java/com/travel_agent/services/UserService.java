@@ -3,7 +3,6 @@ package com.travel_agent.services;
 import com.travel_agent.dto.UserDTO;
 import com.travel_agent.exceptions.ReflectionException;
 import com.travel_agent.mapper.UserMapper;
-import com.travel_agent.models.entity.AccountEntity;
 import com.travel_agent.models.entity.UserEntity;
 import com.travel_agent.repositories.UserRepository;
 import com.travel_agent.utils.ReflectionUtils;
@@ -17,18 +16,16 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private final AccountService accountService;
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     // CREATE: Tạo mới User
     public UserDTO createUser(String username, String password, String role, LocalDate dob) {
-        // Tạo Account thông qua AccountService
-        AccountEntity account = accountService.createAccount(username, password, role);
-
         // Tạo UserEntity liên kết với Account
         UserEntity user = new UserEntity();
-        user.setAccount(account);
         user.setDob(dob);
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setRole(role);
 
         userRepository.save(user);
 

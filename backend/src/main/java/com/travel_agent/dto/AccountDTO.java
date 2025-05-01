@@ -8,8 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = false)
-public class AccountDTO {
-    private String accountId;
+public abstract class AccountDTO {
     private String username;
     private String password;
     private String role;
