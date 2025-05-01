@@ -1,8 +1,13 @@
 package com.travel_agent.services;
 
+import com.travel_agent.dto.CompanyDTO;
+import com.travel_agent.exceptions.ReflectionException;
+import com.travel_agent.mapper.CompanyMapper;
 import com.travel_agent.models.entity.AccountEntity;
 import com.travel_agent.models.entity.CompanyEntity;
 import com.travel_agent.repositories.CompanyRepository;
+import com.travel_agent.utils.ReflectionUtils;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +18,10 @@ import java.util.List;
 public class CompanyService {
     private final AccountService accountService;
     private final CompanyRepository companyRepository;
+    private final CompanyMapper companyMapper;
 
     // CREATE: Create a new Company
-    public CompanyEntity createCompany(String username, String password, String role, String companyName) {
+    public CompanyDTO createCompany(String username, String password, String role, String companyName) {
         // Tạo Account thông qua AccountService
         AccountEntity account = accountService.createAccount(username, password, role);
 
@@ -25,22 +31,24 @@ public class CompanyService {
         company.setCompanyName(companyName);
 
         companyRepository.save(company);
-        return company;
+        return companyMapper.companyToCompanyDTO(company);
     }
 
     // READ: Find Company by ID
-    public CompanyEntity getCompanyById(Integer companyId) {
-        return companyRepository.findById(companyId)
+    public CompanyDTO getCompanyById(Integer companyId) {
+        CompanyEntity company =  companyRepository.findById(companyId)
                 .orElseThrow(() -> new IllegalArgumentException("Company not found with ID: " + companyId));
+        return companyMapper.companyToCompanyDTO(company);
     }
 
     // UPDATE: Update Company
-    public CompanyEntity updateCompany(Integer companyId, String companyName) {
+    public CompanyDTO updateCompany(Integer companyId, CompanyDTO companyDTO) throws ReflectionException {
         CompanyEntity company = companyRepository.findById(companyId)
                 .orElseThrow(() -> new IllegalArgumentException("Company not found with ID: " + companyId));
 
-        company.setCompanyName(companyName);
-        return companyRepository.save(company);
+        ReflectionUtils.updateEntityFields(company, companyDTO);
+        companyRepository.save(company);
+        return companyMapper.companyToCompanyDTO(company);
     }
 
     // DELETE: Delete Company
@@ -51,7 +59,8 @@ public class CompanyService {
     }
 
     // LIST ALL: Find all companies
-    public List<CompanyEntity> getAllCompanies() {
-        return companyRepository.findAll();
+    public List<CompanyDTO> getAllCompanies() {
+        List<CompanyEntity> companies =  companyRepository.findAll();
+        return companyMapper.companiesToCompanyDTOs(companies);
     }
 }

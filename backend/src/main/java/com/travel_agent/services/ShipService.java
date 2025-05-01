@@ -64,7 +64,7 @@ public class ShipService {
         if (shipDto.getCompanyId() != null) {
             CompanyEntity company = companyRepository.findById(shipDto.getCompanyId())
                     .orElseThrow(() -> new IllegalArgumentException("Company not found with ID: " + shipDto.getCompanyId()));
-            shipEntity.setCompanyId(company);
+            shipEntity.setCompany(company);
         }
     }
 
