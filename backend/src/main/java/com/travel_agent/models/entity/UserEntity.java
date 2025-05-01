@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -22,5 +22,5 @@ public class UserEntity {
     @JoinColumn(name = "account_id")
     private AccountEntity account;
 
-    private LocalDateTime dob;
+    private LocalDate dob;
 }

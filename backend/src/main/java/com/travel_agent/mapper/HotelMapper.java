@@ -10,7 +10,7 @@ import com.travel_agent.models.entity.hotel.HotelEntity;
 
 @Mapper(componentModel = "spring")
 public interface HotelMapper {
-    @Mapping(source = "companyId.companyId", target = "companyId") // lấy ID từ Company
+    @Mapping(source = "company.companyId", target = "companyId") // lấy ID từ Company
     HotelDTO hotelToHotelDTO(HotelEntity hotel);
 
     List<HotelDTO> hotelsToHotelDTOs(List<HotelEntity> hotels);

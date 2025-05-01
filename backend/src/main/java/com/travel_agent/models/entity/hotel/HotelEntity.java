@@ -42,6 +42,6 @@ public class HotelEntity {
 
     @ManyToOne
     @JoinColumn(name = "company_id")
-    private CompanyEntity companyId;
+    private CompanyEntity company;
 }
 

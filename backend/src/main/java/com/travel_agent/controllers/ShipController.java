@@ -14,7 +14,6 @@ import com.travel_agent.dto.ResponseObject;
 import com.travel_agent.dto.ResultPaginationDTO;
 import com.travel_agent.services.ShipService;
 
-@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/ship")
 public class ShipController {
