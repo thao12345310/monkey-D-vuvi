@@ -11,7 +11,7 @@ import {
 } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { FaceSmileIcon } from "@heroicons/react/24/solid";
-import logo from "../assets/logo.webp";
+import logo from "../assets/monkey_d_vuvi_logo.jpg";
 
 const NavBar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -32,7 +32,7 @@ const NavBar = () => {
       >
         <div className="flex lg:flex-1">
           <Link to="/" className="-m-1.5 p-1.5 flex items-center gap-2">
-            <div className="w-12 h-12 rounded-full bg-pink-300"></div>
+            <img className="h-14 w-auto" src={logo}></img>
           </Link>
         </div>
         <div className="flex lg:hidden">
@@ -58,7 +58,7 @@ const NavBar = () => {
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           <Link
-            to="/lien-he"
+            to="/login"
             className="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-600 transition-colors duration-200"
           >
             Login <span aria-hidden="true">&rarr;</span>
