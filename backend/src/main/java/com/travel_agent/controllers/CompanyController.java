@@ -2,7 +2,6 @@
 package com.travel_agent.controllers;
 
 import com.travel_agent.services.CompanyService;
-import com.travel_agent.dto.AccountDTO;
 import com.travel_agent.dto.CompanyDTO;
 import com.travel_agent.dto.ResponseObject;
 import com.travel_agent.exceptions.ReflectionException;
@@ -21,18 +20,10 @@ public class CompanyController {
 
     @PostMapping
     public ResponseEntity<ResponseObject> createCompany(@RequestBody CompanyDTO companyDTO) {
-        AccountDTO accDTO = companyDTO.getAccount();
-        System.out.println("AccountDTO" + accDTO);
-        if (accDTO == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseObject.builder()
-                    .message("Invalid input data")
-                    .responseCode(HttpStatus.BAD_REQUEST.value())
-                    .build());
-        }
 
-        String username = accDTO.getUsername();
-        String password = accDTO.getPassword();
-        String role = accDTO.getRole() == null ? "company" : accDTO.getRole();
+        String username = companyDTO.getUsername();
+        String password = companyDTO.getPassword();
+        String role = companyDTO.getRole() == null ? "company" : companyDTO.getRole();
         String companyName = companyDTO.getCompanyName();
         System.out.println("Information: " + username + " " + password + " " + role + " " + companyName);
         if (username == null || password == null || companyName == null || !role.equals("company")) {

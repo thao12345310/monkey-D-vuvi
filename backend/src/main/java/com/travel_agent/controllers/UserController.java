@@ -2,7 +2,6 @@
 package com.travel_agent.controllers;
 
 import com.travel_agent.services.UserService;
-import com.travel_agent.dto.AccountDTO;
 import com.travel_agent.dto.ResponseObject;
 import com.travel_agent.dto.UserDTO;
 import com.travel_agent.exceptions.ReflectionException;
@@ -23,17 +22,9 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<ResponseObject> createUser(@RequestBody UserDTO userDTO) {
-        AccountDTO accDTO = userDTO.getAccount();
-        if (accDTO == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseObject.builder()
-                    .message("Invalid input data")
-                    .responseCode(HttpStatus.BAD_REQUEST.value())
-                    .build());
-        }
-
-        String username = accDTO.getUsername();
-        String password = accDTO.getPassword();
-        String role = accDTO.getRole() == null ? "user" : accDTO.getRole();
+        String username = userDTO.getUsername();
+        String password = userDTO.getPassword();
+        String role = userDTO.getRole() == null ? "user" : userDTO.getRole();
         LocalDate dob = userDTO.getDob();
         if (username == null || password == null || dob == null || !role.equals("user")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseObject.builder()
