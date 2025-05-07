@@ -3,14 +3,22 @@ import React from "react";
 import { FaStar, FaMapMarkerAlt, FaBed } from "react-icons/fa";
 
 export default function KhachSanCardNho({ hotel }) {
-  const { hotelName, totalRooms, hotelPrice, city, address, mapLink } = hotel;
+  const {
+    hotelName,
+    totalRooms,
+    hotelPrice,
+    city,
+    address,
+    mapLink,
+    thumbnail,
+  } = hotel;
   return (
     <div className="max-w-sm rounded-lg overflow-hidden shadow-lg bg-white mx-auto my-4">
       {/* Phần hình ảnh và đánh giá */}
       <div className="relative">
         <img
           className="w-full h-48 object-cover"
-          src="https://minio.fares.vn/mixivivu-dev/tour/citadines-marina-halong/thumbnail/dle1lmlm692jzgmm.webp" // Thay bằng URL ảnh thực tế
+          src={thumbnail}
           alt={hotelName}
         />
         {/* <div className="absolute top-3 left-3 bg-yellow-400 bg-opacity-90 text-white text-xs font-semibold px-2.5 py-1 rounded-md flex items-center space-x-1">

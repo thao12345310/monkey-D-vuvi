@@ -11,7 +11,7 @@ import "./App.css";
 import DoanhNghiep from "./pages/DoanhNghiep";
 import Footer from "./components/Footer";
 import DuThuyen from "./pages/DuThuyen";
-
+import LoginPage from "./pages/LoginPage";
 const App = () => {
     return (
         <Router>
@@ -26,7 +26,7 @@ const App = () => {
                     <Route path="/khach-san/:id" element={<ChiTietKhachSan />} />
                     <Route path="/doanh-nghiep" element={<DoanhNghiep />} />
                     <Route path="/blog" element={<div>Blog</div>} />
-                    <Route path="/lien-he" element={<div>Liên hệ</div>} />
+                    <Route path="/login" element={<LoginPage />} />
                     <Route path="/du-thuyen/:id" element={<DuThuyen />} />
                 </Routes>
                 <Footer />
