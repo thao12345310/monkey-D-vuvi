@@ -1,2 +1,5 @@
 .qodo/
 .vscode/
+backend/src/main/java/com/travel_agent/controllers/init.java
+.cursorignore
+.cursorrules
