@@ -13,12 +13,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Table(name = "hotel_room_features")
 @IdClass(HotelRoomFeatureId.class)
-public class HotelRoomFeatures {
+public class HotelRoomFeatureEntity {
     @Id
     @Column(name = "hotel_room_id")
     private Integer hotelRoomId;
 
     @Id
-    @Column(name = "room_features_id")
+    @Column(name = "room_feature_id")
     private Integer roomFeaturesId;
 }

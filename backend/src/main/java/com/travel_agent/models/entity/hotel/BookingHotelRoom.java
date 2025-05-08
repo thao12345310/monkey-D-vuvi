@@ -19,7 +19,7 @@ public class BookingHotelRoom {
 
     @ManyToOne
     @JoinColumn(name = "hotel_room_id")
-    private HotelRoom hotelRoom;
+    private HotelRoomEntity hotelRoomEntity;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

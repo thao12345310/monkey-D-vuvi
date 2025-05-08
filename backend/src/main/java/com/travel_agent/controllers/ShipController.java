@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 
 import com.travel_agent.dto.ShipDTO;
-import com.travel_agent.dto.ResponseObject;
+import com.travel_agent.dto.ResponseObjectDTO;
 import com.travel_agent.dto.ResultPaginationDTO;
 import com.travel_agent.services.ShipService;
 
@@ -40,11 +40,11 @@ public class ShipController {
 
     // View ship details
     @GetMapping("/{shipId}")
-    public ResponseEntity<ResponseObject> getShipDetails(@PathVariable("shipId") Integer shipId) {
+    public ResponseEntity<ResponseObjectDTO> getShipDetails(@PathVariable("shipId") Integer shipId) {
         ShipDTO shipDto = shipService.getShipDetails(shipId);
 
         if (shipDto != null) {
-            return ResponseEntity.ok(ResponseObject.builder()
+            return ResponseEntity.ok(ResponseObjectDTO.builder()
                     .message("Ship details retrieved successfully")
                     .data(shipDto)
                     .responseCode(HttpStatus.OK.value())
@@ -56,11 +56,11 @@ public class ShipController {
 
     // Add ship
     @PostMapping("/add")
-    public ResponseEntity<ResponseObject> addShip(@RequestBody ShipDTO shipDto) {
+    public ResponseEntity<ResponseObjectDTO> addShip(@RequestBody ShipDTO shipDto) {
         ShipDTO addedShip = shipService.addShip(shipDto);
 
         if (addedShip != null) {
-            return ResponseEntity.ok(ResponseObject.builder()
+            return ResponseEntity.ok(ResponseObjectDTO.builder()
                     .message("Ship added successfully")
                     .data(addedShip)
                     .responseCode(HttpStatus.OK.value())
@@ -72,11 +72,11 @@ public class ShipController {
 
     // Update ship
     @PutMapping("/{shipId}")
-    public ResponseEntity<ResponseObject> updateShip(@PathVariable("shipId") Integer shipId, @RequestBody ShipDTO shipDto) {
+    public ResponseEntity<ResponseObjectDTO> updateShip(@PathVariable("shipId") Integer shipId, @RequestBody ShipDTO shipDto) {
         ShipDTO updatedShip = shipService.updateShip(shipId, shipDto);
 
         if (updatedShip != null) {
-            return ResponseEntity.ok(ResponseObject.builder()
+            return ResponseEntity.ok(ResponseObjectDTO.builder()
                     .message("Ship updated successfully")
                     .data(updatedShip)
                     .responseCode(HttpStatus.OK.value())
@@ -88,15 +88,15 @@ public class ShipController {
 
     // Delete ships
     @DeleteMapping("/delete")
-    public ResponseEntity<ResponseObject> deleteShips(@RequestBody List<Integer> shipIds) {
+    public ResponseEntity<ResponseObjectDTO> deleteShips(@RequestBody List<Integer> shipIds) {
         if (shipIds.size() > 10) {
-            return ResponseEntity.badRequest().body(ResponseObject.builder()
+            return ResponseEntity.badRequest().body(ResponseObjectDTO.builder()
                     .message("Cannot delete more than 10 ships at once")
                     .responseCode(HttpStatus.BAD_REQUEST.value())
                     .build());
         }
         shipService.deleteShips(shipIds);
-        return ResponseEntity.ok(ResponseObject.builder()
+        return ResponseEntity.ok(ResponseObjectDTO.builder()
                 .message("Ships deleted successfully")
                 .responseCode(HttpStatus.OK.value())
                 .build());

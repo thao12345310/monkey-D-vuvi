@@ -75,8 +75,8 @@ public class HotelService {
         hotelDto.setLongDescriptions(longDescriptionDtos.isEmpty() ? null : longDescriptionDtos);
 
         // Fetch rooms
-        List<HotelRoom> hotelRooms = hotelRoomRepository.findByHotel_HotelId(hotelId);
-        List<HotelRoomDTO> roomDtos = hotelRooms.stream()
+        List<HotelRoomEntity> hotelRoomEntities = hotelRoomRepository.findByHotel_HotelId(hotelId);
+        List<HotelRoomDTO> roomDtos = hotelRoomEntities.stream()
                 .map(room -> new HotelRoomDTO(
                         room.getHotelRoomId(),
                         room.getRoomName(),
@@ -296,27 +296,27 @@ public class HotelService {
         HotelEntity hotelEntity = hotelRepository.findById(hotelId)
                 .orElseThrow(() -> new IllegalArgumentException("Hotel not found with ID: " + hotelId));
 
-        HotelRoom hotelRoom = new HotelRoom();
-        hotelRoom.setHotel(hotelEntity);
-        hotelRoom.setRoomName(roomDto.getRoomName());
-        hotelRoom.setRoomPrice(roomDto.getRoomPrice());
-        hotelRoom.setRoomFeatures(roomDto.getRoomFeatures());
-        hotelRoom.setSize(roomDto.getSize());
-        hotelRoom.setMaxPersons(roomDto.getMaxPersons());
-        hotelRoom.setBedType(roomDto.getBedType());
-        hotelRoom.setView(roomDto.getView());
+        HotelRoomEntity hotelRoomEntity = new HotelRoomEntity();
+        hotelRoomEntity.setHotel(hotelEntity);
+        hotelRoomEntity.setRoomName(roomDto.getRoomName());
+        hotelRoomEntity.setRoomPrice(roomDto.getRoomPrice());
+        hotelRoomEntity.setRoomFeatures(roomDto.getRoomFeatures());
+        hotelRoomEntity.setSize(roomDto.getSize());
+        hotelRoomEntity.setMaxPersons(roomDto.getMaxPersons());
+        hotelRoomEntity.setBedType(roomDto.getBedType());
+        hotelRoomEntity.setView(roomDto.getView());
 
-        hotelRoom = hotelRoomRepository.save(hotelRoom);
+        hotelRoomEntity = hotelRoomRepository.save(hotelRoomEntity);
 
         return new HotelRoomDTO(
-                hotelRoom.getHotelRoomId(),
-                hotelRoom.getRoomName(),
-                hotelRoom.getRoomPrice(),
-                hotelRoom.getRoomFeatures(),
-                hotelRoom.getSize(),
-                hotelRoom.getMaxPersons(),
-                hotelRoom.getBedType(),
-                hotelRoom.getView()
+                hotelRoomEntity.getHotelRoomId(),
+                hotelRoomEntity.getRoomName(),
+                hotelRoomEntity.getRoomPrice(),
+                hotelRoomEntity.getRoomFeatures(),
+                hotelRoomEntity.getSize(),
+                hotelRoomEntity.getMaxPersons(),
+                hotelRoomEntity.getBedType(),
+                hotelRoomEntity.getView()
         );
     }
 
@@ -324,33 +324,33 @@ public class HotelService {
         HotelEntity hotelEntity = hotelRepository.findById(hotelId)
                 .orElseThrow(() -> new IllegalArgumentException("Hotel not found with ID: " + hotelId));
 
-        HotelRoom hotelRoom = hotelRoomRepository.findById(roomId)
+        HotelRoomEntity hotelRoomEntity = hotelRoomRepository.findById(roomId)
                 .orElseThrow(() -> new IllegalArgumentException("Room not found with ID: " + roomId));
 
-        if (!hotelRoom.getHotel().getHotelId().equals(hotelId)) {
+        if (!hotelRoomEntity.getHotel().getHotelId().equals(hotelId)) {
             throw new IllegalArgumentException("Room does not belong to the specified hotel");
         }
 
         // Update room details
-        hotelRoom.setRoomName(roomDto.getRoomName());
-        hotelRoom.setRoomPrice(roomDto.getRoomPrice());
-        hotelRoom.setRoomFeatures(roomDto.getRoomFeatures());
-        hotelRoom.setSize(roomDto.getSize());
-        hotelRoom.setMaxPersons(roomDto.getMaxPersons());
-        hotelRoom.setBedType(roomDto.getBedType());
-        hotelRoom.setView(roomDto.getView());
+        hotelRoomEntity.setRoomName(roomDto.getRoomName());
+        hotelRoomEntity.setRoomPrice(roomDto.getRoomPrice());
+        hotelRoomEntity.setRoomFeatures(roomDto.getRoomFeatures());
+        hotelRoomEntity.setSize(roomDto.getSize());
+        hotelRoomEntity.setMaxPersons(roomDto.getMaxPersons());
+        hotelRoomEntity.setBedType(roomDto.getBedType());
+        hotelRoomEntity.setView(roomDto.getView());
 
-        hotelRoom = hotelRoomRepository.save(hotelRoom);
+        hotelRoomEntity = hotelRoomRepository.save(hotelRoomEntity);
 
         return new HotelRoomDTO(
-                hotelRoom.getHotelRoomId(),
-                hotelRoom.getRoomName(),
-                hotelRoom.getRoomPrice(),
-                hotelRoom.getRoomFeatures(),
-                hotelRoom.getSize(),
-                hotelRoom.getMaxPersons(),
-                hotelRoom.getBedType(),
-                hotelRoom.getView()
+                hotelRoomEntity.getHotelRoomId(),
+                hotelRoomEntity.getRoomName(),
+                hotelRoomEntity.getRoomPrice(),
+                hotelRoomEntity.getRoomFeatures(),
+                hotelRoomEntity.getSize(),
+                hotelRoomEntity.getMaxPersons(),
+                hotelRoomEntity.getBedType(),
+                hotelRoomEntity.getView()
         );
     }
 
@@ -359,9 +359,9 @@ public class HotelService {
         HotelEntity hotelEntity = hotelRepository.findById(hotelId)
                 .orElseThrow(() -> new IllegalArgumentException("Hotel not found with ID: " + hotelId));
 
-        List<HotelRoom> roomsToDelete = hotelRoomRepository.findAllById(roomIds);
+        List<HotelRoomEntity> roomsToDelete = hotelRoomRepository.findAllById(roomIds);
 
-        for (HotelRoom room : roomsToDelete) {
+        for (HotelRoomEntity room : roomsToDelete) {
             if (!room.getHotel().getHotelId().equals(hotelId)) {
                 throw new IllegalArgumentException("Room with ID " + room.getHotelRoomId() + " does not belong to the specified hotel");
             }

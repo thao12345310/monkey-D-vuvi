@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -18,4 +20,7 @@ public class HotelRoomDTO {
     private Integer maxPersons;
     private String bedType;
     private String view;
+
+//    private List<Integer> featureIds;
+//    private List<String> features;
 }
