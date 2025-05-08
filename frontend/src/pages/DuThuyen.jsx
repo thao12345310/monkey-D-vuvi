@@ -17,6 +17,7 @@ import axios from "axios";
 // ================= GALLERY SLIDER =================
 const GallerySlider = ({ images }) => {
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
+    console.log(images);
 
     return (
         <div className="w-full">
@@ -109,6 +110,7 @@ const cruiseInfo = [
 ];
 
 const Highlights = () => {
+    
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-6">
             {/* Left */}
@@ -247,8 +249,8 @@ const DuThuyen = () => {
                 setLoading(true);
                 console.log("Đang tải dữ liệu cho ship ID:", id);
                 const response = await axios.get(`http://localhost:8080/api/ship/${id}`);
-                console.log("Dữ liệu nhận được:", response.data);
-                setShipData(response.data);
+                console.log("Dữ liệu nhận được:", response.data.data);
+                setShipData(response.data.data);
             } catch (err) {
                 console.error("Lỗi khi tải dữ liệu:", err);
                 setError(err.message);
@@ -294,7 +296,7 @@ const DuThuyen = () => {
         <div className="container mx-auto p-4">
             {/* ===== Title + Rating Section ===== */}
             <div className="mb-10">
-                <h1 className="text-3xl font-bold mb-2">Heritage Cruises Binh Chuan</h1>
+                <h1 className="text-3xl font-bold mb-2">{shipData["shipName"]}</h1>
                 <div className="flex items-center space-x-4 text-gray-600 text-sm">
                     <div className="flex items-center space-x-1 text-yellow-400">
                         {[...Array(5)].map((_, idx) => (
@@ -303,13 +305,13 @@ const DuThuyen = () => {
                     </div>
                     <span>5.0</span>
                     <span>• 200 đánh giá</span>
-                    <span>• Vịnh Lan Hạ, Việt Nam</span>
+                    <span>• {shipData.address}</span>
                 </div>
             </div>
 
             {/* ===== GallerySlider Section ===== */}
             <div className="mb-10">
-                <GallerySlider images={shipData.images || []} />
+                <GallerySlider images={[shipData.thumbnail]} />
             </div>
 
             {/* ===== Tab Navigation and Content ===== */}
