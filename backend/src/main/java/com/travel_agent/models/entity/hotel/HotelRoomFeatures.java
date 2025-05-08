@@ -19,6 +19,6 @@ public class HotelRoomFeatures {
     private Integer hotelRoomId;
 
     @Id
-    @Column(name = "room_features_id")
+    @Column(name = "feature_id")
     private Integer roomFeaturesId;
 }

@@ -24,9 +24,6 @@ public class HotelRoom {
     @Column(name = "room_price")
     private Integer roomPrice;
 
-    @Column(name = "room_features")
-    private String roomFeatures;
-
     private Integer size;
 
     @Column(name = "max_persons")
