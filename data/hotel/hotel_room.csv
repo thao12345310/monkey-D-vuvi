@@ -4,14 +4,14 @@ room_id,hotel_id,room_name,room_price,room_features,size,max_persons,bed_type,vi
 3,1,Executive Suite,2500000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",67,2,Giường đôi,Hướng biển
 4,1,Suite Ocean,2300000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",65,2,giường đôi,Thank phố và biển
 5,1,Premium King,1950000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",56,2,giường đôi,toàn cảnh thành phố
-6,2, Executive ,1600000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",24,2,giường đôi,hướng thành phố
-7,2,Deluxe Twin,1500000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",24,2,2 giường đơn,hướng thành phố
-8,2,Studio Deluxe ,1700000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",36,3,giường đôi,hướng thành phố
-9,2,Deluxe 2 phòng ngủ,3400000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",49,2,giường đôi và giường đơn,hướng thành phố
-10,2,Executive 2 phòng ngủ,3700000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",59,4,giường đơn hoặc giường đôi,hướng biển
-11,2,Executive 1 phòng ngủ,1900000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",52,2,giường đôi,hướng thành phố
-12,2,Premier 2 phòng ngủ,3700000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",59,4,giường đôi và giường đơn,hướng biển
-13,2,Deluxe 3 phòng ngủ,5500000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",90,6,giường đôi và giường đơn,
+6,2, Executive ,1700000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",24,2,giường đôi,hướng thành phố
+7,2,Deluxe Twin,1700000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",24,2,2 giường đơn,hướng thành phố
+8,2,Studio Deluxe ,1800000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",36,3,giường đôi,hướng thành phố
+9,2,Deluxe 2 phòng ngủ,3500000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",49,2,giường đôi và giường đơn,hướng thành phố
+10,2,Executive 2 phòng ngủ,3800000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",59,4,giường đơn hoặc giường đôi,hướng biển
+11,2,Executive 1 phòng ngủ,2000000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",52,2,giường đôi,hướng thành phố
+12,2,Premier 2 phòng ngủ,3800000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",59,4,giường đôi và giường đơn,hướng biển
+13,2,Deluxe 3 phòng ngủ,5800000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",90,6,giường đôi và giường đơn,
 14,3,Deluxe Bay View,2500000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",39,2,giường đôi hoặc giường đơn,hướng vịnh
 15,3,Deluxe Lake View ,2300000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",39,2,1 Giường đôi,hướng hồ sinh thái
 16,3,Presidential Suite 3 phòng ngủ,27250000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",280,6,giường đơn và giường đôi,
@@ -543,14 +543,14 @@ room_id,hotel_id,room_name,room_price,room_features,size,max_persons,bed_type,vi
 542,97,Superior Double,900000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",26,2,01 giường đôi,Không cửa sổ
 543,97,Deluxe ,950000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",26,2,01 giường đôi/02 giường đơn,Hướng thành phố
 544,97,Family Suite ,1950000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",60,4,01 giường đôi/02 giường đơn,Hướng thành phố
-545,98,Superior Double Room,750000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",24,2,01 Giường đôi,Hướng thành phố
-546,98,Estrella Suite with Jacuzzi,2100000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",50,3,01 Giường đôi,Hướng thành phố
-547,98,Deluxe City view,800000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",26,2,01 Giường đôi/02 Giường đơn,Hướng thành phố
-548,98,Deluxe with Bathtub City View,850000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",26,2,01 Giường đôi/02 Giường đơn,Hướng thành phố
-549,98,Premier Double City View,900000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",28,2,01 Giường đôi,Hướng thành phố
-550,98,Executive Suite,1200000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",37,2,01 Giường đôi,Hướng thành phố
-551,98,Sky Suite,1850000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",37,2,01 Giường đôi,Hướng thành phố
-552,98,Senior Suite,1050000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",37,2,01 Giường đôi,Hướng thành phố
+545,98,Superior Double Room,950000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",24,2,01 Giường đôi,Hướng thành phố
+546,98,Estrella Suite with Jacuzzi,2750000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",50,3,01 Giường đôi,Hướng thành phố
+547,98,Deluxe City view,1050000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",26,2,01 Giường đôi/02 Giường đơn,Hướng thành phố
+548,98,Deluxe with Bathtub City View,1100000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",26,2,01 Giường đôi/02 Giường đơn,Hướng thành phố
+549,98,Premier Double City View,1200000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",28,2,01 Giường đôi,Hướng thành phố
+550,98,Executive Suite,1500000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",37,2,01 Giường đôi,Hướng thành phố
+551,98,Sky Suite,2100000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",37,2,01 Giường đôi,Hướng thành phố
+552,98,Senior Suite,1400000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",37,2,01 Giường đôi,Hướng thành phố
 553,99,Deluxe Ocean View,1950000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",40,2,1 giường đôi hoặc 2 giường đơn,View biển
 554,99,President Suite,7750000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",220,2,1 giường lớn (King),View biển
 555,99,Deluxe Hill View,1750000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",40,2,1 giường đôi hoặc 2 giường đơn,View đổi
@@ -851,12 +851,12 @@ room_id,hotel_id,room_name,room_price,room_features,size,max_persons,bed_type,vi
 850,152,Superior River View,1150000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",25,2,giường đôi hoặc 2 giường đơn,Hướng sông
 851,152,Triple Deluxe River View,1850000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",30,3,giường đôi và 2 giường đơn,Hướng sông
 852,152,Triple Superior River View,1700000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",30,3,giường đơn,Hướng sông
-853,153,Grand Suite,3200000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",80,2,giường đôi,hướng thành phố
-854,153,Deluxe,1650000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",40,2,giường đôi hoặc 2 giường đơn,hướng thành phố
-855,153,Superior,1350000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",35,2,giường đôi hoặc 2 giường đơn,hướng thành phố
-856,153,Grand Deluxe,1850000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",45,2,giường đôi hoặc 2 giường đơn,hướng thành phố
-857,153,Suite Double,2550000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",80,2,giường đôi,hướng thành phố
-858,153,Junior Suite (Connecting),3550000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",80,2,giường đôi,hướng thành phố
+853,153,Superior,1100000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",18,2,1 giường đôi hoặc 2 giường đơn,No view
+854,153,Deluxe,1300000,"Điều hòa, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",18,2,1 giường đôi hoặc 2 giường đơn,"View ban công, bể bơi"
+855,153,Executive Double,1400000,"Điều hòa, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",25,2,Giường đôi,View sân riêng có núi đá tự nhiên
+856,153,Premier Suite Double,1500000,"Điều hòa, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",22,2,Giường đôi,View thành phố và núi
+857,153,Executive Triple,1600000,"Điều hòa, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",25,2,1 giường đôi và 1 giường đơn,View núi đá
+858,153,Executive Family,2000000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",28,2,giường đôi,hướng thành phố
 859,154,Deluxe,1250000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",33,2,giường đôi hoặc 2 giường đơn,hướng thành phố
 860,154,Premium Balcony,1580000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",36,2,giường đôi hoặc 2 giường đơn,hướng thành phố
 861,154,Grand with Premium,2380000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",42,2,giường đôi,hướng thành phố
@@ -1219,3 +1219,21 @@ room_id,hotel_id,room_name,room_price,room_features,size,max_persons,bed_type,vi
 1218,220,Grand Deluxe with balcony,2000000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",50,2,1 giường đôi hoặc 2 giường đơn,"View thành phố, vườn"
 1219,220,Suite Double,2800000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",80,2,1 giường đôi,View thành phố
 1220,220,Suite Family,3000000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",80,4,1 giường đôi và 2 giường đơn,View thành phố
+1221,221,Deluxe Room Garden View,1500000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",36,2,1 giường đôi hoặc 2 giường đơn,View vườn
+1222,221,Deluxe Room Lake View,1600000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",36,2,1 giường đôi hoặc 2 giường đơn,View hồ
+1223,221,Deluxe Room Ocean View,1800000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",36,2,1 giường đôi hoặc 2 giường đơn,View biển
+1224,221,Suite Garden View,2100000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",59,2,1 giường đôi,View vườn
+1225,221,Suite Ocean View,2200000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",59,2,1 giường đôi,View biển
+1226,221,Grand Suite Ocean View,2400000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",72,2,1 giường đôi,View biển
+1227,221, Two Bedroom Deluxe Ocean View,3300000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",72,4,2 giường đôi,View biển
+1228,221,2-Bedrooom Villa with Private Pool,3500000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",141,4,1 giường đôi và 2 giường đơn,"View bể bơi, vườn"
+1229,221, 4-Bedrooom Villa Ocean View,6900000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",267,8,3 giường đôi và 2 giường đơn,View biển
+1230,222,1-Bedroom Villa with Private Pool,2200000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",180,2,1 giường King,View vườn
+1231,222,2-Bedroom Villa with Private Pool,3900000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",180,4,1 giường đôi và 2 giường đơn,View vườn
+1232,222,3-Bedroom Villa with Private Pool,6100000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",250,6,3 giường đôi,View vườn
+1233,222,4-Bedroom Villa with Private Pool,9900000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",350,8,4 giường đôi,View vườn
+1234,223,Deluxe Room,1200000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",30,2,1 giường đôi hoặc 2 giường đơn,View thành phố
+1235,223,Deluxe Corner Room,1300000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",30,2,1 giường đôi hoặc 2 giường đơn,View thành phố
+1236,223,Premium Room,1400000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",39,2,1 giường đôi hoặc 2 giường đơn,View thành phố
+1237,223,Premium Corner Room,1500000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",39,2,1 giường đôi hoặc 2 giường đơn,View thành phố
+1238,223,Suite,4300000,"Điều hòa, Bồn tắm/Cabin tắm đứng, Máy sấy tóc, Minibar, Tivi, Bàn làm việc, Nước đóng chai miễn phí",73,2,1 giường lớn (King),View thành phố

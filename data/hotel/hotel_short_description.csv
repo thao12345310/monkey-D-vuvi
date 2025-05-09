@@ -547,10 +547,9 @@ hotel_id,block_id,data
 152,2,"Hue Riverside Resort là một điểm đến lý tưởng cho những ai muốn tìm kiếm một nơi yên tĩnh, thanh bình"
 152,3,"Khám phá Hue Riverside Resort - nơi bạn có thể kết nối với thiên nhiên, tận hưởng những khoảnh khắc yên bình bên người thân yêu."
 152,4,"Với vị trí đắc địa bên bờ sông Hương, tất cả các phòng của resort đều có view sông, mang lại cảm giác thư thái và bình yên"
-153,1,"Mang đến các dịch vụ hoàn hảo, thỏa mãn sự trải nghiệm của hàng nghìn lượt khách trong & ngoài nước."
-153,2,"Được ví như thiên đường nghỉ dưỡng trong mơ giữa lòng thành phố, Ninh Bình Legend hân hạnh mang đến cho Quý Khách một không gian lưu trú tinh tế, đẳng cấp với tầm nhìn ngoan mục bao quát toàn cảnh Ninh Bình."
-153,3,"Nổi bật với thiết kế nội thất hiện đại, tiện nghi chan hòa với thiên nhiên, nơi đây hứa hẹn là địa điểm lý tưởng cho một kỳ nghỉ riêng tư, sang trọng với những dịch vụ chất lượng hàng đầu."
-153,4,"Dù là bình minh hay ráng chiều, mỗi khoảnh khắc tại Ninh Bình Legend đều là những kỷ niệm đặc biệt và khó quên."
+153,1,"Vị trí thuận lợi, chỉ cách trung tâm Cát Bà và bãi biển Cát Cò 5 phút đi bộ"
+153,2,Có bể bơi ngoài trời lý tưởng cho du khách thư giãn ngắm hoàng hôn
+153,3,"Các tiện ích khác: nhà hàng, bể bơi bốn mùa, thuê xe máy,..."
 154,1,"Không chỉ cung cấp cho quý khách không gian tổ chức sang trọng và trang thiết bị hiện đại, The Reed Hotel còn có đội ngũ nhân sự vừa chuyên nghiệp vừa nhiệt tình, luôn sẵn sàng cho mọi sự kiện."
 154,2,The Reed Hotel sẽ mang đến không gian sân vườn thoáng đãng cho những trò chơi thú vị của cả team cùng nhiều dịch vụ tổ chức sự kiện cao cấp
 154,3,The Reed Hotel chính là địa điểm lý tưởng để các đơn vị tạo nên những dấu ấn khó phai tại buổi Team Building có 1-0-2 cho nhân sự.
@@ -812,3 +811,18 @@ hotel_id,block_id,data
 220,2,Bể bơi ngoài trời thoáng mát
 220,3,Nhà hàng mang nền ẩm thực địa phương và Á - Âu đa dạng
 220,4,"Các tiện ích khác: phòng spa, phòng gym, dịch vụ phòng,..."
+221,1,"Khách sạn thẳng hướng biển, cách trung tâm thành phố 5km"
+221,2,"Hệ thống nhà hàng & bar: Nhà hàng Padma, Pool Bar, Lobby Lounge"
+221,3,Bể bơi ngoài trời rộng gần 900m2
+221,4,"Phòng tiệc lớn Grand Ballroom và các phòng họp nhỏ với thiết kế cao cấp, hiện đại"
+221,5,"Các tiện ích khác: Kids Club, Yoga, Gym, Vincharm Spa..."
+222,1,Có bãi biển riêng trải dài
+222,2,Công viên nước hiện đại và trò chơi bánh xe khổng lồ duy nhất tại khu vực Bắc Trung Bộ
+222,3,"Hệ thống bể bơi: 1 bể bơi chính, 1 bể bơi trẻ em , 1 bể sục Jacuzzi. Bể bơi chính là bể bơi ngoài trời lớn nhất khu vực Bắc Trung Bộ"
+222,4,Nhà hàng Sand Dream phục vụ các món ăn Á - Âu
+222,5,"Các tiện ích nổi bật khác: Vincharm Spa, Kids Garden, Sân Tennis..."
+223,1,Tọa lạc tại trung tâm thành phố Hà Tĩnh
+223,2,"Hệ thống phòng hội nghị với sức chứa lên đến 700 khách, sảnh hội nghị ngoài trời với sức chứa 400 khách"
+223,3,Bể bơi ngoài trời 550m2 và bể bơi trong nhà 350m2
+223,4,"Hệ thống nhà hàng và quầy bar: Nhà hàng Fusion, Sand Dream, Sky Bar, Diplomatic Bar, Pool Bar, Lobby Bar"
+223,5,"Các tiện ích khác: Vincharm Spa, Gym, Vincom Plaza"
