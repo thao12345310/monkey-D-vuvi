@@ -352,6 +352,42 @@ public class HotelService {
         }
     }
 
+    // View room
+    public HotelRoomDTO getHotelRoom(Integer hotelId, Integer roomId) {
+        // Fetch the room by roomId
+        HotelRoom hotelRoomEntity = hotelRoomRepository.findById(roomId)
+                .orElseThrow(() -> new IllegalArgumentException("Room not found with ID: " + roomId));
+
+        // Validate that the room belongs to the specified hotel
+        if (!hotelRoomEntity.getHotel().getHotelId().equals(hotelId)) {
+            throw new IllegalArgumentException("Room does not belong to the specified hotel");
+        }
+
+        // Fetch room features
+        List<Integer> roomFeatureIds = hotelRoomFeatureRepository.findByHotelRoomId(roomId)
+                .stream()
+                .map(HotelRoomFeatures::getRoomFeaturesId)
+                .toList();
+        List<String> roomFeatures = roomFeatureIds.stream()
+                .map(featureId -> featureRepository.findById(featureId)
+                        .orElseThrow(() -> new IllegalArgumentException("Feature not found with ID: " + featureId))
+                        .getFeatureDescription())
+                .toList();
+
+        // Map the entity to DTO
+        return new HotelRoomDTO(
+                hotelRoomEntity.getHotelRoomId(),
+                hotelRoomEntity.getRoomName(),
+                hotelRoomEntity.getRoomPrice(),
+                roomFeatureIds,
+                roomFeatures.isEmpty() ? null : roomFeatures,
+                hotelRoomEntity.getSize(),
+                hotelRoomEntity.getMaxPersons(),
+                hotelRoomEntity.getBedType(),
+                hotelRoomEntity.getView()
+        );
+    }
+
     public HotelRoomDTO addHotelRoom(Integer hotelId, HotelRoomDTO roomDto) {
         HotelEntity hotelEntity = hotelRepository.findById(hotelId)
                 .orElseThrow(() -> new IllegalArgumentException("Hotel not found with ID: " + hotelId));

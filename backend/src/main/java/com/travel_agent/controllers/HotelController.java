@@ -102,6 +102,25 @@ public class HotelController {
                 .build());
     }
 
+    // View room
+    @GetMapping("/{hotelId}/{roomId}")
+    public ResponseEntity<ResponseObject> getHotelRoom(
+            @PathVariable("hotelId") Integer hotelId,
+            @PathVariable("roomId") Integer roomId) {
+        HotelRoomDTO roomDto = hotelService.getHotelRoom(hotelId, roomId);
+
+        if (roomDto != null) {
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .message("Room details retrieved successfully")
+                    .data(roomDto)
+                    .responseCode(HttpStatus.OK.value())
+                    .build());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
     // Add room to hotel
     @PostMapping("/{hotelId}/add-room")
     public ResponseEntity<ResponseObject> addHotelRoom(@PathVariable("hotelId") Integer hotelId, @RequestBody HotelRoomDTO roomDto) {
