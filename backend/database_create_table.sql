@@ -1,5 +1,3 @@
-
-
 CREATE TABLE "user" (
   user_id SERIAL PRIMARY KEY,
   dob DATE,
@@ -54,7 +52,6 @@ CREATE TABLE hotel_room (
   hotel_id INTEGER,
   room_name VARCHAR,
   room_price INTEGER,
-  room_features VARCHAR,
   size INTEGER,
   max_persons INTEGER,
   bed_type VARCHAR,
@@ -85,7 +82,6 @@ CREATE TABLE ship_room (
   size INTEGER,
   max_persons INTEGER,
   room_price INTEGER,
-  room_features VARCHAR,
   FOREIGN KEY (ship_id) REFERENCES ship(ship_id)
 );
 
@@ -162,3 +158,34 @@ CREATE TABLE booking_hotel_room (
 -- Foreign key references for descriptions
 ALTER TABLE ship_short_description ADD FOREIGN KEY (ship_id) REFERENCES ship(ship_id);
 ALTER TABLE hotel_short_description ADD FOREIGN KEY (hotel_id) REFERENCES hotel(hotel_id);
+
+INSERT INTO company (company_id, company_name, username, password, role)
+VALUES ('0', 'Mixivivu', 'company0', '123456', 'company');
+
+CREATE TABLE hotel_img (
+    hotel_id INTEGER,
+    img_url VARCHAR,
+    PRIMARY KEY (hotel_id, img_url),
+    FOREIGN KEY (hotel_id) REFERENCES hotel(hotel_id) ON DELETE CASCADE
+);
+
+CREATE TABLE hotel_room_img (
+    room_id INTEGER,
+    img_url VARCHAR,
+    PRIMARY KEY (room_id, img_url),
+    FOREIGN KEY (room_id) REFERENCES hotel_room(hotel_room_id) ON DELETE CASCADE
+);
+
+CREATE TABLE ship_img (
+  ship_id INTEGER,
+  img_url VARCHAR,
+  PRIMARY KEY (ship_id, img_url),
+  FOREIGN KEY (ship_id) REFERENCES ship(ship_id) ON DELETE CASCADE
+);
+
+CREATE TABLE ship_room_img (
+   room_id INTEGER,
+   img_url VARCHAR,
+   PRIMARY KEY (room_id, img_url),
+   FOREIGN KEY (room_id) REFERENCES ship_room(ship_room_id) ON DELETE CASCADE
+);
