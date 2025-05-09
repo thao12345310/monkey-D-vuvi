@@ -39,4 +39,6 @@ public class HotelDTO {
     private List<HotelLongDescriptionDTO> longDescriptions;
 
     private List<HotelRoomDTO> rooms;
+
+    private List<String> images;
 }

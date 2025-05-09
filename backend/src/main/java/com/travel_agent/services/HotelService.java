@@ -26,6 +26,7 @@ public class HotelService {
     private final HotelLongDescriptionRepository hotelLongDescriptionRepository;
     private final HotelRoomRepository hotelRoomRepository;
     private final HotelRoomFeatureRepository hotelRoomFeatureRepository;
+    private final HotelImageRepository hotelImageRepository;
 
     public ResultPaginationDTO getAllHotels(Pageable pageable) {
         Page<HotelEntity> pageHotel= hotelRepository.findAll(pageable);
@@ -104,6 +105,13 @@ public class HotelService {
                 .toList();
         hotelDto.setRooms(roomDtos.isEmpty() ? null : roomDtos);
 
+        // Fetch images
+        List<String> images = hotelImageRepository.findByHotelId(hotelId)
+                .stream()
+                .map(HotelImageEntity::getImgUrl)
+                .toList();
+        hotelDto.setImages(images.isEmpty() ? null : images);
+
         return hotelDto;
     }
 
@@ -155,6 +163,16 @@ public class HotelService {
             }
         }
 
+        // Save images
+        if (hotelDto.getImages() != null) {
+            for (String imgUrl : hotelDto.getImages()) {
+                HotelImageEntity hotelImage = new HotelImageEntity();
+                hotelImage.setHotelId(hotelEntity.getHotelId());
+                hotelImage.setImgUrl(imgUrl);
+                hotelImageRepository.save(hotelImage);
+            }
+        }
+
         // Save long descriptions
         if (hotelDto.getLongDescriptions() != null) {
             for (HotelLongDescriptionDTO longDescriptionDto : hotelDto.getLongDescriptions()) {
@@ -166,6 +184,8 @@ public class HotelService {
                 hotelLongDescriptionRepository.save(longDescription);
             }
         }
+
+
 
         // Map the saved hotel entity to DTO
         HotelDTO savedHotelDto = hotelMapper.hotelToHotelDTO(hotelEntity);
@@ -186,6 +206,7 @@ public class HotelService {
 
         savedHotelDto.setShortDescriptions(hotelDto.getShortDescriptions());
         savedHotelDto.setLongDescriptions(hotelDto.getLongDescriptions());
+        savedHotelDto.setImages(hotelDto.getImages());
 
         return savedHotelDto;
     }
@@ -246,6 +267,19 @@ public class HotelService {
             }
         }
 
+        // Clear existing images
+        hotelImageRepository.deleteAll(hotelImageRepository.findByHotelId(hotelId));
+
+        // Add new images
+        if (hotelDto.getImages() != null) {
+            for (String imgUrl : hotelDto.getImages()) {
+                HotelImageEntity hotelImage = new HotelImageEntity();
+                hotelImage.setHotelId(hotelId);
+                hotelImage.setImgUrl(imgUrl);
+                hotelImageRepository.save(hotelImage);
+            }
+        }
+
         // Save updated hotel entity
         hotelEntity = hotelRepository.save(hotelEntity);
 
@@ -277,7 +311,6 @@ public class HotelService {
                 .toList();
         updatedHotelDto.setLongDescriptions(longDescriptionDtos.isEmpty() ? null : longDescriptionDtos);
 
-
         updatedHotelDto.setFeatureIds(featureIds.isEmpty() ? null : featureIds);
         updatedHotelDto.setFeatures(features.isEmpty() ? null : features);
 
@@ -285,10 +318,18 @@ public class HotelService {
     }
 
     // Delete hotel
+    @Transactional
     public void deleteHotels(List<Integer> hotelIds) {
         for (Integer hotelId : hotelIds) {
             HotelEntity hotelEntity = hotelRepository.findById(hotelId)
                     .orElseThrow(() -> new IllegalArgumentException("Hotel not found with ID: " + hotelId));
+
+            // Delete associated rooms and their features
+            List<HotelRoom> hotelRooms = hotelRoomRepository.findByHotel_HotelId(hotelId);
+            for (HotelRoom room : hotelRooms) {
+                hotelRoomFeatureRepository.deleteByHotelRoomId(room.getHotelRoomId());
+            }
+            hotelRoomRepository.deleteAll(hotelRooms);
 
             // Delete associated features
             List<HotelFeatureEntity> hotelFeatures = hotelFeatureRepository.findByHotelId(hotelId);
@@ -302,6 +343,11 @@ public class HotelService {
             List<HotelLongDescriptionEntity> hotelLongDescriptions = hotelLongDescriptionRepository.findByHotelId(hotelId);
             hotelLongDescriptionRepository.deleteAll(hotelLongDescriptions);
 
+            // Delete associated images
+            List<HotelImageEntity> hotelImages = hotelImageRepository.findByHotelId(hotelId);
+            hotelImageRepository.deleteAll(hotelImages);
+
+            // Finally, delete the hotel
             hotelRepository.delete(hotelEntity);
         }
     }
