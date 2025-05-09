@@ -146,7 +146,7 @@ company_id,company_name,username,password,role
 145,CÔNG TY TNHH AN PHÚ (AN PHÚ HOTEL),company145,123456,company
 146,La Vela Huế Hotel,company146,123456,company
 147,CÔNG TY CỔ PHẦN VƯỜN XƯA,company147,123456,company
-148,Công Ty TNHH Khách Sạn Thuỳ Anh Ninh Bình Legend,company148,123456,company
+148,Roza Palace Hotel Cát Bà,company148,123456,company
 149,The Reed Hotel Ninh Bình,company149,123456,company
 150,Lalita Boutique Hotel & Spa Ninh Bình,company150,123456,company
 151,CÔNG TY TNHH AVS VIET NAM PHU QUOC - AVS HOTEL PHU QUOC,company151,123456,company
@@ -213,49 +213,52 @@ company_id,company_name,username,password,role
 212,Stella Maris Beach Đà Nẵng,company212,123456,company
 213,Ninh Bình Hidden Charm Hotel & Resort,company213,123456,company
 214,Ninh Bình Legend Hotel,company214,123456,company
-215,Công ty cổ phần Heritage Cruises,company215,123456,company
-216,Tập đoàn du lịch Hương Hải,company216,123456,company
-217,Công ty CPTM Du lịch HMT,company217,123456,company
-218,Tập đoàn Pelican ,company218,123456,company
-219,Công ty cổ phần du thuyền quốc tế Hạ Long,company219,123456,company
-220,Paradise Group,company220,123456,company
-221,Công ty  Du Lịch Châu Á Thái Bình Dương,company221,123456,company
-222,Công ty TNHH THD travel Việt Nam,company222,123456,company
-223,Tập đoàn Paradise,company223,123456,company
-224,Công ty cổ phần du thuyền Genesis Việt Nam,company224,123456,company
-225,Công ty cổ phần thương mại và dịch vụ Sư Tư châu Á,company225,123456,company
-226,CÔNG TY CỔ PHẦN DU THUYỀNHERMES,company226,123456,company
-227,Công ty du thuyền Aclass,company227,123456,company
-228,Công ty cổ phần đầu tư du lịch Renea,company228,123456,company
-229,Công ty Cổ phần đầu tư Việt Star Cruise,company229,123456,company
-230,Tập đoàn Pelican,company230,123456,company
-231,Công ty TNHH Scarlet Pearl Hạ Long,company231,123456,company
-232,Pelican Group,company232,123456,company
-233,Công ty cổ phần đầu tư du lịch Thiên Nga,company233,123456,company
-234,Big Bay Group,company234,123456,company
-235,Erina Group,company235,123456,company
-236,Công ty cổ phần du lịch Quốc Tế Athena Cruise,company236,123456,company
-237,Công ty du thuyền Doris,company237,123456,company
-238,Công ty TNHH du thuyền La Casta,company238,123456,company
-239,Công ty TNHH Sen Hoàng Gia,company239,123456,company
-240,Công ty TNHH vận tải Alisa,company240,123456,company
-241,Công ty CPTM & ĐT Du Thuyền Quốc Tế,company241,123456,company
-242,Công ty Cổ phần tập đoàn HALO ECO,company242,123456,company
-243,Công ty TNHH du thuyền Rosa,company243,123456,company
-244,Công ty TNHH MTV Dịch Vụ Du Lịch VIT Hạ Long,company244,123456,company
-245,Công ty du thuyền Sea Stars Hạ Long,company245,123456,company
-246,Elegance Hospitality Group,company246,123456,company
-247,SEALIFE GROUP ,company247,123456,company
-248,M’GLORIA GROUP,company248,123456,company
-249,Công ty du thuyền Verdure Lotus,company249,123456,company
-250,Công ty du thuyên Verdure Lotus,company250,123456,company
-251,Công ty TNHH du thuyền Bhaya,company251,123456,company
-252,Du thuyền Iris,company252,123456,company
-253,Công ty Saquila Hospitality ,company253,123456,company
-254,Công ty cổ phần những cánh buồm Phương Đông,company254,123456,company
-255,Bigbay Group,company255,123456,company
-256,APC Group,company256,123456,company
-257,CÔNG TY CỔ PHẦN HẠ LONG PACIFIC,company257,123456,company
-258,HƯƠNG HẢI GROUP,company258,123456,company
-259,"Công ty TNHH Thương mại, Dịch vụ, Du lịch Minh Loan",company259,123456,company
-260,Vedure Lotus Cruise,company260,123456,company
+215,Melia Vinpearl Cửa Hội Beach Resort ,company215,123456,company
+216,Melia Vinpearl Cửa Sót Beach Resort ,company216,123456,company
+217,Melia Vinpearl Hà Tĩnh ,company217,123456,company
+218,Công ty cổ phần Heritage Cruises,company218,123456,company
+219,Tập đoàn du lịch Hương Hải,company219,123456,company
+220,Công ty CPTM Du lịch HMT,company220,123456,company
+221,Tập đoàn Pelican ,company221,123456,company
+222,Công ty cổ phần du thuyền quốc tế Hạ Long,company222,123456,company
+223,Paradise Group,company223,123456,company
+224,Công ty  Du Lịch Châu Á Thái Bình Dương,company224,123456,company
+225,Công ty TNHH THD travel Việt Nam,company225,123456,company
+226,Tập đoàn Paradise,company226,123456,company
+227,Công ty cổ phần du thuyền Genesis Việt Nam,company227,123456,company
+228,Công ty cổ phần thương mại và dịch vụ Sư Tư châu Á,company228,123456,company
+229,CÔNG TY CỔ PHẦN DU THUYỀNHERMES,company229,123456,company
+230,Công ty du thuyền Aclass,company230,123456,company
+231,Công ty cổ phần đầu tư du lịch Renea,company231,123456,company
+232,Công ty Cổ phần đầu tư Việt Star Cruise,company232,123456,company
+233,Tập đoàn Pelican,company233,123456,company
+234,Công ty TNHH Scarlet Pearl Hạ Long,company234,123456,company
+235,Pelican Group,company235,123456,company
+236,Công ty cổ phần đầu tư du lịch Thiên Nga,company236,123456,company
+237,Big Bay Group,company237,123456,company
+238,Erina Group,company238,123456,company
+239,Công ty cổ phần du lịch Quốc Tế Athena Cruise,company239,123456,company
+240,Công ty du thuyền Doris,company240,123456,company
+241,Công ty TNHH du thuyền La Casta,company241,123456,company
+242,Công ty TNHH Sen Hoàng Gia,company242,123456,company
+243,Công ty TNHH vận tải Alisa,company243,123456,company
+244,Công ty CPTM & ĐT Du Thuyền Quốc Tế,company244,123456,company
+245,Công ty Cổ phần tập đoàn HALO ECO,company245,123456,company
+246,Công ty TNHH du thuyền Rosa,company246,123456,company
+247,Công ty TNHH MTV Dịch Vụ Du Lịch VIT Hạ Long,company247,123456,company
+248,Công ty du thuyền Sea Stars Hạ Long,company248,123456,company
+249,Elegance Hospitality Group,company249,123456,company
+250,SEALIFE GROUP ,company250,123456,company
+251,M’GLORIA GROUP,company251,123456,company
+252,Công ty du thuyền Verdure Lotus,company252,123456,company
+253,Công ty du thuyên Verdure Lotus,company253,123456,company
+254,Công ty TNHH du thuyền Bhaya,company254,123456,company
+255,Du thuyền Iris,company255,123456,company
+256,Công ty Saquila Hospitality ,company256,123456,company
+257,Công ty cổ phần những cánh buồm Phương Đông,company257,123456,company
+258,Bigbay Group,company258,123456,company
+259,APC Group,company259,123456,company
+260,CÔNG TY CỔ PHẦN HẠ LONG PACIFIC,company260,123456,company
+261,HƯƠNG HẢI GROUP,company261,123456,company
+262,"Công ty TNHH Thương mại, Dịch vụ, Du lịch Minh Loan",company262,123456,company
+263,Vedure Lotus Cruise,company263,123456,company
