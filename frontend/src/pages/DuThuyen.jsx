@@ -13,6 +13,8 @@ import RoomItem from "../components/RoomItem";
 import roomsData from "../pages/roomsData";
 import AboutSection from "../components/AboutSection";
 import axios from "axios";
+import ReviewsShip from "./ReviewsShip";
+
 
 // ================= GALLERY SLIDER =================
 const GallerySlider = ({ images }) => {
@@ -65,7 +67,9 @@ const tabs = [
     { id: 1, label: "Đặc điểm" },
     { id: 2, label: "Phòng & giá" },
     { id: 3, label: "Giới thiệu" },
+    { id: 4, label: "Đánh giá" }, // ✅ Thêm tab đánh giá
 ];
+
 
 const TabNav = ({ activeTab, setActiveTab }) => {
     return (
@@ -321,6 +325,8 @@ const DuThuyen = () => {
                 {activeTab === 1 && <Highlights />}
                 {activeTab === 2 && <Rooms />}
                 {activeTab === 3 && <Introduction />}
+                {activeTab === 4 && <ReviewsShip shipId={id} />}
+
             </div>
         </div>
     );
