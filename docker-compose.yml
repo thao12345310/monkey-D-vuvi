@@ -26,30 +26,30 @@ services:
             - backend
 
     backend:
-        build:
-            context: ./backend
-            dockerfile: Dockerfile
-        ports:
-            - "8080:8080"
-        environment:
-            - SPRING_DATASOURCE_URL=${DB_URL:-jdbc:postgresql://host.docker.internal:5432/monkey_d_vuvi}
-            - SPRING_DATASOURCE_USERNAME=${DB_USERNAME:-admin}
-            - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD:-admin}
-        extra_hosts:
-            - "host.docker.internal:host-gateway"
-        depends_on:
-            - db
+      build:
+        context: ./backend
+        dockerfile: Dockerfile
+      ports:
+        - "8080:8080"
+      environment:
+        - SPRING_DATASOURCE_URL=${DB_URL:-jdbc:postgresql://host.docker.internal:5432/monkey_d_vuvi}
+        - SPRING_DATASOURCE_USERNAME=${DB_USERNAME:-admin}
+        - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD:-admin}
+      extra_hosts:
+        - "host.docker.internal:host-gateway"
+      depends_on:
+        - db
 
     db:
-        image: postgres:15-alpine
-        ports:
-            - "5432:5432"
-        environment:
-            - POSTGRES_DB=${DB_NAME:-monkey_d_vuvi}
-            - POSTGRES_USER=${DB_USERNAME:-admin}
-            - POSTGRES_PASSWORD=${DB_PASSWORD:-admin}
-        volumes:
-            - postgres_data:/var/lib/postgresql/data
+      image: postgres:15-alpine
+      ports:
+        - "6001:6001"
+      environment:
+        - POSTGRES_DB=${DB_NAME:-monkey_d_vuvi}
+        - POSTGRES_USER=${DB_USERNAME:-admin}
+        - POSTGRES_PASSWORD=${DB_PASSWORD:-admin}
+      volumes:
+        - postgres_data:/var/lib/postgresql/data
 
 volumes:
-    postgres_data:
+  postgres_data:
