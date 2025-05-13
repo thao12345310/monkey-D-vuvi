@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FaStar } from "react-icons/fa";
 
-const Reviews = ({ shipId }) => {
+const ReviewsShip = ({ shipId }) => {
     const [reviews, setReviews] = useState([]);
     const [filteredStar, setFilteredStar] = useState(null);
     const [newReview, setNewReview] = useState({ name: "", content: "", stars: 5 });

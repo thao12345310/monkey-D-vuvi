@@ -13,7 +13,7 @@ import RoomItem from "../components/RoomItem";
 import roomsData from "../pages/roomsData";
 import AboutSection from "../components/AboutSection";
 import axios from "axios";
-import ReviewsShip from "./ReviewsShip";
+import ReviewsShip from "../components/ReviewsShip";
 
 
 // ================= GALLERY SLIDER =================
