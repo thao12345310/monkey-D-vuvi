@@ -1,6 +1,6 @@
-from RecommendGraph import rs_builder
-from SearchWebGraph import search_builder 
-from SearchWikiGraph import ws_builder
+from .RecommendGraph import rs_builder
+from .SearchWebGraph import search_builder 
+from .SearchWikiGraph import ws_builder
 from langgraph.graph import StateGraph, START, END
 from langchain.vectorstores import Qdrant
 from qdrant_client import QdrantClient
@@ -39,7 +39,7 @@ def controller(state):
     Nếu câu hỏi đưa vào liên quan tới yêu cầu xây dựng tour du lịch, hỏi đáp về nhà hàng, khách sạn cụ thể, hãy gọi tới `Recommendation System`.
     Nếu câu hỏi đưa vào liên quan tới yêu cầu tìm kiếm thông tin từ wikipedia, hãy gọi tới `Search Wikipedia`.
     Nếu câu hỏi đưa vào liên quan tới yêu cầu tìm kiếm thông tin từ google, hãy gọi tới `Search Web`.
-    Nếu không có subgraph nào phù hợp, hãy gọi tới `Search Web`.
+    Nếu không có subgraph nào phù hợp, hãy gọi tới `answer`.
     LƯU Ý: CHỈ ĐƯA RA MỘT TRONG CÁC GIÁ TRỊ NÀY, KHÔNG ĐƯA RA CÁC GIÁ TRỊ KHÁC.
     Hãy đưa ra câu trả lời ngắn gọn và súc tích.
     Đây là câu hỏi của người dùng: {query}"""
@@ -53,8 +53,18 @@ def controller(state):
     elif messages.content == "Search Web":
         print("Search Web")
         return {"subgraph_name": "Search Web"}
-    return {"subgraph_name": "Search Web"}
+    return {"subgraph_name": "answer"}
 
+def answer(state):
+    
+    context = "\n\n".join(str(item) for item in state["context"])
+    query = state["messages"]
+    prompt_template = """
+Bạn là một trợ lý ảo của web du lịch MonkeyDvuvi, một website hỗ trợ đặt phòng khách sạn, du thuyền trực tuyến. Bạn hãy trả lời các câu hỏi tương tác với người
+dùng một cách tự nhiên và thân thiện, nếu cần thiết hãy vui tính.
+"""
+    response = llm.invoke([SystemMessage(content=prompt_template)] + state['messages'])
+    return {"messages": response}
 def condition_tools(state):
     if state['subgraph_name'] == "Recommendation System":
         return "Recommendation System"
@@ -63,14 +73,14 @@ def condition_tools(state):
     elif state['subgraph_name'] == "Search Web":
         return "Search Web"
     else:
-        return "Search Web"
+        return "answer"
       
 builder = StateGraph(EntryGraphState)
 builder.add_node("controller", controller)
 builder.add_node("Recommendation System", rs_builder.compile())
 builder.add_node("Search Wikipedia", ws_builder.compile())
 builder.add_node("Search Web", search_builder.compile())
-
+builder.add_node("answer", answer)
 builder.add_edge(START, "controller")
 builder.add_conditional_edges(
     "controller",
@@ -79,4 +89,5 @@ builder.add_conditional_edges(
 builder.add_edge("Recommendation System", END)
 builder.add_edge("Search Wikipedia", END)
 builder.add_edge("Search Web", END)
+builder.add_edge("answer", END)
 graph = builder.compile()

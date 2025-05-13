@@ -7,12 +7,12 @@ from langchain.embeddings import OpenAIEmbeddings
 from langchain_community.tools import TavilySearchResults
 from langgraph.graph import MessagesState
 from langchain_core.messages import SystemMessage
-from dotenv import load_dotenv
-load_dotenv('.env')
+from settings import OPENAI_API_KEY
+
 import operator
 from typing import Annotated
 from langchain_openai import ChatOpenAI
-llm = ChatOpenAI(model="gpt-4o")
+llm = ChatOpenAI(model="gpt-4o", api_key=OPENAI_API_KEY)
 class RecommendState(MessagesState):
     query: str
     context: Annotated[list, operator.add]
@@ -55,7 +55,8 @@ def generateRecommend(state):
     context = "\n\n".join(str(item) for item in state["context"])
     query = state["messages"]
     prompt_template = """
-Bạn là một chuyên gia du lịch và có kiến thức đầy đủ về các khách sạn tại Việt Nam. Bạn hãy trả lời câu hỏi của tôi dựa trên thông tin mà tôi đã cung cấp cho bạn. Các câu hỏi chủ yếu về các địa điểm du lịch, và cách xây dựng tour du lịch hợp lí bao gồm khách sạn, nhà hàng cũng như các địa điểm du lịch nổi tiếng gần đó.
+Bạn là một trợ lý ảo của web du lịch MonkeyDvuvi, một website hỗ trợ đặt phòng khách sạn, du thuyền trực tuyến. Nhiệm vụ của bạn là trả lời các câu hỏi của người dùng
+ về các địa điểm du lịch, nhà hàng, khách sạn, du thuyền tại Việt Nam, ngoài ra có thể gợi ý tour và các lịch trình chi tiết phù hợp với nhu cầu người dùng. Bạn hãy trả lời câu hỏi của tôi dựa trên thông tin mà tôi đã cung cấp cho bạn. Các câu hỏi chủ yếu về các địa điểm du lịch, và cách xây dựng tour du lịch hợp lí bao gồm khách sạn, nhà hàng cũng như các địa điểm du lịch nổi tiếng gần đó.
 Dưới đây là thông tin về một khách sạn mà tôi đã tìm thấy: {context}
 
 Hãy cung cấp thông tin chi tiết về khách sạn, nhà hàng và tour du lịch theo như tôi yêu cầu, sử dụng các thông tin đã có và bổ sung thêm nếu có. Nếu có các thông tin về đường dẫn tới map hay facebook, website của khách sạn hay nhà hàng, hãy cung cấp cho tôi. Nếu không có thông tin nào, hãy nói là không có thông tin nào.

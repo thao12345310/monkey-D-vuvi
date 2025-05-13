@@ -4,3 +4,5 @@ backend/src/main/java/com/travel_agent/controllers/init.java
 .cursorignore
 .cursorrules
 .env
+**/.env
+**/qdrant_storage/
