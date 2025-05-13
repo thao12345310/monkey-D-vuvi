@@ -8,13 +8,9 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
 
-// Fake data
-import RoomItem from "../components/RoomItem";
-import roomsData from "../pages/roomsData";
-import AboutSection from "../components/AboutSection";
+import RoomItem from "../../components/public/RoomItem";
 import axios from "axios";
-import ReviewsShip from "../../components/ReviewsShip";
-
+import ReviewsShip from "../../components/public/ReviewsShip";
 
 // ================= GALLERY SLIDER =================
 const GallerySlider = ({ images }) => {
@@ -70,7 +66,6 @@ const tabs = [
     { id: 4, label: "Đánh giá" }, // ✅ Thêm tab đánh giá
 ];
 
-
 const TabNav = ({ activeTab, setActiveTab }) => {
     return (
         <div className="flex space-x-6 border-b pb-2">
@@ -90,48 +85,44 @@ const TabNav = ({ activeTab, setActiveTab }) => {
 };
 
 // ================= HIGHLIGHTS TAB =================
-const features = [
-    { icon: <FaSwimmingPool size={24} />, text: "Có bể sục" },
-    { icon: <FaCocktail size={24} />, text: "Quầy bar" },
-    { icon: <FaUtensils size={24} />, text: "Nhà hàng" },
-    { icon: <FaConciergeBell size={24} />, text: "Lễ tân 24 giờ" },
-    { icon: <FaBath size={24} />, text: "Phòng có bồn tắm" },
-];
+const Highlights = ({ shipData }) => {
+    const cruiseInfo = [
+        { label: "Hạ thủy", value: shipData.launch },
+        { label: "Cabin", value: shipData.cabin },
+        { label: "Thân vỏ", value: shipData.shell },
+        { label: "Hành trình", value: shipData.trip },
+        { label: "Điều hành", value: shipData.companyName },
+    ];
 
-const descriptionList = [
-    "Du thuyền thiết kế sang trọng và truyền thống",
-    "Phòng ngủ tiện nghi sang trọng với bồn tắm view vịnh",
-    "Bể bơi 4 mùa rộng lớn checkin cực đẹp",
-    "Nhiều lịch trình 2N1Đ, 3N2Đ, 4N3Đ trên vịnh Lan Hạ",
-];
-
-const cruiseInfo = [
-    { label: "Hạ thủy", value: "2019" },
-    { label: "Cabin", value: "20" },
-    { label: "Thân vỏ", value: "Kim loại" },
-    { label: "Hành trình", value: "Vịnh Lan Hạ - Bãi tắm Ba Trái Đào - Hang Sáng Tối" },
-    { label: "Điều hành", value: "Công ty cổ phần Heritage Cruises" },
-];
-
-const Highlights = () => {
-    
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-6">
             {/* Left */}
             <div className="md:col-span-2 space-y-6">
                 {/* Features */}
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-                    {features.map((item, index) => (
+                    {shipData.features.map((feature, index) => (
                         <div key={index} className="flex items-center space-x-2">
-                            <div className="text-primary">{item.icon}</div>
-                            <span>{item.text}</span>
+                            <div className="text-primary">
+                                {feature === "Nhà hàng" ? (
+                                    <FaUtensils size={24} />
+                                ) : feature === "Lễ tân 24h" ? (
+                                    <FaConciergeBell size={24} />
+                                ) : feature === "Phòng gia đình" ? (
+                                    <FaBath size={24} />
+                                ) : feature === "Miễn phí kayaking" ? (
+                                    <FaSwimmingPool size={24} />
+                                ) : (
+                                    <FaCocktail size={24} />
+                                )}
+                            </div>
+                            <span>{feature}</span>
                         </div>
                     ))}
                 </div>
 
                 {/* Description */}
                 <div className="space-y-3">
-                    {descriptionList.map((desc, idx) => (
+                    {shipData.shortDescriptions.map((desc, idx) => (
                         <div key={idx} className="flex items-start space-x-2">
                             <span className="text-primary">✔️</span>
                             <p>{desc}</p>
@@ -141,13 +132,13 @@ const Highlights = () => {
             </div>
 
             {/* Right */}
-            <div className="border p-4 rounded-xl shadow-md bg-gray-50">
+            <div className="border p-4 rounded-xl shadow-md bg-gray-50 h-fit">
                 <h3 className="text-lg font-semibold mb-4">Thông tin du thuyền</h3>
                 <div className="space-y-3">
                     {cruiseInfo.map((info, idx) => (
-                        <div key={idx} className="flex justify-between text-sm">
-                            <span className="text-gray-600">{info.label}</span>
-                            <span className="font-semibold">{info.value}</span>
+                        <div key={idx} className="flex justify-between gap-20 text-sm">
+                            <span className="text-gray-600 w-30">{info.label}</span>
+                            <span className="font-semibold text-right">{info.value}</span>
                         </div>
                     ))}
                 </div>
@@ -157,7 +148,7 @@ const Highlights = () => {
 };
 
 // ================= ROOMS TAB =================
-const Rooms = () => {
+const Rooms = ({ shipData }) => {
     const [quantities, setQuantities] = useState({});
 
     const handleQuantityChange = (id, delta) => {
@@ -167,9 +158,9 @@ const Rooms = () => {
         }));
     };
 
-    const totalPrice = roomsData.reduce((sum, room) => {
-        const qty = quantities[room.id] || 0;
-        return sum + qty * room.price;
+    const totalPrice = shipData.rooms.reduce((sum, room) => {
+        const qty = quantities[room.roomId] || 0;
+        return sum + qty * room.roomPrice;
     }, 0);
 
     const resetSelections = () => {
@@ -186,8 +177,8 @@ const Rooms = () => {
             </div>
 
             <div className="bg-gray-50 p-6 rounded-2xl space-y-4">
-                {roomsData.map((room) => (
-                    <RoomItem key={room.id} room={room} quantity={quantities[room.id]} onQuantityChange={handleQuantityChange} />
+                {shipData.rooms.map((room) => (
+                    <RoomItem key={room.roomId} room={room} quantity={quantities[room.roomId]} onQuantityChange={handleQuantityChange} />
                 ))}
 
                 {/* Tổng tiền */}
@@ -197,8 +188,12 @@ const Rooms = () => {
                     </div>
 
                     <div className="space-x-4">
-                        <button className="border px-4 py-2 rounded-full hover:bg-primary hover:text-white transition-all">Thuê trọn tàu</button>
-                        <button className="bg-primary text-white px-6 py-2 rounded-full hover:bg-blue-600 transition-all">Đặt ngay →</button>
+                        <button className="border-2 border-primary text-gray-500 px-4 py-2 rounded-full hover:bg-gray-300 transition-all duration-300">
+                            Thuê trọn tàu
+                        </button>
+                        <button className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-800 transition-all duration-300">
+                            Đặt ngay →
+                        </button>
                     </div>
                 </div>
             </div>
@@ -207,33 +202,31 @@ const Rooms = () => {
 };
 
 // ================= INTRODUCTION TAB =================
-const aboutSections = [
-    {
-        title: "Du thuyền tuyệt đẹp về đêm",
-        image: "https://link.to.your.image1.jpg",
-        description:
-            "Du thuyền Heritage Cruises Binh Chuan có kiến trúc độc đáo, thiết kế mang đậm nét truyền thống và lịch sử. Với 20 phòng nghỉ riêng biệt...",
-    },
-    {
-        title: "Bể bơi bốn mùa của du thuyền",
-        image: "https://link.to.your.image2.jpg",
-        description: "Đặc biệt, du thuyền có bể bơi bốn mùa mang lại cảm giác hài lòng cho những du khách đi vào mùa lạnh. Đây chính là điểm nhấn...",
-    },
-    {
-        title: "Nhà hàng Tonkin",
-        image: "https://link.to.your.image3.jpg",
-        description: "Nhà hàng Tonkin của du thuyền thiết kế theo lối kiến trúc Đông Dương và đậm tính nghệ thuật sẽ phục vụ du khách cao cấp...",
-    },
-];
-
-const Introduction = () => {
+const Introduction = ({ shipData }) => {
     return (
         <div className="py-10 space-y-8">
             <h2 className="text-3xl font-bold mb-6">Giới thiệu</h2>
             <div className="space-y-8">
-                {aboutSections.map((section, index) => (
-                    <AboutSection key={index} image={section.image} title={section.title} description={section.description} />
-                ))}
+                {shipData.longDescriptions.map((block, index) => {
+                    if (block.type === "paragraph") {
+                        return (
+                            <div key={block.blockId} className="mb-6">
+                                <p className="text-gray-700 leading-relaxed">{block.data}</p>
+                            </div>
+                        );
+                    } else if (block.type === "image") {
+                        return (
+                            <div key={block.blockId} className="mb-6">
+                                <img
+                                    src={block.data}
+                                    alt={`Introduction image ${block.blockId}`}
+                                    className="w-full h-[400px] object-cover rounded-xl shadow-md"
+                                />
+                            </div>
+                        );
+                    }
+                    return null;
+                })}
             </div>
         </div>
     );
@@ -300,7 +293,7 @@ const DuThuyen = () => {
         <div className="container mx-auto p-4">
             {/* ===== Title + Rating Section ===== */}
             <div className="mb-10">
-                <h1 className="text-3xl font-bold mb-2">{shipData["shipName"]}</h1>
+                <h1 className="text-3xl font-bold mb-2">{shipData.shipName}</h1>
                 <div className="flex items-center space-x-4 text-gray-600 text-sm">
                     <div className="flex items-center space-x-1 text-yellow-400">
                         {[...Array(5)].map((_, idx) => (
@@ -315,18 +308,17 @@ const DuThuyen = () => {
 
             {/* ===== GallerySlider Section ===== */}
             <div className="mb-10">
-                <GallerySlider images={[shipData.thumbnail]} />
+                <GallerySlider images={shipData.images} />
             </div>
 
             {/* ===== Tab Navigation and Content ===== */}
             <TabNav activeTab={activeTab} setActiveTab={setActiveTab} />
 
             <div className="mt-6">
-                {activeTab === 1 && <Highlights />}
-                {activeTab === 2 && <Rooms />}
-                {activeTab === 3 && <Introduction />}
+                {activeTab === 1 && <Highlights shipData={shipData} />}
+                {activeTab === 2 && <Rooms shipData={shipData} />}
+                {activeTab === 3 && <Introduction shipData={shipData} />}
                 {activeTab === 4 && <ReviewsShip shipId={id} />}
-
             </div>
         </div>
     );

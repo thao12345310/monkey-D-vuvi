@@ -117,7 +117,7 @@ const ReviewsShip = ({ shipId }) => {
                     </div>
                     <button
                         type="submit"
-                        className="bg-primary text-white px-6 py-2 rounded-full hover:bg-blue-600 transition-all"
+                        className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-800 transition-all"
                     >
                         Gửi đánh giá
                     </button>
