@@ -1,8 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FiMessageSquare, FiSend, FiX } from "react-icons/fi";
 
-const ChatBotWidget = () => {
-  const [isOpen, setIsOpen] = useState(true);
+const ChatBotWidget = ({ isOpen, setIsOpen }) => {
   const [messages, setMessages] = useState([
     { id: 1, text: "Hey there 👋\nHow can I help you today?", sender: "bot" },
   ]);
