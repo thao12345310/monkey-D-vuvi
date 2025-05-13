@@ -1,36 +1,55 @@
 import React, { useState } from "react";
-import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
-import NavBar from "./components/NavBar";
-import ScrollToTop from "./components/ScrollToTop";
-import Home from "./pages/Home";
-import TimDuThuyen from "./pages/TimDuThuyen";
-import TimVeMayBay from "./pages/TimVeMayBay";
-import TimKhachSan from "./pages/TimKhachSan";
-import ChiTietKhachSan from "./pages/ChiTietKhachSan";
-import DoanhNghiep from "./pages/DoanhNghiep";
-import DuThuyen from "./pages/DuThuyen";
-import LoginPage from "./pages/LoginPage";
-import ChatBotWidget from "./components/ChatBotWidget";
-import Footer from "./components/Footer";
+import {
+  Routes,
+  Route,
+  BrowserRouter as Router,
+  useLocation,
+} from "react-router-dom";
+import NavBar from "./components/public/NavBar";
+import ScrollToTop from "./components/public/ScrollToTop";
+import Home from "./pages/public/Home";
+import TimDuThuyen from "./pages/public/TimDuThuyen";
+import TimVeMayBay from "./pages/public/TimVeMayBay";
+import TimKhachSan from "./pages/public/TimKhachSan";
+import ChiTietKhachSan from "./pages/public/ChiTietKhachSan";
+import DoanhNghiep from "./pages/public/DoanhNghiep";
+import DuThuyen from "./pages/public/DuThuyen";
+import LoginPage from "./pages/public/LoginPage";
+import ChatBotWidget from "./components/public/ChatBotWidget";
+import Footer from "./components/public/Footer";
 import "./App.css";
+import AdminLayout from "./components/admin/AdminLayout";
+import Dashboard from "./pages/admin/DashBoard";
+import Team from "./pages/admin/Team";
+import { ColorModeContext, useMode } from "./theme";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 
-const App = () => {
+const AppRoutes = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [theme, colorMode] = useMode();
+  const location = useLocation();
+  const isAdminPath = location.pathname.startsWith("/admin");
 
   return (
-    <Router>
+    <>
       <ScrollToTop />
-      <div className="relative min-h-screen bg-gray-50 flex flex-col">
-        <NavBar />
+      <div className="app min-h-screen flex flex-col">
+        {!isAdminPath && <NavBar />}
 
-        <div className={`flex-1 flex transition-all duration-300 ease-in-out`}>
-          {/* Main content */}
+        <div className="flex-1 flex transition-all duration-300 ease-in-out">
           <div
             className={`w-full ${
-              isChatOpen ? "lg:w-2/3" : "w-full"
+              !isAdminPath && isChatOpen ? "lg:w-2/3" : "w-full"
             } transition-all duration-300 ease-in-out`}
           >
             <Routes>
+              {/* Admin */}
+              <Route path="/admin" element={<AdminLayout />}>
+                <Route index element={<Dashboard />} />
+                <Route path="team" element={<Team />} />
+              </Route>
+
+              {/* User */}
               <Route path="/" element={<Home />} />
               <Route path="/tim-du-thuyen" element={<TimDuThuyen />} />
               <Route path="/tim-ve-may-bay" element={<TimVeMayBay />} />
@@ -43,12 +62,21 @@ const App = () => {
             </Routes>
           </div>
 
-          {/* ChatBot sidebar */}
-          <ChatBotWidget isOpen={isChatOpen} setIsOpen={setIsChatOpen} />
+          {!isAdminPath && (
+            <ChatBotWidget isOpen={isChatOpen} setIsOpen={setIsChatOpen} />
+          )}
         </div>
 
-        <Footer />
+        {!isAdminPath && <Footer />}
       </div>
+    </>
+  );
+};
+
+const App = () => {
+  return (
+    <Router>
+      <AppRoutes />
     </Router>
   );
 };

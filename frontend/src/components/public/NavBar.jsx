@@ -2,16 +2,9 @@
 
 import React, { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
-import {
-  Dialog,
-  DialogPanel,
-  Disclosure,
-  DisclosureButton,
-  DisclosurePanel,
-} from "@headlessui/react";
+import { Dialog, DialogPanel } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { FaceSmileIcon } from "@heroicons/react/24/solid";
-import logo from "../assets/monkey_d_vuvi_logo.jpg";
+import logo from "../../assets/monkey_d_vuvi_logo.jpg";
 
 const NavBar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

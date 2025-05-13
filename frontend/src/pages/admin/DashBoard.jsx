@@ -17,7 +17,7 @@ const DashboardCard = ({ title, value }) => {
   );
 };
 
-const DashboardPage = () => {
+const Dashboard = () => {
   const data = [
     { title: "Active Users", value: 112893 },
     { title: "New Signups", value: 54321 },
@@ -35,4 +35,4 @@ const DashboardPage = () => {
   );
 };
 
-export default DashboardPage;
+export default Dashboard;

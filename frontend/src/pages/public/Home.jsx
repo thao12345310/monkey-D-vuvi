@@ -10,8 +10,8 @@ import {
   Grid,
 } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import backgroundImage from "../assets/hinhnen.webp";
-import KhachSanCardNho from "../components/KhachSanCardNho";
+import backgroundImage from "../../assets/hinhnen.webp";
+import KhachSanCardNho from "../../components/public/KhachSanCardNho";
 import axios from "axios";
 import { Link } from "react-router-dom";
 const Home = () => {
@@ -25,8 +25,7 @@ const Home = () => {
         setHotels(data.result || []);
       })
       .catch((error) => console.error("Lỗi khi gọi API:", error));
-  }, []); // thêm [] để chỉ gọi 1 lần khi mount
-
+  });
   return (
     <Box>
       {/* Hero Section */}
