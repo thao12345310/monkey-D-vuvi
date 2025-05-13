@@ -1,4 +1,4 @@
-package com.travel_agent.models.id;
+package com.travel_agent.models.id.ship;
 
 import java.io.Serializable;
 
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ShipDescriptionId implements Serializable {
+public class ShipFeatureId implements Serializable {
     private Integer shipId;
-    private Integer blockId;
+    private Integer featureId;
 }

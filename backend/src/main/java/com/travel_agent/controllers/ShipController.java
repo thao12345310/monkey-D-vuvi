@@ -1,18 +1,18 @@
 package com.travel_agent.controllers;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.HttpStatus;
-
 import com.travel_agent.dto.ship.ShipDTO;
+import com.travel_agent.dto.ship.ShipRoomDTO;
 import com.travel_agent.dto.ResponseObject;
 import com.travel_agent.dto.ResultPaginationDTO;
 import com.travel_agent.services.ShipService;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/ship")
@@ -37,7 +37,6 @@ public class ShipController {
         return shipService.getAllShips(pageable);
     }
 
-    // View ship details
     @GetMapping("/{shipId}")
     public ResponseEntity<ResponseObject> getShipDetails(@PathVariable("shipId") Integer shipId) {
         ShipDTO shipDto = shipService.getShipDetails(shipId);
@@ -53,7 +52,6 @@ public class ShipController {
         }
     }
 
-    // Add ship
     @PostMapping("/add")
     public ResponseEntity<ResponseObject> addShip(@RequestBody ShipDTO shipDto) {
         ShipDTO addedShip = shipService.addShip(shipDto);
@@ -69,7 +67,6 @@ public class ShipController {
         }
     }
 
-    // Update ship
     @PutMapping("/{shipId}")
     public ResponseEntity<ResponseObject> updateShip(@PathVariable("shipId") Integer shipId, @RequestBody ShipDTO shipDto) {
         ShipDTO updatedShip = shipService.updateShip(shipId, shipDto);
@@ -85,7 +82,6 @@ public class ShipController {
         }
     }
 
-    // Delete ships
     @DeleteMapping("/delete")
     public ResponseEntity<ResponseObject> deleteShips(@RequestBody List<Integer> shipIds) {
         if (shipIds.size() > 10) {
@@ -97,6 +93,77 @@ public class ShipController {
         shipService.deleteShips(shipIds);
         return ResponseEntity.ok(ResponseObject.builder()
                 .message("Ships deleted successfully")
+                .responseCode(HttpStatus.OK.value())
+                .build());
+    }
+
+    // View room
+    @GetMapping("/{shipId}/{roomId}")
+    public ResponseEntity<ResponseObject> getShipRoom(
+            @PathVariable("shipId") Integer shipId,
+            @PathVariable("roomId") Integer roomId) {
+        ShipRoomDTO roomDto = shipService.getShipRoom(shipId, roomId);
+
+        if (roomDto != null) {
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .message("Room details retrieved successfully")
+                    .data(roomDto)
+                    .responseCode(HttpStatus.OK.value())
+                    .build());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // Add room
+    @PostMapping("/{shipId}/add-room")
+    public ResponseEntity<ResponseObject> addShipRoom(@PathVariable("shipId") Integer shipId, @RequestBody ShipRoomDTO roomDto) {
+        ShipRoomDTO addedRoom = shipService.addShipRoom(shipId, roomDto);
+
+        if (addedRoom != null) {
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .message("Room added successfully")
+                    .data(addedRoom)
+                    .responseCode(HttpStatus.OK.value())
+                    .build());
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    // Update room
+    @PutMapping("/{shipId}/{roomId}")
+    public ResponseEntity<ResponseObject> updateShipRoom(
+            @PathVariable("shipId") Integer shipId,
+            @PathVariable("roomId") Integer roomId,
+            @RequestBody ShipRoomDTO roomDto) {
+        ShipRoomDTO updatedRoom = shipService.updateShipRoom(shipId, roomId, roomDto);
+
+        if (updatedRoom != null) {
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .message("Room updated successfully")
+                    .data(updatedRoom)
+                    .responseCode(HttpStatus.OK.value())
+                    .build());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // Delete room
+    @DeleteMapping("/{shipId}/delete-room")
+    public ResponseEntity<ResponseObject> deleteShipRooms(
+            @PathVariable("shipId") Integer shipId,
+            @RequestBody List<Integer> roomIds) {
+        if (roomIds.size() > 10) {
+            return ResponseEntity.badRequest().body(ResponseObject.builder()
+                    .message("Cannot delete more than 10 rooms at once")
+                    .responseCode(HttpStatus.BAD_REQUEST.value())
+                    .build());
+        }
+        shipService.deleteShipRooms(shipId, roomIds);
+        return ResponseEntity.ok(ResponseObject.builder()
+                .message("Rooms deleted successfully")
                 .responseCode(HttpStatus.OK.value())
                 .build());
     }

@@ -1,6 +1,6 @@
-package com.travel_agent.models.entity.hotel;
+package com.travel_agent.models.entity.ship;
 
-import com.travel_agent.models.id.hotel.HotelRoomImageId;
+import com.travel_agent.models.id.ship.ShipImageId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
@@ -11,11 +11,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "hotel_room_img")
-@IdClass(HotelRoomImageId.class)
-public class HotelRoomImage {
+@Table(name = "ship_img")
+@IdClass(ShipImageId.class)
+public class ShipImageEntity {
     @Id
-    private Integer roomId;
+    private Integer shipId;
 
     @Id
     private String imgUrl;

@@ -21,7 +21,7 @@ public class BookingShipRoom {
 
     @ManyToOne
     @JoinColumn(name = "ship_room_id")
-    private ShipRoom shipRoom;
+    private ShipRoomEntity shipRoomEntity;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
