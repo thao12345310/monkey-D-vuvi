@@ -1,8 +1,12 @@
 package com.travel_agent.services;
 
 import com.travel_agent.dto.*;
+import com.travel_agent.dto.hotel.HotelDTO;
+import com.travel_agent.dto.hotel.HotelLongDescriptionDTO;
+import com.travel_agent.dto.hotel.HotelRoomDTO;
 import com.travel_agent.models.entity.hotel.*;
 import com.travel_agent.repositories.*;
+import com.travel_agent.repositories.hotel.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -27,6 +31,7 @@ public class HotelService {
     private final HotelRoomRepository hotelRoomRepository;
     private final HotelRoomFeatureRepository hotelRoomFeatureRepository;
     private final HotelImageRepository hotelImageRepository;
+    private final HotelRoomImageRepository hotelRoomImageRepository;
 
     public ResultPaginationDTO getAllHotels(Pageable pageable) {
         Page<HotelEntity> pageHotel= hotelRepository.findAll(pageable);
@@ -90,6 +95,11 @@ public class HotelService {
                                     .orElseThrow(() -> new IllegalArgumentException("Feature not found with ID: " + featureId))
                                     .getFeatureDescription())
                             .toList();
+                    List<String> images = hotelRoomImageRepository.findByRoomId(room.getHotelRoomId())
+                            .stream()
+                            .map(HotelRoomImage::getImgUrl)
+                            .toList();
+
                     return new HotelRoomDTO(
                             room.getHotelRoomId(),
                             room.getRoomName(),
@@ -99,7 +109,8 @@ public class HotelService {
                             room.getSize(),
                             room.getMaxPersons(),
                             room.getBedType(),
-                            room.getView()
+                            room.getView(),
+                            images.isEmpty() ? null : images
                     );
                 })
                 .toList();
@@ -374,6 +385,11 @@ public class HotelService {
                         .getFeatureDescription())
                 .toList();
 
+        List<String> images = hotelRoomImageRepository.findByRoomId(roomId)
+                .stream()
+                .map(HotelRoomImage::getImgUrl)
+                .toList();
+
         // Map the entity to DTO
         return new HotelRoomDTO(
                 hotelRoomEntity.getHotelRoomId(),
@@ -384,7 +400,8 @@ public class HotelService {
                 hotelRoomEntity.getSize(),
                 hotelRoomEntity.getMaxPersons(),
                 hotelRoomEntity.getBedType(),
-                hotelRoomEntity.getView()
+                hotelRoomEntity.getView(),
+                images.isEmpty() ? null : images
         );
     }
 
@@ -419,6 +436,15 @@ public class HotelService {
                         .getFeatureDescription())
                 .toList();
 
+        if (roomDto.getImages() != null) {
+            for (String imgUrl : roomDto.getImages()) {
+                HotelRoomImage roomImage = new HotelRoomImage();
+                roomImage.setRoomId(hotelRoom.getHotelRoomId());
+                roomImage.setImgUrl(imgUrl);
+                hotelRoomImageRepository.save(roomImage);
+            }
+        }
+
         return new HotelRoomDTO(
                 hotelRoom.getHotelRoomId(),
                 hotelRoom.getRoomName(),
@@ -428,10 +454,12 @@ public class HotelService {
                 hotelRoom.getSize(),
                 hotelRoom.getMaxPersons(),
                 hotelRoom.getBedType(),
-                hotelRoom.getView()
+                hotelRoom.getView(),
+                roomDto.getImages()
         );
     }
 
+    @Transactional
     public HotelRoomDTO updateHotelRoom(Integer hotelId, Integer roomId, HotelRoomDTO roomDto) {
         hotelRepository.findById(hotelId)
                 .orElseThrow(() -> new IllegalArgumentException("Hotel not found with ID: " + hotelId));
@@ -467,6 +495,17 @@ public class HotelService {
             hotelRoomFeatureRepository.save(roomFeature);
         }
 
+        hotelRoomImageRepository.deleteByRoomId(roomId);
+
+        if (roomDto.getImages() != null) {
+            for (String imgUrl : roomDto.getImages()) {
+                HotelRoomImage roomImage = new HotelRoomImage();
+                roomImage.setRoomId(hotelRoom.getHotelRoomId());
+                roomImage.setImgUrl(imgUrl);
+                hotelRoomImageRepository.save(roomImage);
+            }
+        }
+
         return new HotelRoomDTO(
                 hotelRoom.getHotelRoomId(),
                 hotelRoom.getRoomName(),
@@ -476,7 +515,8 @@ public class HotelService {
                 hotelRoom.getSize(),
                 hotelRoom.getMaxPersons(),
                 hotelRoom.getBedType(),
-                hotelRoom.getView()
+                hotelRoom.getView(),
+                roomDto.getImages()
         );
     }
 

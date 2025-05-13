@@ -1,4 +1,4 @@
-package com.travel_agent.models.id;
+package com.travel_agent.models.id.hotel;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @EqualsAndHashCode
-public class HotelImageId implements Serializable {
-    private Integer hotelId;
+public class HotelRoomImageId implements Serializable {
+    private Integer roomId;
     private String imgUrl;
 }

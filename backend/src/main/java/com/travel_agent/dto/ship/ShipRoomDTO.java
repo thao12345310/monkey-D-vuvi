@@ -1,4 +1,4 @@
-package com.travel_agent.dto;
+package com.travel_agent.dto.ship;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class HotelRoomDTO {
+public class ShipRoomDTO {
     private Integer roomId;
     private String roomName;
     private Integer roomPrice;
@@ -19,6 +19,5 @@ public class HotelRoomDTO {
     private List<String> roomFeatures;
     private Integer size;
     private Integer maxPersons;
-    private String bedType;
-    private String view;
+    private List<String> images;
 }

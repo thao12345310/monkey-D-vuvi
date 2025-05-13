@@ -1,6 +1,6 @@
 package com.travel_agent.services;
 
-import com.travel_agent.dto.ShipDTO;
+import com.travel_agent.dto.ship.ShipDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

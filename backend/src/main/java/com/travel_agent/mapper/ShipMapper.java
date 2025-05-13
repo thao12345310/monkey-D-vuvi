@@ -5,7 +5,7 @@ import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import com.travel_agent.dto.ShipDTO;
+import com.travel_agent.dto.ship.ShipDTO;
 import com.travel_agent.models.entity.ship.ShipEntity;
 
 @Mapper(componentModel = "spring")

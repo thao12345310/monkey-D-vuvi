@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FiMessageSquare, FiSend, FiX } from "react-icons/fi";
+import MarkdownIt from "markdown-it";
 
 const ChatBotWidget = ({ isOpen, setIsOpen }) => {
   const [messages, setMessages] = useState([
@@ -7,6 +8,12 @@ const ChatBotWidget = ({ isOpen, setIsOpen }) => {
   ]);
   const [inputValue, setInputValue] = useState("");
   const messagesEndRef = useRef(null);
+
+  const md = new MarkdownIt({
+    html: true,
+    linkify: true,
+    breaks: true, // giữ xuống dòng \n chuẩn Markdown
+  });
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -20,56 +27,30 @@ const ChatBotWidget = ({ isOpen, setIsOpen }) => {
     e.preventDefault();
     const trimmedInput = inputValue.trim();
     if (trimmedInput) {
-      const newMessage = {
-        id: messages.length + 1,
-        text: trimmedInput,
-        sender: "user",
-      };
-      setMessages([...messages, newMessage]);
+      const newMessage = { id: messages.length + 1, text: trimmedInput, sender: "user" };
+      setMessages((prev) => [...prev, newMessage]);
       setInputValue("");
 
-      // --- Gọi API backend ---
       try {
         const response = await fetch("http://127.0.0.1:8000/chat", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            message: trimmedInput,
-            user_id: "user_123",  // hardcode hoặc lấy dynamic tùy bạn
-          }),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: trimmedInput, user_id: "user_123" }),
         });
 
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-
         const data = await response.json();
-        const botResponse = {
-          id: messages.length + 2,
-          text: data.reply,
-          sender: "bot",
-        };
-
-        setMessages((prevMessages) => [...prevMessages, botResponse]);
+        const botResponse = { id: messages.length + 2, text: data.reply, sender: "bot" };
+        setMessages((prev) => [...prev, botResponse]);
       } catch (error) {
         console.error("Error sending message:", error);
-        const botResponse = {
-          id: messages.length + 2,
-          text: "Error: Unable to get response from server.",
-          sender: "bot",
-        };
-        setMessages((prevMessages) => [...prevMessages, botResponse]);
+        const botResponse = { id: messages.length + 2, text: "Error: Unable to get response from server.", sender: "bot" };
+        setMessages((prev) => [...prev, botResponse]);
       }
     }
   };
 
-  const toggleChat = () => {
-    setIsOpen(!isOpen);
-  };
+  const toggleChat = () => setIsOpen(!isOpen);
 
-  // Nút mở khi cửa sổ đóng
   if (!isOpen) {
     return (
       <button
@@ -82,7 +63,6 @@ const ChatBotWidget = ({ isOpen, setIsOpen }) => {
     );
   }
 
-  // Giao diện đầy đủ khi cửa sổ mở
   return (
     <div className="fixed bottom-5 right-5 w-80 md:w-96 h-[500px] flex flex-col bg-white rounded-lg shadow-xl z-50 border border-gray-200">
       {/* Header */}
@@ -92,34 +72,37 @@ const ChatBotWidget = ({ isOpen, setIsOpen }) => {
           <span className="font-semibold">Chatbot</span>
         </div>
         <button onClick={toggleChat} aria-label="Close Chat">
-          <FiX size={20} className="hover:text-pink-100" />{" "}
+          <FiX size={20} className="hover:text-pink-100" />
         </button>
       </div>
 
-      {/* Message List Area */}
+      {/* Message List */}
       <div className="flex-grow p-4 overflow-y-auto bg-white space-y-4">
         {messages.map((msg) => (
           <div
             key={msg.id}
-            className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"
-              }`}
+            className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
           >
             <div className="flex items-start max-w-[80%]">
-              {/* Avatar cho bot */}
               {msg.sender === "bot" && (
                 <div className="flex-shrink-0 w-7 h-7 rounded-full bg-[#EC80B1] text-white flex items-center justify-center mr-2">
                   <FiMessageSquare size={16} />
                 </div>
               )}
-
-              {/* Bubble tin nhắn */}
               <div
-                className={`px-4 py-2 rounded-lg text-sm whitespace-pre-wrap ${msg.sender === "user"
+                className={`px-4 py-2 rounded-lg text-sm ${msg.sender === "user"
                   ? "bg-[#EC80B1] text-white rounded-br-none"
                   : "bg-gray-100 text-gray-800 rounded-bl-none"
                   }`}
               >
-                {msg.text}
+                {msg.sender === "bot" ? (
+                  <div
+                    className="prose prose-sm max-w-none [&_ul]:list-disc [&_ul]:pl-5 [&_li]:mb-1 [&_a]:text-pink-500 [&_a]:underline"
+                    dangerouslySetInnerHTML={{ __html: md.render(msg.text) }}
+                  />
+                ) : (
+                  msg.text
+                )}
               </div>
             </div>
           </div>
@@ -127,12 +110,9 @@ const ChatBotWidget = ({ isOpen, setIsOpen }) => {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input Area */}
+      {/* Input */}
       <div className="p-3 border-t border-gray-200 bg-gray-50 rounded-b-lg">
-        <form
-          onSubmit={handleSendMessage}
-          className="flex items-center space-x-2"
-        >
+        <form onSubmit={handleSendMessage} className="flex items-center space-x-2">
           <input
             type="text"
             value={inputValue}
