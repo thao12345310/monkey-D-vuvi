@@ -12,8 +12,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Table(name = "ship_room")
-public class ShipRoom {
+public class ShipRoomEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ship_room_id")
     private Integer shipRoomId;
 
@@ -31,7 +32,4 @@ public class ShipRoom {
 
     @Column(name = "room_price")
     private Integer roomPrice;
-
-    @Column(name = "room_features")
-    private String roomFeatures;
 }

@@ -1,4 +1,4 @@
-package com.travel_agent.models.id;
+package com.travel_agent.models.id.ship;
 
 import java.io.Serializable;
 

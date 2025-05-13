@@ -1,6 +1,6 @@
 package com.travel_agent.models.entity.ship;
 
-import com.travel_agent.models.id.ShipDescriptionId;
+import com.travel_agent.models.id.ship.ShipFeatureId;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,18 +11,14 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "ship_long_description")
-@IdClass(ShipDescriptionId.class)
-public class ShipLongDescription {
+@Table(name = "ship_features")
+@IdClass(ShipFeatureId.class)
+public class ShipFeatureEntity {
     @Id
     @Column(name = "ship_id")
     private Integer shipId;
 
     @Id
-    @Column(name = "block_id")
-    private Integer blockId;
-
-    private String type;
-    private String data;
+    @Column(name = "feature_id")
+    private Integer featureId;
 }
-
