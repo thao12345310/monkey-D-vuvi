@@ -1,6 +1,6 @@
 package com.travel_agent.models.entity.hotel;
 
-import com.travel_agent.models.id.HotelImageId;
+import com.travel_agent.models.id.hotel.HotelImageId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;

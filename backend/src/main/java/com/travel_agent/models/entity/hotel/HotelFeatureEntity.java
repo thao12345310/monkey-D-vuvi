@@ -1,6 +1,6 @@
 package com.travel_agent.models.entity.hotel;
 
-import com.travel_agent.models.id.HotelFeatureId;
+import com.travel_agent.models.id.hotel.HotelFeatureId;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

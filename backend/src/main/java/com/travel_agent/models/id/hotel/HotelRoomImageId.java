@@ -1,4 +1,4 @@
-package com.travel_agent.models.id;
+package com.travel_agent.models.id.hotel;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

@@ -1,8 +1,12 @@
 package com.travel_agent.services;
 
 import com.travel_agent.dto.*;
+import com.travel_agent.dto.hotel.HotelDTO;
+import com.travel_agent.dto.hotel.HotelLongDescriptionDTO;
+import com.travel_agent.dto.hotel.HotelRoomDTO;
 import com.travel_agent.models.entity.hotel.*;
 import com.travel_agent.repositories.*;
+import com.travel_agent.repositories.hotel.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -455,6 +459,7 @@ public class HotelService {
         );
     }
 
+    @Transactional
     public HotelRoomDTO updateHotelRoom(Integer hotelId, Integer roomId, HotelRoomDTO roomDto) {
         hotelRepository.findById(hotelId)
                 .orElseThrow(() -> new IllegalArgumentException("Hotel not found with ID: " + hotelId));

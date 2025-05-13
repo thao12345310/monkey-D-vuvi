@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 
-import com.travel_agent.dto.ShipDTO;
+import com.travel_agent.dto.ship.ShipDTO;
 import com.travel_agent.dto.ResponseObject;
 import com.travel_agent.dto.ResultPaginationDTO;
 import com.travel_agent.services.ShipService;
