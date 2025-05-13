@@ -138,7 +138,7 @@ public class HotelController {
     }
 
     // Update room in hotel
-    @PutMapping("/{hotelId}/update-room/{roomId}")
+    @PutMapping("/{hotelId}/{roomId}")
     public ResponseEntity<ResponseObject> updateHotelRoom(
             @PathVariable("hotelId") Integer hotelId,
             @PathVariable("roomId") Integer roomId,
