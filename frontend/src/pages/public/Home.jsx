@@ -25,7 +25,7 @@ const Home = () => {
         setHotels(data.result || []);
       })
       .catch((error) => console.error("Lỗi khi gọi API:", error));
-  });
+  }, []);
   return (
     <Box>
       {/* Hero Section */}

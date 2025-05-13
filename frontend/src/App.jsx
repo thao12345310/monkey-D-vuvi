@@ -21,12 +21,9 @@ import "./App.css";
 import AdminLayout from "./components/admin/AdminLayout";
 import Dashboard from "./pages/admin/DashBoard";
 import Team from "./pages/admin/Team";
-import { ColorModeContext, useMode } from "./theme";
-import { CssBaseline, ThemeProvider } from "@mui/material";
 
 const AppRoutes = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const [theme, colorMode] = useMode();
   const location = useLocation();
   const isAdminPath = location.pathname.startsWith("/admin");
 
