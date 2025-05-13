@@ -9,9 +9,10 @@ import {
   FaConciergeBell,
   FaBath,
 } from "react-icons/fa";
-import RoomItem from "../../components/RoomItem";
+
+import RoomItem from "../../components/public/RoomItem";
 import roomsData from "./roomsData";
-import AboutSection from "../../components/AboutSection";
+import AboutSection from "../../components/public/AboutSection";
 
 const DuThuyen = () => {
   const [activeTab, setActiveTab] = useState(1);

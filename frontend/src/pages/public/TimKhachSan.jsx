@@ -16,14 +16,14 @@ import {
   Stack,
 } from "@mui/material";
 import { Search, LocationOn, CalendarToday, Person } from "@mui/icons-material";
-import LongCard from "../components/LongCard";
 import SearchIcon from "@mui/icons-material/Search";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import axios from "axios";
+import LongCard from "../../components/public/LongCard";
 
-const TimDuThuyen = () => {
-  const [ships, setShips] = useState([]);
+const TimKhachSan = () => {
+  const [hotels, setHotels] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -46,16 +46,16 @@ const TimDuThuyen = () => {
     },
   });
 
-  const fetchShips = async (page) => {
+  const fetchHotels = async (page) => {
     try {
       setLoading(true);
       console.log("Đang tải dữ liệu cho trang:", page);
       const response = await axios.get(
-        `http://localhost:8080/api/ship?currentPage=${page}&pageSize=6`
+        `http://localhost:8080/api/hotel?currentPage=${page}&pageSize=6`
       );
       const data = response.data;
       console.log("Dữ liệu nhận được:", data);
-      setShips(data.result || []);
+      setHotels(data.result || []);
       setTotalPages(data.meta?.pages || 1);
     } catch (error) {
       console.error("Lỗi khi gọi API:", error);
@@ -65,13 +65,13 @@ const TimDuThuyen = () => {
   };
 
   useEffect(() => {
-    fetchShips(currentPage);
+    fetchHotels(currentPage);
   }, [currentPage]);
 
   const handleSearch = () => {
     console.log("Tìm kiếm với params:", searchParams);
     setCurrentPage(1); // Reset về trang 1 khi tìm kiếm
-    fetchShips(1);
+    fetchHotels(1);
   };
 
   const handleGiaRangeChange = (event, newValue) => {
@@ -91,12 +91,6 @@ const TimDuThuyen = () => {
   const handlePageChange = (event, value) => {
     console.log("Chuyển sang trang:", value);
     setCurrentPage(value);
-
-    // Cuộn lên đầu danh sách du thuyền
-    const element = document.getElementById("danh-sach-du-thuyen");
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
   };
 
   return (
@@ -106,10 +100,10 @@ const TimDuThuyen = () => {
       {/* Search Bar */}
       <Paper elevation={3} sx={{ px: 4, py: 5, borderRadius: 5, mb: 4 }}>
         <Typography variant="h4" fontWeight="bold" align="center" gutterBottom>
-          Bạn lựa chọn du thuyền nào?
+          Bạn lựa chọn khách sạn nào?
         </Typography>
         <Typography align="center" color="text.secondary" mb={4}>
-          Hơn 100 du thuyền hạng sang giá tốt đang chờ bạn
+          Hơn 100 khách sạn hạng sang giá tốt đang chờ bạn
         </Typography>
 
         <Box
@@ -135,7 +129,7 @@ const TimDuThuyen = () => {
               onChange={(e) =>
                 setSearchParams({
                   ...searchParams,
-                  tenDuThuyen: e.target.value,
+                  tenKhachSan: e.target.value,
                 })
               }
             />
@@ -264,23 +258,23 @@ const TimDuThuyen = () => {
           </Paper>
         </Grid>
 
-        <Grid item xs={12} md={9} id="danh-sach-du-thuyen">
+        <Grid item xs={12} md={9}>
           <Paper elevation={3} sx={{ borderRadius: 5, p: 2 }}>
             <Typography variant="h6" gutterBottom>
-              Danh sách du thuyền {loading && "(Đang tải...)"}
+              Danh sách khách sạn {loading && "(Đang tải...)"}
             </Typography>
-            {!loading && ships.length === 0 && (
+            {!loading && hotels.length === 0 && (
               <Typography align="center" color="text.secondary" py={4}>
-                Không tìm thấy du thuyền nào phù hợp
+                Không tìm thấy khách sạn nào phù hợp
               </Typography>
             )}
-            {ships.map((ship) => (
+            {hotels.map((hotel) => (
               <LongCard
-                data={ship}
-                type="du-thuyen"
-                idField="shipId"
-                nameField="shipName"
-                priceField="shipPrice"
+                data={hotel}
+                type="khach-san"
+                idField="hotelId"
+                nameField="hotelName"
+                priceField="hotelPrice"
                 imageField="thumbnail"
               />
             ))}
@@ -305,4 +299,4 @@ const TimDuThuyen = () => {
   );
 };
 
-export default TimDuThuyen;
+export default TimKhachSan;

@@ -21,4 +21,5 @@ public class HotelRoomDTO {
     private Integer maxPersons;
     private String bedType;
     private String view;
+    private List<String> images;
 }
