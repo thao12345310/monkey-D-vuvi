@@ -1,4 +1,4 @@
-package com.travel_agent.dto;
+package com.travel_agent.dto.ship;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class HotelLongDescriptionDTO {
-    private Integer blockId;
-    private String type;
-    private String data;
+public class ShipImageDTO {
+    private Integer shipId;
+    private String imgUrl;
 }

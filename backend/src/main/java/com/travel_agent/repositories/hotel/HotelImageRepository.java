@@ -1,4 +1,4 @@
-package com.travel_agent.repositories;
+package com.travel_agent.repositories.hotel;
 
 import com.travel_agent.models.entity.hotel.HotelImageEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

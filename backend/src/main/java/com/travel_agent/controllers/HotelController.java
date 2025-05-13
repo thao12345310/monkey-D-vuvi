@@ -1,7 +1,7 @@
 package com.travel_agent.controllers;
 
-import com.travel_agent.dto.HotelDTO;
-import com.travel_agent.dto.HotelRoomDTO;
+import com.travel_agent.dto.hotel.HotelDTO;
+import com.travel_agent.dto.hotel.HotelRoomDTO;
 import com.travel_agent.dto.ResponseObject;
 import com.travel_agent.dto.ResultPaginationDTO;
 import com.travel_agent.services.HotelService;
