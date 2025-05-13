@@ -17,9 +17,9 @@ from langchain_community.document_loaders import WikipediaLoader
 import operator
 from typing import Annotated
 from langchain_openai import ChatOpenAI
-llm = ChatOpenAI(model="gpt-4o")
-from dotenv import load_dotenv
-load_dotenv('.env')
+from settings import OPENAI_API_KEY
+llm = ChatOpenAI(model="gpt-4o", api_key=OPENAI_API_KEY)
+
 class SearchState(MessagesState):
     query: str
     context: Annotated[list, operator.add]

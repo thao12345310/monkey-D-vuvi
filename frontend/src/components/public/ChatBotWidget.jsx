@@ -16,7 +16,7 @@ const ChatBotWidget = ({ isOpen, setIsOpen }) => {
     scrollToBottom();
   }, [messages]);
 
-  const handleSendMessage = (e) => {
+  const handleSendMessage = async (e) => {
     e.preventDefault();
     const trimmedInput = inputValue.trim();
     if (trimmedInput) {
@@ -28,16 +28,40 @@ const ChatBotWidget = ({ isOpen, setIsOpen }) => {
       setMessages([...messages, newMessage]);
       setInputValue("");
 
-      // --- Phần giả lập bot trả lời (Bạn sẽ thay thế bằng logic thật) ---
-      setTimeout(() => {
+      // --- Gọi API backend ---
+      try {
+        const response = await fetch("http://127.0.0.1:8000/chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            message: trimmedInput,
+            user_id: "user_123",  // hardcode hoặc lấy dynamic tùy bạn
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const data = await response.json();
         const botResponse = {
           id: messages.length + 2,
-          text: `Okay, I received: "${trimmedInput}". How else can I assist?`,
+          text: data.reply,
+          sender: "bot",
+        };
+
+        setMessages((prevMessages) => [...prevMessages, botResponse]);
+      } catch (error) {
+        console.error("Error sending message:", error);
+        const botResponse = {
+          id: messages.length + 2,
+          text: "Error: Unable to get response from server.",
           sender: "bot",
         };
         setMessages((prevMessages) => [...prevMessages, botResponse]);
-      }, 1000);
-      // --- Kết thúc phần giả lập ---
+      }
     }
   };
 
@@ -77,9 +101,8 @@ const ChatBotWidget = ({ isOpen, setIsOpen }) => {
         {messages.map((msg) => (
           <div
             key={msg.id}
-            className={`flex ${
-              msg.sender === "user" ? "justify-end" : "justify-start"
-            }`}
+            className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"
+              }`}
           >
             <div className="flex items-start max-w-[80%]">
               {/* Avatar cho bot */}
@@ -91,11 +114,10 @@ const ChatBotWidget = ({ isOpen, setIsOpen }) => {
 
               {/* Bubble tin nhắn */}
               <div
-                className={`px-4 py-2 rounded-lg text-sm whitespace-pre-wrap ${
-                  msg.sender === "user"
-                    ? "bg-[#EC80B1] text-white rounded-br-none"
-                    : "bg-gray-100 text-gray-800 rounded-bl-none"
-                }`}
+                className={`px-4 py-2 rounded-lg text-sm whitespace-pre-wrap ${msg.sender === "user"
+                  ? "bg-[#EC80B1] text-white rounded-br-none"
+                  : "bg-gray-100 text-gray-800 rounded-bl-none"
+                  }`}
               >
                 {msg.text}
               </div>
