@@ -13,10 +13,10 @@ import axios from "axios";
 import ReviewsShip from "../../components/public/ReviewsShip";
 import BookModal from "../../components/public/BookModal";
 import config from "../../config";
+
 // ================= GALLERY SLIDER =================
 const GallerySlider = ({ images }) => {
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
-    console.log(images);
 
     return (
         <div className="w-full">
@@ -64,7 +64,7 @@ const tabs = [
     { id: 1, label: "Đặc điểm" },
     { id: 2, label: "Phòng & giá" },
     { id: 3, label: "Giới thiệu" },
-    { id: 4, label: "Đánh giá" }, // ✅ Thêm tab đánh giá
+    { id: 4, label: "Đánh giá" },
 ];
 
 const TabNav = ({ activeTab, setActiveTab }) => {
@@ -108,7 +108,7 @@ const Highlights = ({ shipData }) => {
                                     <FaUtensils size={24} />
                                 ) : feature === "Lễ tân 24h" ? (
                                     <FaConciergeBell size={24} />
-                                ) : feature === "Phòng gia đình" ? (
+                                ) : feature === "Phòng gia đình" ? (
                                     <FaBath size={24} />
                                 ) : feature === "Miễn phí kayaking" ? (
                                     <FaSwimmingPool size={24} />
@@ -151,22 +151,40 @@ const Highlights = ({ shipData }) => {
 // ================= ROOMS TAB =================
 const Rooms = ({ shipData }) => {
     const [quantities, setQuantities] = useState({});
+    const [showBookModal, setShowBookModal] = useState(false);
+    const [selectedRoom, setSelectedRoom] = useState(null);
 
-    const handleQuantityChange = (id, delta) => {
+    const handleQuantityChange = (roomId, delta) => {
         setQuantities((prev) => ({
             ...prev,
-            [id]: Math.max(0, (prev[id] || 0) + delta),
+            [roomId]: Math.max(0, (prev[roomId] || 0) + delta),
         }));
+    };
+
+    const handleBookRoom = () => {
+        const bookedRooms = shipData.rooms.filter((room) => quantities[room.roomId] > 0);
+        if (bookedRooms.length > 0) {
+            setSelectedRoom({
+                rooms: bookedRooms,
+                quantities: quantities,
+            });
+            setShowBookModal(true);
+        }
+    };
+
+    const handleCloseModal = () => {
+        setShowBookModal(false);
+        setSelectedRoom(null);
+    };
+
+    const resetSelections = () => {
+        setQuantities({});
     };
 
     const totalPrice = shipData.rooms.reduce((sum, room) => {
         const qty = quantities[room.roomId] || 0;
         return sum + qty * room.roomPrice;
     }, 0);
-
-    const resetSelections = () => {
-        setQuantities({});
-    };
 
     return (
         <div className="space-y-6 py-6">
@@ -179,7 +197,12 @@ const Rooms = ({ shipData }) => {
 
             <div className="bg-gray-50 p-6 rounded-2xl space-y-4">
                 {shipData.rooms.map((room) => (
-                    <RoomItem key={room.roomId} room={room} quantity={quantities[room.roomId]} onQuantityChange={handleQuantityChange} />
+                    <RoomItem
+                        key={room.roomId}
+                        room={room}
+                        quantity={quantities[room.roomId] || 0}
+                        onQuantityChange={(delta) => handleQuantityChange(room.roomId, delta)}
+                    />
                 ))}
 
                 {/* Tổng tiền */}
@@ -192,12 +215,21 @@ const Rooms = ({ shipData }) => {
                         <button className="border-2 border-primary text-gray-500 px-4 py-2 rounded-full hover:bg-gray-300 transition-all duration-300">
                             Thuê trọn tàu
                         </button>
-                        <button className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-800 transition-all duration-300">
-                            Đặt ngay →
+
+                        <button
+                            onClick={handleBookRoom}
+                            disabled={totalPrice === 0}
+                            className={`px-4 py-2 rounded-full text-white transition-colors ${
+                                totalPrice === 0 ? "bg-gray-400 cursor-not-allowed" : "bg-pink-500 hover:bg-pink-600"
+                            }`}
+                        >
+                            Đặt ngay
                         </button>
                     </div>
                 </div>
             </div>
+
+            {showBookModal && selectedRoom && <BookModal bookingData={selectedRoom} onClose={handleCloseModal} />}
         </div>
     );
 };
@@ -208,7 +240,7 @@ const Introduction = ({ shipData }) => {
         <div className="py-10 space-y-8">
             <h2 className="text-3xl font-bold mb-6">Giới thiệu</h2>
             <div className="space-y-8">
-                {shipData.longDescriptions.map((block, index) => {
+                {shipData.longDescriptions.map((block) => {
                     if (block.type === "paragraph") {
                         return (
                             <div key={block.blockId} className="mb-6">
@@ -241,27 +273,13 @@ const DuThuyen = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const [selectedRoom, setSelectedRoom] = useState(null);
-    const [showModal, setShowModal] = useState(false);
-    const handleBookRoom = (room) => {
-        setSelectedRoom(room);
-        setShowModal(true);
-    };
-    
-    const handleCloseModal = () => {
-        setShowModal(false);
-        setSelectedRoom(null);
-    };
-
-
     useEffect(() => {
         const fetchShipData = async () => {
             try {
                 setLoading(true);
-                console.log("Đang tải dữ liệu cho ship ID:", id);
                 const response = await axios.get(`${config.api.url}/api/ship/${id}`);
-                console.log("Dữ liệu nhận được:", response.data.data);
                 setShipData(response.data.data);
+                console.log("Dữ liệu du thuyền:", response.data.data);
             } catch (err) {
                 console.error("Lỗi khi tải dữ liệu:", err);
                 setError(err.message);
@@ -319,29 +337,23 @@ const DuThuyen = () => {
                     <span>• {shipData.address}</span>
                 </div>
             </div>
-    
+
             {/* ===== GallerySlider Section ===== */}
             <div className="mb-10">
                 <GallerySlider images={shipData.images} />
             </div>
-    
+
             {/* ===== Tab Navigation and Content ===== */}
             <TabNav activeTab={activeTab} setActiveTab={setActiveTab} />
-    
+
             <div className="mt-6">
                 {activeTab === 1 && <Highlights shipData={shipData} />}
                 {activeTab === 2 && <Rooms shipData={shipData} />}
                 {activeTab === 3 && <Introduction shipData={shipData} />}
                 {activeTab === 4 && <ReviewsShip shipId={id} />}
             </div>
-    
-            {/* BookModal */}
-            {showModal && selectedRoom && (
-                <BookModal room={selectedRoom} onClose={handleCloseModal} />
-            )}
         </div>
     );
-    
 };
 
 export default DuThuyen;
