@@ -54,6 +54,27 @@ public class HotelController {
         }
     }
 
+    // Get all rooms by hotel ID
+@GetMapping("/{hotelId}/rooms")
+public ResponseEntity<ResponseObject> getAllRoomsByHotelId(@PathVariable("hotelId") Integer hotelId) {
+    List<HotelRoomDTO> rooms = hotelService.getAllRoomsByHotelId(hotelId);
+
+    if (rooms != null && !rooms.isEmpty()) {
+        return ResponseEntity.ok(ResponseObject.builder()
+                .message("Rooms retrieved successfully")
+                .data(rooms)
+                .responseCode(HttpStatus.OK.value())
+                .build());
+    } else {
+        return ResponseEntity.ok(ResponseObject.builder()
+                .message("No rooms found for this hotel")
+                .data(rooms)
+                .responseCode(HttpStatus.OK.value())
+                .build());
+    }
+}
+
+
     // Add hotel
     @PostMapping("/add")
     public ResponseEntity<ResponseObject> addHotel(@RequestBody HotelDTO hotelDto) {

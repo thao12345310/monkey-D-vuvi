@@ -20,7 +20,8 @@ import Footer from "./components/public/Footer";
 import "./App.css";
 import AdminLayout from "./components/admin/AdminLayout";
 import Dashboard from "./pages/admin/DashBoard";
-import Team from "./pages/admin/Team";
+import Booking from "./pages/admin/Booking";
+import ManageRoom from "./pages/admin/ManageRoom";
 
 const AppRoutes = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -43,7 +44,8 @@ const AppRoutes = () => {
               {/* Admin */}
               <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<Dashboard />} />
-                <Route path="team" element={<Team />} />
+                <Route path="booking" element={<Booking />} />
+                <Route path="manage-room" element={<ManageRoom />} />
               </Route>
 
               {/* User */}

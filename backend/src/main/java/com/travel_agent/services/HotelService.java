@@ -125,6 +125,48 @@ public class HotelService {
         return hotelDto;
     }
 
+    public List<HotelRoomDTO> getAllRoomsByHotelId(Integer hotelId) {
+        // Kiểm tra khách sạn có tồn tại không
+        hotelRepository.findById(hotelId)
+                .orElseThrow(() -> new IllegalArgumentException("Hotel not found with ID: " + hotelId));
+    
+        // Lấy danh sách phòng
+        List<HotelRoomEntity> hotelRoomEntities = hotelRoomRepository.findByHotel_HotelId(hotelId);
+    
+        // Map sang DTO
+        return hotelRoomEntities.stream().map(room -> {
+            List<Integer> roomFeatureIds = hotelRoomFeatureRepository.findByHotelRoomId(room.getHotelRoomId())
+                    .stream()
+                    .map(HotelRoomFeatureEntity::getRoomFeaturesId)
+                    .toList();
+    
+            List<String> roomFeatures = roomFeatureIds.stream()
+                    .map(featureId -> featureRepository.findById(featureId)
+                            .orElseThrow(() -> new IllegalArgumentException("Feature not found with ID: " + featureId))
+                            .getFeatureDescription())
+                    .toList();
+    
+            List<String> images = hotelRoomImageRepository.findByRoomId(room.getHotelRoomId())
+                    .stream()
+                    .map(HotelRoomImageEntity::getImgUrl)
+                    .toList();
+    
+            return new HotelRoomDTO(
+                    room.getHotelRoomId(),
+                    room.getRoomName(),
+                    room.getRoomPrice(),
+                    roomFeatureIds,
+                    roomFeatures.isEmpty() ? null : roomFeatures,
+                    room.getSize(),
+                    room.getMaxPersons(),
+                    room.getBedType(),
+                    room.getView(),
+                    images.isEmpty() ? null : images
+            );
+        }).toList();
+    }
+
+    
     private void populateHotelEntity(HotelEntity hotelEntity, HotelDTO hotelDto) {
         hotelEntity.setHotelName(hotelDto.getHotelName());
         hotelEntity.setTotalRooms(hotelDto.getTotalRooms());

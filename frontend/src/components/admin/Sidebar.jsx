@@ -4,8 +4,8 @@ import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../../theme";
+import EditCalendarOutlinedIcon from "@mui/icons-material/EditCalendarOutlined";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
 import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
@@ -133,16 +133,16 @@ const Sidebar = () => {
               Data
             </Typography>
             <Item
-              title="Quản lý phòng"
-              to="/admin/team"
-              icon={<BedOutlinedIcon />}
+              title="Quản lý đặt phòng"
+              to="/admin/booking"
+              icon={<EditCalendarOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
-              title="Contacts Information"
-              to="/admin/contacts"
-              icon={<ContactsOutlinedIcon />}
+              title="Thông tin phòng"
+              to="/admin/manage-room"
+              icon={<BedOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
