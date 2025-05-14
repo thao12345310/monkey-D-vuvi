@@ -6,3 +6,11 @@ backend/src/main/java/com/travel_agent/controllers/init.java
 .env
 **/.env
 **/qdrant_storage/
+**/node_modules/
+**/dist/
+**/build/
+**/target/
+**/logs/
+**/logs/
+/frontend/package-lock.json
+frontend/package-lock.json
