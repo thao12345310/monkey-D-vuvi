@@ -70,7 +70,7 @@ public class HotelController {
         }
     }
 
-    // Get all rooms by hotel ID
+    // View all rooms
     @GetMapping("/{hotelId}/rooms")
     public ResponseEntity<ResponseObject> getAllRoomsByHotelId(@PathVariable("hotelId") Integer hotelId) {
         List<HotelRoomDTO> rooms = hotelService.getAllRoomsByHotelId(hotelId);
