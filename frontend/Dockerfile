@@ -13,7 +13,6 @@ RUN npm install
 COPY . .
 
 # Build the application with source maps
-ENV NODE_ENV=development
 RUN npm run build
 
 # Production stage
