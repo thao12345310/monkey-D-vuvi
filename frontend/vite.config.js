@@ -6,7 +6,13 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig(({ command, mode }) => {
     // Load env file based on `mode` in the current working directory.
     const env = loadEnv(mode, process.cwd(), "");
-    const isDev = command === "serve";
+    const isDev = mode === "development";
+
+    // Determine backend URL based on environment
+    const backendProtocol = isDev ? "http" : "https";
+    const backendHost = env.VITE_BACKEND_HOST || (isDev ? "localhost" : "monkey-d-vuvi-backend.onrender.com");
+    const backendPort = env.VITE_BACKEND_PORT || (isDev ? "8080" : "443");
+    const backendUrl = `${backendProtocol}://${backendHost}${backendPort !== "443" ? `:${backendPort}` : ""}`;
 
     return {
         plugins: [tailwindcss(), react()],
@@ -15,15 +21,15 @@ export default defineConfig(({ command, mode }) => {
             host: true,
             proxy: {
                 "/api": {
-                    target: `http://${env.VITE_BACKEND_HOST}:${env.VITE_BACKEND_PORT}` || "http://localhost:8080",
+                    target: backendUrl,
                     changeOrigin: true,
-                    secure: false,
+                    secure: !isDev,
                     ws: true,
                 },
             },
         },
         build: {
-            sourcemap: true,
+            sourcemap: isDev,
             rollupOptions: {
                 output: {
                     manualChunks: undefined,
@@ -32,9 +38,13 @@ export default defineConfig(({ command, mode }) => {
         },
         define: {
             __DEV__: isDev,
+            // Inject environment variables during build
+            "process.env.VITE_BACKEND_HOST": JSON.stringify(backendHost),
+            "process.env.VITE_BACKEND_PORT": JSON.stringify(backendPort),
+            "process.env.NODE_ENV": JSON.stringify(mode),
         },
         css: {
-            devSourcemap: true,
+            devSourcemap: isDev,
         },
         optimizeDeps: {
             include: ["react", "react-dom"],

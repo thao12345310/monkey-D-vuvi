@@ -53,31 +53,39 @@ const getWsProtocol = (host: string) => {
     return isLocalhost(host) ? "ws" : "wss";
 };
 
-const backendHost = import.meta.env.VITE_BACKEND_HOST || "localhost";
-const backendPort = import.meta.env.VITE_BACKEND_PORT || "8080";
+// Get environment variables with fallbacks
+const isDev = import.meta.env.MODE === "development";
+const backendHost = import.meta.env.VITE_BACKEND_HOST || (isDev ? "localhost" : "monkey-d-vuvi-backend.onrender.com");
+const backendPort = import.meta.env.VITE_BACKEND_PORT || (isDev ? "8080" : "443");
 const protocol = getProtocol(backendHost);
 const wsProtocol = getWsProtocol(backendHost);
 
+// Build the API URL
+const buildApiUrl = () => {
+    if (isDev) {
+        return `${protocol}://${backendHost}:${backendPort}`;
+    }
+    // In production, don't include port 443 in the URL
+    return `${protocol}://${backendHost}`;
+};
+
 const config: Config = {
     api: {
-        // API URL for client-side requests
-        url: `${protocol}://${backendHost}${backendPort ? `:${backendPort}` : ""}`,
-        // Backend host for server-side communication
-        baseUrl: `${protocol}://${backendHost}${backendPort ? `:${backendPort}` : ""}`,
-        // WebSocket URL
-        wsUrl: `${wsProtocol}://${backendHost}${backendPort ? `:${backendPort}` : ""}`,
+        url: buildApiUrl(),
+        baseUrl: buildApiUrl(),
+        wsUrl: `${wsProtocol}://${backendHost}${isDev ? `:${backendPort}` : ""}`,
     },
     server: {
-        port: import.meta.env.PORT || 5173,
-        host: import.meta.env.SERVER_NAME || "localhost",
+        port: import.meta.env.PORT || (isDev ? 5173 : 80),
+        host: import.meta.env.SERVER_NAME || (isDev ? "localhost" : "monkey-d-vuvi-frontend.onrender.com"),
         cors: {
             origin: import.meta.env.CORS_ALLOWED_ORIGIN || "*",
         },
     },
     env: {
         mode: import.meta.env.MODE,
-        isDevelopment: import.meta.env.DEV,
-        isProduction: import.meta.env.PROD,
+        isDevelopment: isDev,
+        isProduction: !isDev,
     },
 };
 
