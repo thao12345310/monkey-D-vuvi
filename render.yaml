@@ -1,0 +1,31 @@
+services:
+    # Backend Service
+    - type: web
+      name: monkey-d-vuvi-backend
+      env: docker
+      dockerfilePath: ./backend/Dockerfile
+      plan: free
+      envVars:
+          - key: SPRING_DATASOURCE_URL
+            value: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+          - key: SPRING_DATASOURCE_USERNAME
+            value: ${DB_USERNAME}
+          - key: SPRING_DATASOURCE_PASSWORD
+            value: ${DB_PASSWORD}
+      healthCheckPath: /actuator/health
+
+    # Frontend Service
+    - type: web
+      name: monkey-d-vuvi-frontend
+      env: docker
+      dockerfilePath: ./frontend/Dockerfile
+      plan: free
+      envVars:
+          - key: REACT_APP_API_URL
+            value: https://monkey-d-vuvi-backend.onrender.com
+
+    # Database Service
+    - type: postgres
+      name: monkey-d-vuvi-db
+      plan: free
+      ipAllowList: []
