@@ -7,7 +7,7 @@ services:
       plan: free
       envVars:
           - key: SPRING_DATASOURCE_URL
-            value: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+            value: ${DB_URL}
           - key: SPRING_DATASOURCE_USERNAME
             value: ${DB_USERNAME}
           - key: SPRING_DATASOURCE_PASSWORD
@@ -23,9 +23,3 @@ services:
       envVars:
           - key: REACT_APP_API_URL
             value: https://monkey-d-vuvi-backend.onrender.com
-
-    # Database Service
-    - type: postgres
-      name: monkey-d-vuvi-db
-      plan: free
-      ipAllowList: []
