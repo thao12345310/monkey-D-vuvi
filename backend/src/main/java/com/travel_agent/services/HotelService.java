@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -47,6 +48,15 @@ public class HotelService {
         return rs;
     }
 
+    // Search hotel
+    public List<HotelDTO> searchHotelsByNameAndPrice(String name, Integer minPrice, Integer maxPrice) {
+        List<HotelEntity> hotels = hotelRepository.findByHotelNameAndPriceRange(name, minPrice, maxPrice);
+        return hotels.stream()
+                .map(hotelMapper::hotelToHotelDTO)
+                .collect(Collectors.toList());
+    }
+
+    // View hotel details
     public HotelDTO getHotelDetails(Integer hotelId) {
         HotelEntity hotelEntity = hotelRepository.findById(hotelId)
                 .orElseThrow(() -> new IllegalArgumentException("Hotel not found with ID: " + hotelId));
