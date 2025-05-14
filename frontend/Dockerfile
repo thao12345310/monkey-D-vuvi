@@ -28,10 +28,14 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf.template
 COPY --from=build /app/dist /usr/share/nginx/html
 
 # Create entrypoint script
-RUN echo '#!/bin/sh\n\
-envsubst "\$VITE_BACKEND_HOST \$VITE_API_URL" < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf\n\
-nginx -g "daemon off;"' > /docker-entrypoint.sh \
-    && chmod +x /docker-entrypoint.sh
+COPY <<EOF /docker-entrypoint.sh
+#!/bin/sh
+set -e
+envsubst "\$VITE_BACKEND_HOST \$VITE_API_URL" < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf
+exec nginx -g 'daemon off;'
+EOF
+
+RUN chmod +x /docker-entrypoint.sh
 
 # Expose port 80
 EXPOSE 80
