@@ -4,6 +4,7 @@ services:
       name: monkey-d-vuvi-backend
       env: docker
       dockerfilePath: ./backend/Dockerfile
+      rootDir: ./backend
       plan: free
       envVars:
           - key: SPRING_DATASOURCE_URL
@@ -19,6 +20,7 @@ services:
       name: monkey-d-vuvi-frontend
       env: docker
       dockerfilePath: ./frontend/Dockerfile
+      rootDir: ./frontend
       plan: free
       envVars:
           - key: REACT_APP_API_URL
