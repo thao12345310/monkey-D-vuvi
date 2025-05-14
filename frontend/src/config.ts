@@ -40,14 +40,32 @@ interface Config {
     };
 }
 
+// Determine the protocol based on the environment and hostname
+const isLocalhost = (host: string) => {
+    return host === "localhost" || host === "backend" || host.includes("127.0.0.1");
+};
+
+const getProtocol = (host: string) => {
+    return isLocalhost(host) ? "http" : "https";
+};
+
+const getWsProtocol = (host: string) => {
+    return isLocalhost(host) ? "ws" : "wss";
+};
+
+const backendHost = import.meta.env.VITE_BACKEND_HOST || "localhost";
+const backendPort = import.meta.env.VITE_BACKEND_PORT || "8080";
+const protocol = getProtocol(backendHost);
+const wsProtocol = getWsProtocol(backendHost);
+
 const config: Config = {
     api: {
         // API URL for client-side requests
-        url: `http://${import.meta.env.VITE_BACKEND_HOST || "localhost"}:${import.meta.env.VITE_BACKEND_PORT || "8080"}`,
+        url: `${protocol}://${backendHost}${backendPort ? `:${backendPort}` : ""}`,
         // Backend host for server-side communication
-        baseUrl: `http://${import.meta.env.VITE_BACKEND_HOST || "backend"}:${import.meta.env.VITE_BACKEND_PORT || "8080"}`,
+        baseUrl: `${protocol}://${backendHost}${backendPort ? `:${backendPort}` : ""}`,
         // WebSocket URL
-        wsUrl: `ws://${import.meta.env.VITE_BACKEND_HOST || "localhost"}:${import.meta.env.VITE_BACKEND_PORT || "8080"}`,
+        wsUrl: `${wsProtocol}://${backendHost}${backendPort ? `:${backendPort}` : ""}`,
     },
     server: {
         port: import.meta.env.PORT || 5173,
