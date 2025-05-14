@@ -27,14 +27,8 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf.template
 # Copy built files from build stage
 COPY --from=build /app/dist /usr/share/nginx/html
 
-# Create entrypoint script
-COPY <<EOF /docker-entrypoint.sh
-#!/bin/sh
-set -e
-envsubst "\$VITE_API_URL" < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf
-exec nginx -g 'daemon off;'
-EOF
-
+# Copy entrypoint script
+COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 
 # Expose port 80

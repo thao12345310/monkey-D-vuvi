@@ -25,5 +25,17 @@ services:
       rootDir: frontend
       plan: free
       envVars:
+          - key: PORT
+            value: 80
           - key: VITE_API_URL
             value: https://monkey-d-vuvi-backend.onrender.com
+          - key: VITE_BACKEND_HOST
+            value: monkey-d-vuvi-backend.onrender.com
+          - key: VITE_WS_URL
+            value: wss://monkey-d-vuvi-backend.onrender.com
+          - key: SERVER_NAME
+            value: monkey-d-vuvi-frontend.onrender.com
+          - key: CORS_ALLOWED_ORIGIN
+            value: https://monkey-d-vuvi-frontend.onrender.com
+          - key: NODE_ENV
+            value: production
