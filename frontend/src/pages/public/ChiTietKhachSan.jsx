@@ -9,6 +9,8 @@ import "swiper/css/navigation";
 import "swiper/css/thumbs";
 
 import RoomItem from "../../components/public/RoomItem";
+import RoomDetailModal from "../../components/public/RoomDetailModal";
+import BookModal from "../../components/public/BookModal";
 import axios from "axios";
 import ReviewsShip from "../../components/public/ReviewsShip";
 import config from "../../config";
@@ -146,22 +148,52 @@ const Highlights = ({ hotelData }) => {
 // ================= ROOMS TAB =================
 const Rooms = ({ hotelData }) => {
     const [quantities, setQuantities] = useState({});
+    const [showBookModal, setShowBookModal] = useState(false);
+    const [selectedRoom, setSelectedRoom] = useState(null);
+    const [showRoomDetailModal, setShowRoomDetailModal] = useState(false);
+    const [roomForDetail, setRoomForDetail] = useState(null);
 
-    const handleQuantityChange = (id, delta) => {
+    const handleQuantityChange = (roomId, delta) => {
         setQuantities((prev) => ({
             ...prev,
-            [id]: Math.max(0, (prev[id] || 0) + delta),
+            [roomId]: Math.max(0, (prev[roomId] || 0) + delta),
         }));
+    };
+
+    const handleBookRoom = () => {
+        const bookedRooms = hotelData.rooms.filter((room) => quantities[room.roomId] > 0);
+        if (bookedRooms.length > 0) {
+            setSelectedRoom({
+                rooms: bookedRooms,
+                quantities: quantities,
+            });
+            setShowBookModal(true);
+        }
+    };
+
+    const handleCloseModal = () => {
+        setShowBookModal(false);
+        setSelectedRoom(null);
+    };
+
+    const handleShowRoomDetail = (room) => {
+        setRoomForDetail(room);
+        setShowRoomDetailModal(true);
+    };
+
+    const handleCloseRoomDetail = () => {
+        setShowRoomDetailModal(false);
+        setRoomForDetail(null);
+    };
+
+    const resetSelections = () => {
+        setQuantities({});
     };
 
     const totalPrice = hotelData.rooms.reduce((sum, room) => {
         const qty = quantities[room.roomId] || 0;
         return sum + qty * room.roomPrice;
     }, 0);
-
-    const resetSelections = () => {
-        setQuantities({});
-    };
 
     return (
         <div className="space-y-6 py-6">
@@ -174,25 +206,45 @@ const Rooms = ({ hotelData }) => {
 
             <div className="bg-gray-50 p-6 rounded-2xl space-y-4">
                 {hotelData.rooms.map((room) => (
-                    <RoomItem key={room.roomId} room={room} quantity={quantities[room.roomId]} onQuantityChange={handleQuantityChange} />
+                    <RoomItem
+                        key={room.roomId}
+                        room={room}
+                        quantity={quantities[room.roomId]}
+                        onQuantityChange={(delta) => handleQuantityChange(room.roomId, delta)}
+                        onShowDetail={() => handleShowRoomDetail(room)}
+                    />
                 ))}
 
-                {/* Tổng tiền */}
+                {/* Tổng tiền và nút đặt phòng */}
                 <div className="flex justify-between items-center mt-6">
                     <div className="text-lg">
                         Tổng tiền: <span className="font-bold text-primary">{totalPrice.toLocaleString("vi-VN")} đ</span>
                     </div>
 
                     <div className="space-x-4">
-                        <button className="border-2 border-primary text-gray-500 px-4 py-2 rounded-full hover:bg-gray-300 transition-all duration-300">
-                            Thuê trọn khách sạn
-                        </button>
-                        <button className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-800 transition-all duration-300">
+                        <button
+                            onClick={handleBookRoom}
+                            disabled={totalPrice === 0}
+                            className={`bg-pink-500 text-white px-6 py-2 rounded-full transition-all duration-300 
+                                ${totalPrice === 0 ? "opacity-50 cursor-not-allowed" : "hover:bg-pink-600"}`}
+                        >
                             Đặt ngay →
                         </button>
                     </div>
                 </div>
             </div>
+
+            {/* Room Detail Modal */}
+            <RoomDetailModal
+                room={roomForDetail}
+                isOpen={showRoomDetailModal}
+                onClose={handleCloseRoomDetail}
+                quantity={roomForDetail ? quantities[roomForDetail.roomId] || 0 : 0}
+                onQuantityChange={(delta) => roomForDetail && handleQuantityChange(roomForDetail.roomId, delta)}
+            />
+
+            {/* Booking Modal */}
+            {showBookModal && <BookModal bookingData={selectedRoom} onClose={handleCloseModal} />}
         </div>
     );
 };
