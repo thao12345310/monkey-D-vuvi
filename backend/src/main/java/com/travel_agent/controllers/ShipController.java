@@ -37,6 +37,21 @@ public class ShipController {
         return shipService.getAllShips(pageable);
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<ResponseObject> searchShipsByNamePriceAndTrip(
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "minPrice", required = false) Integer minPrice,
+            @RequestParam(value = "maxPrice", required = false) Integer maxPrice,
+            @RequestParam(value = "trip", required = false) String trip) {
+        ResultPaginationDTO result = shipService.searchShipsByNamePriceAndTrip(name, minPrice, maxPrice, trip);
+
+        return ResponseEntity.ok(ResponseObject.builder()
+                .message("Ships retrieved successfully")
+                .data(result)
+                .responseCode(HttpStatus.OK.value())
+                .build());
+    }
+
     @GetMapping("/{shipId}")
     public ResponseEntity<ResponseObject> getShipDetails(@PathVariable("shipId") Integer shipId) {
         ShipDTO shipDto = shipService.getShipDetails(shipId);

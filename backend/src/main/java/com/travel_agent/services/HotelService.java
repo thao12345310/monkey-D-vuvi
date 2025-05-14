@@ -49,11 +49,37 @@ public class HotelService {
     }
 
     // Search hotel
-    public List<HotelDTO> searchHotelsByNameAndPrice(String name, Integer minPrice, Integer maxPrice) {
-        List<HotelEntity> hotels = hotelRepository.findByHotelNameAndPriceRange(name, minPrice, maxPrice);
-        return hotels.stream()
-                .map(hotelMapper::hotelToHotelDTO)
-                .collect(Collectors.toList());
+    public ResultPaginationDTO searchHotelsByNamePriceAndCity(String name, Integer minPrice, Integer maxPrice, String city) {
+        List<HotelEntity> hotels = hotelRepository.findByHotelNamePriceAndCity(name, minPrice, maxPrice, city);
+        long total = hotels.size();
+
+        List<HotelDTO> hotelDtos = hotels.stream().map(hotel -> {
+            HotelDTO hotelDto = hotelMapper.hotelToHotelDTO(hotel);
+
+            // Fetch features
+            List<HotelFeatureEntity> hotelFeatures = hotelFeatureRepository.findByHotelId(hotel.getHotelId());
+            List<Integer> featureIds = hotelFeatures.stream()
+                    .map(HotelFeatureEntity::getFeatureId)
+                    .toList();
+            List<String> featureDescriptions = featureIds.stream()
+                    .map(featureId -> featureRepository.findById(featureId)
+                            .orElseThrow(() -> new IllegalArgumentException("Feature not found with ID: " + featureId))
+                            .getFeatureDescription())
+                    .toList();
+
+            hotelDto.setFeatureIds(featureIds.isEmpty() ? null : featureIds);
+            hotelDto.setFeatures(featureDescriptions.isEmpty() ? null : featureDescriptions);
+
+            return hotelDto;
+        }).toList();
+
+        ResultPaginationDTO result = new ResultPaginationDTO();
+        result.setResult(hotelDtos);
+        Meta meta = new Meta();
+        meta.setTotal(total);
+        result.setMeta(meta);
+
+        return result;
     }
 
     // View hotel details
@@ -176,11 +202,9 @@ public class HotelService {
         }).toList();
     }
 
-    
     private void populateHotelEntity(HotelEntity hotelEntity, HotelDTO hotelDto) {
         hotelEntity.setHotelName(hotelDto.getHotelName());
         hotelEntity.setTotalRooms(hotelDto.getTotalRooms());
-        hotelEntity.setCompanyName(hotelDto.getCompanyName());
         hotelEntity.setHotelPrice(hotelDto.getHotelPrice());
         hotelEntity.setCity(hotelDto.getCity());
         hotelEntity.setAddress(hotelDto.getAddress());
@@ -191,6 +215,7 @@ public class HotelService {
             CompanyEntity company = companyRepository.findById(hotelDto.getCompanyId())
                     .orElseThrow(() -> new IllegalArgumentException("Company not found with ID: " + hotelDto.getCompanyId()));
             hotelEntity.setCompany(company);
+            hotelEntity.setCompanyName(company.getCompanyName());
         }
 
         hotelEntity = hotelRepository.save(hotelEntity);
@@ -454,6 +479,7 @@ public class HotelService {
         );
     }
 
+    // Add room
     public HotelRoomDTO addHotelRoom(Integer hotelId, HotelRoomDTO roomDto) {
         HotelEntity hotelEntity = hotelRepository.findById(hotelId)
                 .orElseThrow(() -> new IllegalArgumentException("Hotel not found with ID: " + hotelId));
@@ -508,6 +534,7 @@ public class HotelService {
         );
     }
 
+    // Update room
     @Transactional
     public HotelRoomDTO updateHotelRoom(Integer hotelId, Integer roomId, HotelRoomDTO roomDto) {
         hotelRepository.findById(hotelId)

@@ -9,11 +9,13 @@ import java.util.List;
 
 public interface HotelRepository extends JpaRepository<HotelEntity, Integer> {
     @Query("SELECT h FROM HotelEntity h WHERE " +
-            "(:name IS NULL OR LOWER(h.hotelName) LIKE LOWER(CONCAT('%', :name, '%'))) AND " +
-            "(:minPrice IS NULL OR h.hotelPrice >= :minPrice) AND " +
-            "(:maxPrice IS NULL OR h.hotelPrice <= :maxPrice)")
-    List<HotelEntity> findByHotelNameAndPriceRange(
+            "((:name IS NULL OR :name = '' OR (h.hotelName IS NOT NULL AND LOWER(h.hotelName) LIKE LOWER(CONCAT('%', :name, '%'))))) AND " +
+            "((:minPrice IS NULL OR h.hotelPrice >= :minPrice)) AND " +
+            "((:maxPrice IS NULL OR h.hotelPrice <= :maxPrice)) AND " +
+            "((:city IS NULL OR :city = '' OR (h.city IS NOT NULL AND LOWER(h.city) LIKE LOWER(CONCAT('%', :city, '%')))))")
+    List<HotelEntity> findByHotelNamePriceAndCity(
             @Param("name") String name,
             @Param("minPrice") Integer minPrice,
-            @Param("maxPrice") Integer maxPrice);
+            @Param("maxPrice") Integer maxPrice,
+            @Param("city") String city);
 }
