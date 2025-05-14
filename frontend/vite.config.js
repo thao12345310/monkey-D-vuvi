@@ -1,8 +1,47 @@
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 
-// https://vite.dev/config/
-export default defineConfig({
-  plugins: [tailwindcss(), react()],
+// https://vitejs.dev/config/
+export default defineConfig(({ command, mode }) => {
+    // Load env file based on `mode` in the current working directory.
+    const env = loadEnv(mode, process.cwd(), "");
+    const isDev = command === "serve";
+
+    return {
+        plugins: [tailwindcss(), react()],
+        server: {
+            port: parseInt(process.env.PORT || "5173"),
+            host: true,
+            proxy: {
+                "/api": {
+                    target: `http://${env.VITE_BACKEND_HOST}:${env.VITE_BACKEND_PORT}` || "http://localhost:8080",
+                    changeOrigin: true,
+                    secure: false,
+                    ws: true,
+                },
+            },
+        },
+        build: {
+            sourcemap: true,
+            rollupOptions: {
+                output: {
+                    manualChunks: undefined,
+                },
+            },
+        },
+        define: {
+            __DEV__: isDev,
+        },
+        css: {
+            devSourcemap: true,
+        },
+        optimizeDeps: {
+            include: ["react", "react-dom"],
+        },
+        esbuild: {
+            keepNames: isDev,
+            minifyIdentifiers: !isDev,
+        },
+    };
 });

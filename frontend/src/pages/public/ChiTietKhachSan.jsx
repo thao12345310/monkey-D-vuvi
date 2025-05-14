@@ -11,7 +11,7 @@ import "swiper/css/thumbs";
 import RoomItem from "../../components/public/RoomItem";
 import axios from "axios";
 import ReviewsShip from "../../components/public/ReviewsShip";
-
+import config from "../../config";
 // ================= GALLERY SLIDER =================
 const GallerySlider = ({ images }) => {
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
@@ -240,7 +240,7 @@ const ChiTietKhachSan = () => {
         const fetchHotelData = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get(`http://localhost:8080/api/hotel/${id}`);
+                const response = await axios.get(`${config.api.url}/api/hotel/${id}`);
                 setHotelData(response.data.data);
             } catch (err) {
                 console.error("Lỗi khi tải dữ liệu:", err);

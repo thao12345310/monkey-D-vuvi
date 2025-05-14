@@ -11,7 +11,7 @@ import "swiper/css/thumbs";
 import RoomItem from "../../components/public/RoomItem";
 import axios from "axios";
 import ReviewsShip from "../../components/public/ReviewsShip";
-
+import config from "../../config";
 // ================= GALLERY SLIDER =================
 const GallerySlider = ({ images }) => {
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
@@ -245,7 +245,7 @@ const DuThuyen = () => {
             try {
                 setLoading(true);
                 console.log("Đang tải dữ liệu cho ship ID:", id);
-                const response = await axios.get(`http://localhost:8080/api/ship/${id}`);
+                const response = await axios.get(`${config.api.url}/api/ship/${id}`);
                 console.log("Dữ liệu nhận được:", response.data.data);
                 setShipData(response.data.data);
             } catch (err) {

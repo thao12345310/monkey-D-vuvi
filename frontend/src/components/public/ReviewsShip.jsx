@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FaStar } from "react-icons/fa";
-
+import config from "../../config";
 const ReviewsShip = ({ shipId }) => {
     const [reviews, setReviews] = useState([]);
     const [filteredStar, setFilteredStar] = useState(null);
@@ -10,7 +10,7 @@ const ReviewsShip = ({ shipId }) => {
     useEffect(() => {
         const fetchReviews = async () => {
             try {
-                const res = await axios.get(`http://localhost:8080/api/ship/${shipId}/reviews`);
+                const res = await axios.get(`${config.api.url}/api/ship/${shipId}/reviews`);
                 setReviews(res.data.data || []);
             } catch (err) {
                 console.error("Lỗi tải đánh giá:", err);
@@ -22,18 +22,16 @@ const ReviewsShip = ({ shipId }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post(`http://localhost:8080/api/ship/${shipId}/reviews`, newReview);
+            await axios.post(`${config.api.url}/api/ship/${shipId}/reviews`, newReview);
             setNewReview({ name: "", content: "", stars: 5 });
-            const res = await axios.get(`http://localhost:8080/api/ship/${shipId}/reviews`);
+            const res = await axios.get(`${config.api.url}/api/ship/${shipId}/reviews`);
             setReviews(res.data.data || []);
         } catch (err) {
             console.error("Lỗi gửi đánh giá:", err);
         }
     };
 
-    const displayedReviews = filteredStar
-        ? reviews.filter((r) => r.stars === filteredStar)
-        : reviews;
+    const displayedReviews = filteredStar ? reviews.filter((r) => r.stars === filteredStar) : reviews;
 
     return (
         <div className="py-8 space-y-8">
@@ -44,18 +42,13 @@ const ReviewsShip = ({ shipId }) => {
                 {[5, 4, 3, 2, 1].map((star) => (
                     <button
                         key={star}
-                        className={`px-3 py-1 rounded-full border ${
-                            filteredStar === star ? "bg-primary text-white" : "bg-white text-gray-600"
-                        }`}
+                        className={`px-3 py-1 rounded-full border ${filteredStar === star ? "bg-primary text-white" : "bg-white text-gray-600"}`}
                         onClick={() => setFilteredStar(filteredStar === star ? null : star)}
                     >
                         {star} ⭐
                     </button>
                 ))}
-                <button
-                    className="px-3 py-1 border rounded-full text-gray-500"
-                    onClick={() => setFilteredStar(null)}
-                >
+                <button className="px-3 py-1 border rounded-full text-gray-500" onClick={() => setFilteredStar(null)}>
                     Tất cả
                 </button>
             </div>
@@ -115,10 +108,7 @@ const ReviewsShip = ({ shipId }) => {
                             ))}
                         </select>
                     </div>
-                    <button
-                        type="submit"
-                        className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-800 transition-all"
-                    >
+                    <button type="submit" className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-800 transition-all">
                         Gửi đánh giá
                     </button>
                 </form>
