@@ -22,9 +22,8 @@ services:
             - ./frontend:/app
         environment:
             - PORT=5173
-            - VITE_API_URL=http://localhost:8080
-            - VITE_BACKEND_HOST=backend:8080
-            - VITE_WS_URL=ws://localhost:8080
+            - VITE_BACKEND_HOST=${BACKEND_HOST:-backend}
+            - VITE_BACKEND_PORT=${BACKEND_PORT:-8080}
             - SERVER_NAME=localhost
             - CORS_ALLOWED_ORIGIN=*
             - NODE_ENV=development

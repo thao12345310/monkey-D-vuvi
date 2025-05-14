@@ -4,9 +4,8 @@
 
 // Define environment variables interface to match Vite's types
 interface ImportMetaEnv {
-    readonly VITE_API_URL: string;
     readonly VITE_BACKEND_HOST: string;
-    readonly VITE_WS_URL: string;
+    readonly VITE_BACKEND_PORT: string;
     readonly PORT: string | undefined;
     readonly SERVER_NAME: string;
     readonly CORS_ALLOWED_ORIGIN: string;
@@ -44,11 +43,11 @@ interface Config {
 const config: Config = {
     api: {
         // API URL for client-side requests
-        url: import.meta.env.VITE_API_URL || "http://localhost:8080",
+        url: `http://${import.meta.env.VITE_BACKEND_HOST || "localhost"}:${import.meta.env.VITE_BACKEND_PORT || "8080"}`,
         // Backend host for server-side communication
-        baseUrl: `http://${import.meta.env.VITE_BACKEND_HOST || "backend:8080"}`,
+        baseUrl: `http://${import.meta.env.VITE_BACKEND_HOST || "backend"}:${import.meta.env.VITE_BACKEND_PORT || "8080"}`,
         // WebSocket URL
-        wsUrl: import.meta.env.VITE_WS_URL || "ws://localhost:8080",
+        wsUrl: `ws://${import.meta.env.VITE_BACKEND_HOST || "localhost"}:${import.meta.env.VITE_BACKEND_PORT || "8080"}`,
     },
     server: {
         port: import.meta.env.PORT || 5173,
