@@ -1,7 +1,7 @@
 // components/RoomItem.jsx
 import React from "react";
 import { FaUserFriends, FaBed } from "react-icons/fa";
-import RoomDetailModal from "frontend/src/components/public/RoomDetailModal"; 
+import RoomDetailModal from "./RoomDetailModal";
 
 // const RoomItem = ({ room, quantity, onQuantityChange }) => {
 //     return (

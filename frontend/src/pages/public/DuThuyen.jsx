@@ -11,6 +11,7 @@ import "swiper/css/thumbs";
 import RoomItem from "../../components/public/RoomItem";
 import axios from "axios";
 import ReviewsShip from "../../components/public/ReviewsShip";
+import BookModal from "../../components/public/BookModal";
 import config from "../../config";
 // ================= GALLERY SLIDER =================
 const GallerySlider = ({ images }) => {
@@ -240,6 +241,19 @@ const DuThuyen = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    const [selectedRoom, setSelectedRoom] = useState(null);
+    const [showModal, setShowModal] = useState(false);
+    const handleBookRoom = (room) => {
+        setSelectedRoom(room);
+        setShowModal(true);
+    };
+    
+    const handleCloseModal = () => {
+        setShowModal(false);
+        setSelectedRoom(null);
+    };
+
+
     useEffect(() => {
         const fetchShipData = async () => {
             try {
@@ -305,23 +319,29 @@ const DuThuyen = () => {
                     <span>• {shipData.address}</span>
                 </div>
             </div>
-
+    
             {/* ===== GallerySlider Section ===== */}
             <div className="mb-10">
                 <GallerySlider images={shipData.images} />
             </div>
-
+    
             {/* ===== Tab Navigation and Content ===== */}
             <TabNav activeTab={activeTab} setActiveTab={setActiveTab} />
-
+    
             <div className="mt-6">
                 {activeTab === 1 && <Highlights shipData={shipData} />}
                 {activeTab === 2 && <Rooms shipData={shipData} />}
                 {activeTab === 3 && <Introduction shipData={shipData} />}
                 {activeTab === 4 && <ReviewsShip shipId={id} />}
             </div>
+    
+            {/* BookModal */}
+            {showModal && selectedRoom && (
+                <BookModal room={selectedRoom} onClose={handleCloseModal} />
+            )}
         </div>
     );
+    
 };
 
 export default DuThuyen;
