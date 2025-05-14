@@ -27,3 +27,5 @@ services:
       envVars:
           - key: VITE_API_URL
             value: https://monkey-d-vuvi-backend.onrender.com
+          - key: VITE_BACKEND_HOST
+            value: monkey-d-vuvi-backend.onrender.com
