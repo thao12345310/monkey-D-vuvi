@@ -40,15 +40,16 @@ public class HotelController {
 
     // Search hotel
     @GetMapping("/search")
-    public ResponseEntity<ResponseObject> searchHotelsByNameAndPrice(
+    public ResponseEntity<ResponseObject> searchHotelsByNamePriceAndCity(
             @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "minPrice", required = false) Integer minPrice,
-            @RequestParam(value = "maxPrice", required = false) Integer maxPrice) {
-        List<HotelDTO> hotels = hotelService.searchHotelsByNameAndPrice(name, minPrice, maxPrice);
+            @RequestParam(value = "maxPrice", required = false) Integer maxPrice,
+            @RequestParam(value = "city", required = false) String city) {
+        ResultPaginationDTO result = hotelService.searchHotelsByNamePriceAndCity(name, minPrice, maxPrice, city);
 
         return ResponseEntity.ok(ResponseObject.builder()
                 .message("Hotels retrieved successfully")
-                .data(hotels)
+                .data(result)
                 .responseCode(HttpStatus.OK.value())
                 .build());
     }
@@ -70,25 +71,24 @@ public class HotelController {
     }
 
     // Get all rooms by hotel ID
-@GetMapping("/{hotelId}/rooms")
-public ResponseEntity<ResponseObject> getAllRoomsByHotelId(@PathVariable("hotelId") Integer hotelId) {
-    List<HotelRoomDTO> rooms = hotelService.getAllRoomsByHotelId(hotelId);
+    @GetMapping("/{hotelId}/rooms")
+    public ResponseEntity<ResponseObject> getAllRoomsByHotelId(@PathVariable("hotelId") Integer hotelId) {
+        List<HotelRoomDTO> rooms = hotelService.getAllRoomsByHotelId(hotelId);
 
-    if (rooms != null && !rooms.isEmpty()) {
-        return ResponseEntity.ok(ResponseObject.builder()
-                .message("Rooms retrieved successfully")
-                .data(rooms)
-                .responseCode(HttpStatus.OK.value())
-                .build());
-    } else {
-        return ResponseEntity.ok(ResponseObject.builder()
-                .message("No rooms found for this hotel")
-                .data(rooms)
-                .responseCode(HttpStatus.OK.value())
-                .build());
+        if (rooms != null && !rooms.isEmpty()) {
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .message("Rooms retrieved successfully")
+                    .data(rooms)
+                    .responseCode(HttpStatus.OK.value())
+                    .build());
+        } else {
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .message("No rooms found for this hotel")
+                    .data(rooms)
+                    .responseCode(HttpStatus.OK.value())
+                    .build());
+        }
     }
-}
-
 
     // Add hotel
     @PostMapping("/add")
@@ -155,7 +155,6 @@ public ResponseEntity<ResponseObject> getAllRoomsByHotelId(@PathVariable("hotelI
             return ResponseEntity.notFound().build();
         }
     }
-
 
     // Add room to hotel
     @PostMapping("/{hotelId}/add-room")

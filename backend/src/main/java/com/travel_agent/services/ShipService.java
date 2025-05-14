@@ -47,6 +47,40 @@ public class ShipService {
         return rs;
     }
 
+    // Search ship
+    public ResultPaginationDTO searchShipsByNamePriceAndTrip(String name, Integer minPrice, Integer maxPrice, String trip) {
+        List<ShipEntity> ships = shipRepository.findByShipNamePriceAndAddress(name, minPrice, maxPrice, trip);
+        long total = ships.size();
+
+        List<ShipDTO> shipDtos = ships.stream().map(ship -> {
+            ShipDTO shipDto = shipMapper.shipToShipDTO(ship);
+
+            // Fetch features
+            List<ShipFeatureEntity> shipFeatures = shipFeatureRepository.findByShipId(ship.getShipId());
+            List<Integer> featureIds = shipFeatures.stream()
+                    .map(ShipFeatureEntity::getFeatureId)
+                    .toList();
+            List<String> featureDescriptions = featureIds.stream()
+                    .map(featureId -> featureRepository.findById(featureId)
+                            .orElseThrow(() -> new IllegalArgumentException("Feature not found with ID: " + featureId))
+                            .getFeatureDescription())
+                    .toList();
+
+            shipDto.setFeatureIds(featureIds.isEmpty() ? null : featureIds);
+            shipDto.setFeatures(featureDescriptions.isEmpty() ? null : featureDescriptions);
+
+            return shipDto;
+        }).toList();
+
+        ResultPaginationDTO result = new ResultPaginationDTO();
+        result.setResult(shipDtos);
+        Meta meta = new Meta();
+        meta.setTotal(total);
+        result.setMeta(meta);
+
+        return result;
+    }
+
     public ShipDTO getShipDetails(Integer shipId) {
         ShipEntity shipEntity = shipRepository.findById(shipId)
                 .orElseThrow(() -> new IllegalArgumentException("Ship not found with ID: " + shipId));
@@ -129,7 +163,6 @@ public class ShipService {
         shipEntity.setCabin(shipDto.getCabin());
         shipEntity.setShell(shipDto.getShell());
         shipEntity.setTrip(shipDto.getTrip());
-        shipEntity.setCompanyName(shipDto.getCompanyName());
         shipEntity.setShipPrice(shipDto.getShipPrice());
         shipEntity.setAddress(shipDto.getAddress());
         shipEntity.setMapLink(shipDto.getMapLink());
@@ -139,6 +172,7 @@ public class ShipService {
             CompanyEntity company = companyRepository.findById(shipDto.getCompanyId())
                     .orElseThrow(() -> new IllegalArgumentException("Company not found with ID: " + shipDto.getCompanyId()));
             shipEntity.setCompany(company);
+            shipEntity.setCompanyName(company.getCompanyName());
         }
 
         shipEntity = shipRepository.save(shipEntity);
@@ -452,6 +486,7 @@ public class ShipService {
         );
     }
 
+    // Update room
     @Transactional
     public ShipRoomDTO updateShipRoom(Integer shipId, Integer roomId, ShipRoomDTO roomDto) {
         shipRepository.findById(shipId)
