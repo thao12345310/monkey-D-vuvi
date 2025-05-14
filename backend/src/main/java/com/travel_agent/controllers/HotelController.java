@@ -38,6 +38,21 @@ public class HotelController {
         return hotelService.getAllHotels(pageable);
     }
 
+    // Search hotel
+    @GetMapping("/search")
+    public ResponseEntity<ResponseObject> searchHotelsByNameAndPrice(
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "minPrice", required = false) Integer minPrice,
+            @RequestParam(value = "maxPrice", required = false) Integer maxPrice) {
+        List<HotelDTO> hotels = hotelService.searchHotelsByNameAndPrice(name, minPrice, maxPrice);
+
+        return ResponseEntity.ok(ResponseObject.builder()
+                .message("Hotels retrieved successfully")
+                .data(hotels)
+                .responseCode(HttpStatus.OK.value())
+                .build());
+    }
+
     // View hotel details
     @GetMapping("/{hotelId}")
     public ResponseEntity<ResponseObject> getHotelDetails(@PathVariable("hotelId") Integer hotelId) {
