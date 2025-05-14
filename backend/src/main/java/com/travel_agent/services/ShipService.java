@@ -157,6 +157,45 @@ public class ShipService {
         return shipDto;
     }
 
+    public List<ShipRoomDTO> getAllRoomsByShipId(Integer shipId) {
+        // Check if the ship exists
+        shipRepository.findById(shipId)
+                .orElseThrow(() -> new IllegalArgumentException("Ship not found with ID: " + shipId));
+
+        // Fetch the list of rooms
+        List<ShipRoomEntity> shipRoomEntities = shipRoomRepository.findByShip_ShipId(shipId);
+
+        // Map entities to DTOs
+        return shipRoomEntities.stream().map(room -> {
+            List<Integer> roomFeatureIds = shipRoomFeatureRepository.findByShipRoomId(room.getShipRoomId())
+                    .stream()
+                    .map(ShipRoomFeatureEntity::getRoomFeaturesId)
+                    .toList();
+
+            List<String> roomFeatures = roomFeatureIds.stream()
+                    .map(featureId -> featureRepository.findById(featureId)
+                            .orElseThrow(() -> new IllegalArgumentException("Feature not found with ID: " + featureId))
+                            .getFeatureDescription())
+                    .toList();
+
+            List<String> images = shipRoomImageRepository.findByRoomId(room.getShipRoomId())
+                    .stream()
+                    .map(ShipRoomImageEntity::getImgUrl)
+                    .toList();
+
+            return new ShipRoomDTO(
+                    room.getShipRoomId(),
+                    room.getRoomName(),
+                    room.getRoomPrice(),
+                    roomFeatureIds,
+                    roomFeatures.isEmpty() ? null : roomFeatures,
+                    room.getSize(),
+                    room.getMaxPersons(),
+                    images.isEmpty() ? null : images
+            );
+        }).toList();
+    }
+
     private void populateShipEntity(ShipEntity shipEntity, ShipDTO shipDto) {
         shipEntity.setShipName(shipDto.getShipName());
         shipEntity.setLaunch(shipDto.getLaunch());

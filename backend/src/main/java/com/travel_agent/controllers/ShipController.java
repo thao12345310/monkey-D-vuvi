@@ -67,6 +67,26 @@ public class ShipController {
         }
     }
 
+    // View all rooms
+    @GetMapping("/{shipId}/rooms")
+    public ResponseEntity<ResponseObject> getAllRoomsByShipId(@PathVariable("shipId") Integer shipId) {
+        List<ShipRoomDTO> rooms = shipService.getAllRoomsByShipId(shipId);
+
+        if (rooms != null && !rooms.isEmpty()) {
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .message("Rooms retrieved successfully")
+                    .data(rooms)
+                    .responseCode(HttpStatus.OK.value())
+                    .build());
+        } else {
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .message("No rooms found for this ship")
+                    .data(rooms)
+                    .responseCode(HttpStatus.OK.value())
+                    .build());
+        }
+    }
+
     @PostMapping("/add")
     public ResponseEntity<ResponseObject> addShip(@RequestBody ShipDTO shipDto) {
         ShipDTO addedShip = shipService.addShip(shipDto);

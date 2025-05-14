@@ -162,31 +162,31 @@ public class HotelService {
     }
 
     public List<HotelRoomDTO> getAllRoomsByHotelId(Integer hotelId) {
-        // Kiểm tra khách sạn có tồn tại không
+        // Check if the hotel exists
         hotelRepository.findById(hotelId)
                 .orElseThrow(() -> new IllegalArgumentException("Hotel not found with ID: " + hotelId));
-    
-        // Lấy danh sách phòng
+
+        // Fetch the list of rooms
         List<HotelRoomEntity> hotelRoomEntities = hotelRoomRepository.findByHotel_HotelId(hotelId);
-    
-        // Map sang DTO
+
+        // Map entities to DTOs
         return hotelRoomEntities.stream().map(room -> {
             List<Integer> roomFeatureIds = hotelRoomFeatureRepository.findByHotelRoomId(room.getHotelRoomId())
                     .stream()
                     .map(HotelRoomFeatureEntity::getRoomFeaturesId)
                     .toList();
-    
+
             List<String> roomFeatures = roomFeatureIds.stream()
                     .map(featureId -> featureRepository.findById(featureId)
                             .orElseThrow(() -> new IllegalArgumentException("Feature not found with ID: " + featureId))
                             .getFeatureDescription())
                     .toList();
-    
+
             List<String> images = hotelRoomImageRepository.findByRoomId(room.getHotelRoomId())
                     .stream()
                     .map(HotelRoomImageEntity::getImgUrl)
                     .toList();
-    
+
             return new HotelRoomDTO(
                     room.getHotelRoomId(),
                     room.getRoomName(),
