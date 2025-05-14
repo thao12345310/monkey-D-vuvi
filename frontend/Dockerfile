@@ -12,7 +12,8 @@ RUN npm install
 # Copy source code
 COPY . .
 
-# Build the application
+# Build the application with source maps
+ENV NODE_ENV=development
 RUN npm run build
 
 # Production stage
@@ -27,8 +28,9 @@ RUN mkdir -p /etc/nginx/templates/
 # Copy nginx configuration to templates directory
 COPY nginx.conf /etc/nginx/templates/default.conf.template
 
-# Copy built files from build stage
+# Copy built files and source maps from build stage
 COPY --from=build /app/dist /usr/share/nginx/html/
+COPY --from=build /app/src /usr/share/nginx/html/src/
 
 # Copy entrypoint script
 COPY docker-entrypoint.sh /docker-entrypoint.sh

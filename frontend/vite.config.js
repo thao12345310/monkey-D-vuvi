@@ -6,6 +6,7 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig(({ command, mode }) => {
     // Load env file based on `mode` in the current working directory.
     const env = loadEnv(mode, process.cwd(), "");
+    const isDev = command === "serve";
 
     return {
         plugins: [tailwindcss(), react()],
@@ -21,8 +22,26 @@ export default defineConfig(({ command, mode }) => {
                 },
             },
         },
+        build: {
+            sourcemap: true,
+            rollupOptions: {
+                output: {
+                    manualChunks: undefined,
+                },
+            },
+        },
         define: {
-            __DEV__: command === "serve",
+            __DEV__: isDev,
+        },
+        css: {
+            devSourcemap: true,
+        },
+        optimizeDeps: {
+            include: ["react", "react-dom"],
+        },
+        esbuild: {
+            keepNames: isDev,
+            minifyIdentifiers: !isDev,
         },
     };
 });
