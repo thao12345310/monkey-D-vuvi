@@ -20,7 +20,7 @@ import Footer from "./components/public/Footer";
 import "./App.css";
 import AdminLayout from "./components/admin/AdminLayout";
 import Dashboard from "./pages/admin/DashBoard";
-import Booking from "./pages/admin/Booking";
+import ManageBooking from "./pages/admin/ManageBooking";
 import ManageRoom from "./pages/admin/ManageRoom";
 
 const AppRoutes = () => {
@@ -44,7 +44,7 @@ const AppRoutes = () => {
               {/* Admin */}
               <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<Dashboard />} />
-                <Route path="booking" element={<Booking />} />
+                <Route path="booking" element={<ManageBooking />} />
                 <Route path="manage-room" element={<ManageRoom />} />
               </Route>
 
