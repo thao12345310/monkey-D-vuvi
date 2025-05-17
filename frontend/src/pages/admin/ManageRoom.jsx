@@ -9,26 +9,30 @@ import {
   TextField,
   Stack,
   Autocomplete,
+  useTheme,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
+import { tokens } from "../../theme";
 
 export default function ManageRoom() {
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editRoom, setEditRoom] = useState(null);
   const [open, setOpen] = useState(false);
-  const hotelId = 1;
+  const hotelId = 2;
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
   const roomFeatureOptions = [
-    "Wi-Fi",
-    "Air Conditioning",
-    "TV",
-    "Mini Bar",
-    "Balcony",
-    "Sea View",
-    "Bathtub",
-    "Room Service",
+    { id: 1, label: "Wi-Fi" },
+    { id: 2, label: "Air Conditioning" },
+    { id: 3, label: "TV" },
+    { id: 4, label: "Mini Bar" },
+    { id: 5, label: "Balcony" },
+    { id: 6, label: "Sea View" },
+    { id: 7, label: "Bathtub" },
+    { id: 8, label: "Room Service" },
   ];
 
   useEffect(() => {
@@ -60,10 +64,31 @@ export default function ManageRoom() {
 
   const handleSave = async () => {
     try {
+      const featureIds = (editRoom.roomFeatures || [])
+        .map((featureLabel) => {
+          const matched = roomFeatureOptions.find(
+            (f) => f.label === featureLabel
+          );
+          return matched?.id;
+        })
+        .filter(Boolean); // loại bỏ undefined
+
+      const updatedData = {
+        roomName: editRoom.roomName,
+        roomPrice: editRoom.roomPrice,
+        size: editRoom.size,
+        maxPersons: editRoom.maxPersons,
+        bedType: editRoom.bedType,
+        view: editRoom.view,
+        roomFeatureIds: featureIds,
+        images: editRoom.images || [],
+      };
+
       await axios.put(
-        `http://localhost:8080/api/room/${editRoom.roomId}`,
-        editRoom
+        `http://localhost:8080/api/hotel/${hotelId}/${editRoom.roomId}`,
+        updatedData
       );
+
       fetchRooms(); // reload data
       handleClose();
     } catch (error) {
@@ -87,10 +112,9 @@ export default function ManageRoom() {
   };
 
   const columns = [
-    { field: "roomName", headerName: "Room Name", flex: 1 },
+    { field: "roomName", headerName: "Room Name", flex: 1.5 },
     { field: "roomPrice", headerName: "Price", flex: 1 },
-    { field: "size", headerName: "Size (m²)", flex: 1 },
-    { field: "maxPersons", headerName: "Max Persons", flex: 1 },
+    { field: "size", headerName: "Size (m²)", flex: 0.8 },
     { field: "bedType", headerName: "Bed Type", flex: 1 },
     { field: "view", headerName: "View", flex: 1 },
     {
@@ -103,6 +127,7 @@ export default function ManageRoom() {
           variant="outlined"
           size="small"
           onClick={() => handleEdit(params.row)}
+          color={colors.grey[100]}
         >
           Edit
         </Button>
@@ -158,7 +183,7 @@ export default function ManageRoom() {
               <TextField
                 label="Room Name"
                 name="roomName"
-                value={editRoom.roomName}
+                value={editRoom.roomName || ""}
                 onChange={handleChange}
                 fullWidth
               />
@@ -166,7 +191,7 @@ export default function ManageRoom() {
                 label="Price"
                 name="roomPrice"
                 type="number"
-                value={editRoom.roomPrice}
+                value={editRoom.roomPrice || ""}
                 onChange={handleChange}
                 fullWidth
               />
@@ -174,7 +199,7 @@ export default function ManageRoom() {
                 label="Size (m²)"
                 name="size"
                 type="number"
-                value={editRoom.size}
+                value={editRoom.size || ""}
                 onChange={handleChange}
                 fullWidth
               />
@@ -182,21 +207,21 @@ export default function ManageRoom() {
                 label="Max Persons"
                 name="maxPersons"
                 type="number"
-                value={editRoom.maxPersons}
+                value={editRoom.maxPersons || ""}
                 onChange={handleChange}
                 fullWidth
               />
               <TextField
                 label="Bed Type"
                 name="bedType"
-                value={editRoom.bedType}
+                value={editRoom.bedType || ""}
                 onChange={handleChange}
                 fullWidth
               />
               <TextField
                 label="View"
                 name="view"
-                value={editRoom.view}
+                value={editRoom.view || ""}
                 onChange={handleChange}
                 fullWidth
               />
@@ -204,7 +229,7 @@ export default function ManageRoom() {
               {/* Features */}
               <Autocomplete
                 multiple
-                options={roomFeatureOptions}
+                options={roomFeatureOptions.map((f) => f.label)}
                 value={editRoom.roomFeatures || []}
                 onChange={(event, newValue) =>
                   setEditRoom((prev) => ({
