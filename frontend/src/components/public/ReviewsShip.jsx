@@ -10,7 +10,12 @@ const ReviewsShip = ({ shipId }) => {
     useEffect(() => {
         const fetchReviews = async () => {
             try {
-                const res = await axios.get(`${config.api.url}/api/ship/${shipId}/reviews`);
+                const token = localStorage.getItem("jwt");
+                const res = await axios.get(`${config.api.url}/api/ship/${shipId}/reviews`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
                 setReviews(res.data.data || []);
             } catch (err) {
                 console.error("Lỗi tải đánh giá:", err);
@@ -24,7 +29,12 @@ const ReviewsShip = ({ shipId }) => {
         try {
             await axios.post(`${config.api.url}/api/ship/${shipId}/reviews`, newReview);
             setNewReview({ name: "", content: "", stars: 5 });
-            const res = await axios.get(`${config.api.url}/api/ship/${shipId}/reviews`);
+            const token = localStorage.getItem("jwt");
+            const res = await axios.get(`${config.api.url}/api/ship/${shipId}/reviews`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
             setReviews(res.data.data || []);
         } catch (err) {
             console.error("Lỗi gửi đánh giá:", err);

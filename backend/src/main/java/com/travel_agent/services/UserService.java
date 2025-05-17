@@ -8,6 +8,7 @@ import com.travel_agent.repositories.UserRepository;
 import com.travel_agent.utils.ReflectionUtils;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -18,13 +19,14 @@ import java.util.List;
 public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
     // CREATE: Tạo mới User
     public UserDTO createUser(String username, String password, String role, LocalDate dob) {
         // Tạo UserEntity liên kết với Account
         UserEntity user = new UserEntity();
         user.setDob(dob);
         user.setUsername(username);
-        user.setPassword(password);
+        user.setPassword(passwordEncoder.encode(password));
         user.setRole(role);
 
         userRepository.save(user);
@@ -60,5 +62,19 @@ public class UserService {
     public List<UserDTO> getAllUsers() {
         List<UserEntity> users =  userRepository.findAll();
         return userMapper.UsersToUserDTOs(users);
+    }
+
+    // Find user by username
+    public UserDTO findByUsername(String username) {
+        UserEntity user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("User not found with username: " + username));
+        return userMapper.UserToUserDTO(user);
+    }
+
+    // Find user by username and password
+    public UserDTO findByUsernameAndPassword(String username, String password) {
+        UserEntity user = userRepository.findByUsernameAndPassword(username, password)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid username or password"));
+        return userMapper.UserToUserDTO(user);
     }
 }
