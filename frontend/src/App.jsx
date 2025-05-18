@@ -18,6 +18,7 @@ import AdminLayout from "./components/admin/AdminLayout";
 import Dashboard from "./pages/admin/DashBoard";
 import ManageBooking from "./pages/admin/ManageBooking";
 import ManageRoom from "./pages/admin/ManageRoom";
+import BookingHistoryPage from "./pages/public/BookingHistoryPage";
 
 const AppRoutes = () => {
     const [isChatOpen, setIsChatOpen] = useState(false);
@@ -54,7 +55,7 @@ const AppRoutes = () => {
 
                             {/* User Profile Routes */}
                             <Route path="/profile" element={<div>Thông tin cá nhân</div>} />
-                            <Route path="/bookings" element={<div>Đơn đặt phòng của bạn</div>} />
+                            <Route path="/bookings" element={<BookingHistoryPage />} />
                         </Routes>
                     </div>
 
