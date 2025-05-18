@@ -14,6 +14,7 @@ import ChiTietKhachSan from "./pages/public/ChiTietKhachSan";
 import DoanhNghiep from "./pages/public/DoanhNghiep";
 import DuThuyen from "./pages/public/DuThuyen";
 import LoginPage from "./pages/public/LoginPage";
+import RegisterPage from "./pages/public/RegisterPage";
 import ChatBotWidget from "./components/public/ChatBotWidget";
 import Footer from "./components/public/Footer";
 import "./App.css";
@@ -21,6 +22,7 @@ import AdminLayout from "./components/admin/AdminLayout";
 import Dashboard from "./pages/admin/DashBoard";
 import ManageBooking from "./pages/admin/ManageBooking";
 import ManageRoom from "./pages/admin/ManageRoom";
+import BookingHistoryPage from "./pages/public/BookingHistoryPage";
 
 const AppRoutes = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -43,19 +45,25 @@ const AppRoutes = () => {
               {/* Admin */}
               <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<Dashboard />} />
-                <Route path="booking" element={<ManageBooking />} />
-                <Route path="manage-room" element={<ManageRoom />} />
+                {/* <Route path="/booking" element={<Booking />} /> */}
+                {/* <Route path="/manage-room" element={<ManageRoom />} /> */}
               </Route>
 
               {/* User */}
               <Route path="/" element={<Home />} />
               <Route path="/tim-du-thuyen" element={<TimDuThuyen />} />
+              <Route path="/tim-ve-may-bay" element={<TimVeMayBay />} />
               <Route path="/tim-khach-san" element={<TimKhachSan />} />
               <Route path="/khach-san/:id" element={<ChiTietKhachSan />} />
               <Route path="/doanh-nghiep" element={<DoanhNghiep />} />
               <Route path="/blog" element={<div>Blog</div>} />
               <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
               <Route path="/du-thuyen/:id" element={<DuThuyen />} />
+
+              {/* User Profile Routes */}
+              <Route path="/profile" element={<div>Thông tin cá nhân</div>} />
+              <Route path="/bookings" element={<BookingHistoryPage />} />
             </Routes>
           </div>
 

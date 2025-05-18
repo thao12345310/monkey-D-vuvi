@@ -1,7 +1,7 @@
 CREATE TABLE "user" (
   user_id SERIAL PRIMARY KEY,
   dob DATE,
-  username VARCHAR,
+  username VARCHAR UNIQUE,
   password VARCHAR,
   role VARCHAR
 );

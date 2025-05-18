@@ -60,4 +60,18 @@ public class CompanyService {
         List<CompanyEntity> companies =  companyRepository.findAll();
         return companyMapper.companiesToCompanyDTOs(companies);
     }
+
+    // Find company by username
+    public CompanyDTO findByUsername(String username) {
+        CompanyEntity company = companyRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("Company not found with username: " + username));
+        return companyMapper.companyToCompanyDTO(company);
+    }
+
+    // Find company by username and password
+    public CompanyDTO findByUsernameAndPassword(String username, String password) {
+        CompanyEntity company = companyRepository.findByUsernameAndPassword(username, password)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid username or password"));
+        return companyMapper.companyToCompanyDTO(company);
+    }
 }
