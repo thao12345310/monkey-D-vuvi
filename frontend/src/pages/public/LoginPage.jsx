@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import config from "../../config";
+import { useAuth } from "../../contexts/AuthContext";
 
 function LoginPage() {
     const navigate = useNavigate();
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const [role, setRole] = useState("user"); // Default role
-
+    const { login } = useAuth();
     const handleLoginSubmit = async (event) => {
         event.preventDefault();
         setError("");
@@ -30,8 +31,7 @@ function LoginPage() {
             const data = metadata.data;
 
             if (metadata.responseCode === 200) {
-                localStorage.setItem("token", data.token);
-                localStorage.setItem("role", data.role);
+                login(data.token, data.role);
                 navigate("/");
             } else {
                 setError(metadata.message || "Đăng nhập thất bại");
