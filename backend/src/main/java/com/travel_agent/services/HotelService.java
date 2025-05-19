@@ -629,4 +629,13 @@ public class HotelService {
         // Delete the hotel rooms
         hotelRoomRepository.deleteAll(roomsToDelete);
     }
+
+    public List<String> getAllCities() {
+        return hotelRepository.findAll().stream()
+                .map(HotelEntity::getCity)
+                .filter(city -> city != null && !city.trim().isEmpty())
+                .distinct()
+                .sorted(String::compareToIgnoreCase)
+                .collect(Collectors.toList());
+    }
 }

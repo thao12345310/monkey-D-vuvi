@@ -182,7 +182,13 @@ const TimDuThuyen = () => {
 
       {/* Search Bar */}
       <Paper elevation={3} sx={{ px: 4, py: 5, borderRadius: 5, mb: 4 }}>
-        <Typography variant="h4" fontWeight="bold" align="center" gutterBottom>
+        <Typography
+          variant="h4"
+          fontWeight="bold"
+          align="center"
+          gutterBottom
+          color="#EC80B1"
+        >
           Bạn lựa chọn du thuyền nào?
         </Typography>
         <Typography align="center" color="text.secondary" mb={4}>
@@ -205,7 +211,7 @@ const TimDuThuyen = () => {
             borderRadius="50px"
             height="50px"
           >
-            <SearchIcon sx={{ color: "grey.500", mr: 1 }} />
+            <SearchIcon sx={{ color: "#EC80B1", mr: 1 }} />
             <input
               type="text"
               placeholder="Nhập tên khách sạn"
@@ -230,7 +236,7 @@ const TimDuThuyen = () => {
             display="flex"
             alignItems="center"
           >
-            <LocationOnIcon sx={{ color: "grey.500", mr: 1 }} />
+            <LocationOnIcon sx={{ color: "#EC80B1", mr: 1 }} />
             <TextField
               select
               variant="standard"
@@ -259,7 +265,7 @@ const TimDuThuyen = () => {
             display="flex"
             alignItems="center"
           >
-            <AttachMoneyIcon sx={{ color: "grey.500", mr: 1 }} />
+            <AttachMoneyIcon sx={{ color: "#EC80B1", mr: 1 }} />
             <TextField
               select
               variant="standard"
@@ -317,7 +323,7 @@ const TimDuThuyen = () => {
               variant="h6"
               gutterBottom
               fontWeight="bold"
-              color="primary"
+              color="#EC80B1"
             >
               Bộ lọc
             </Typography>
@@ -488,33 +494,30 @@ const TimDuThuyen = () => {
             ))}
 
             {/* Phân trang */}
-            <Box
-              sx={{ display: "flex", justifyContent: "center", mt: 4, mb: 2 }}
-            >
-              <Pagination
-                count={totalPages}
-                page={currentPage}
-                onChange={handlePageChange}
-                color="primary"
-                shape="rounded"
-                disabled={loading}
-                sx={{
-                  "& .MuiPaginationItem-root": {
-                    color: "#666",
-                    "&.Mui-selected": {
-                      backgroundColor: "#EC80B1",
-                      color: "white",
-                      "&:hover": {
-                        backgroundColor: "#d66d9e",
+            {totalPages > 1 && (
+              <Stack spacing={2} alignItems="center" mt={3}>
+                <Pagination
+                  count={totalPages}
+                  page={currentPage}
+                  onChange={handlePageChange}
+                  color="primary"
+                  shape="rounded"
+                  disabled={loading}
+                  sx={{
+                    "& .MuiPaginationItem-root": {
+                      color: "#EC80B1",
+                      "&.Mui-selected": {
+                        bgcolor: "#EC80B1",
+                        color: "#fff",
+                        "&:hover": {
+                          bgcolor: "#d66d9e",
+                        },
                       },
                     },
-                    "&:hover": {
-                      backgroundColor: "rgba(236, 128, 177, 0.1)",
-                    },
-                  },
-                }}
-              />
-            </Box>
+                  }}
+                />
+              </Stack>
+            )}
           </Paper>
         </Grid>
       </Grid>

@@ -212,4 +212,14 @@ public class HotelController {
                 .responseCode(HttpStatus.OK.value())
                 .build());
     }
+
+    @GetMapping("/cities")
+    public ResponseEntity<ResponseObject> getAllCities() {
+        List<String> cities = hotelService.getAllCities();
+        return ResponseEntity.ok(ResponseObject.builder()
+                .message("Cities retrieved successfully")
+                .data(cities)
+                .responseCode(HttpStatus.OK.value())
+                .build());
+    }
 }
