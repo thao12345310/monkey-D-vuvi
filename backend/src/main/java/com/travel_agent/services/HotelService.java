@@ -49,11 +49,17 @@ public class HotelService {
     }
 
     // Search hotel
-    public ResultPaginationDTO searchHotelsByNamePriceAndCity(String name, Integer minPrice, Integer maxPrice, String city) {
-        List<HotelEntity> hotels = hotelRepository.findByHotelNamePriceAndCity(name, minPrice, maxPrice, city);
-        long total = hotels.size();
+    public ResultPaginationDTO searchHotelsByNamePriceAndCity(
+            String name,
+            Integer minPrice,
+            Integer maxPrice,
+            String city,
+            Pageable pageable) {
+        
+        Page<HotelEntity> hotelPage = hotelRepository.findByHotelNamePriceAndCity(
+                name, minPrice, maxPrice, city, pageable);
 
-        List<HotelDTO> hotelDtos = hotels.stream().map(hotel -> {
+        List<HotelDTO> hotelDtos = hotelPage.getContent().stream().map(hotel -> {
             HotelDTO hotelDto = hotelMapper.hotelToHotelDTO(hotel);
 
             // Fetch features
@@ -76,7 +82,9 @@ public class HotelService {
         ResultPaginationDTO result = new ResultPaginationDTO();
         result.setResult(hotelDtos);
         Meta meta = new Meta();
-        meta.setTotal(total);
+        meta.setPage(pageable.getPageNumber() + 1);
+        meta.setPages(hotelPage.getTotalPages());
+        meta.setTotal(hotelPage.getTotalElements());
         result.setMeta(meta);
 
         return result;
@@ -620,5 +628,14 @@ public class HotelService {
 
         // Delete the hotel rooms
         hotelRoomRepository.deleteAll(roomsToDelete);
+    }
+
+    public List<String> getAllCities() {
+        return hotelRepository.findAll().stream()
+                .map(HotelEntity::getCity)
+                .filter(city -> city != null && !city.trim().isEmpty())
+                .distinct()
+                .sorted(String::compareToIgnoreCase)
+                .collect(Collectors.toList());
     }
 }

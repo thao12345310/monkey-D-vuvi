@@ -1,9 +1,11 @@
 import React from "react";
 // Bạn có thể cần cài đặt react-icons: npm install react-icons
 import { FaStar, FaMapMarkerAlt, FaBed } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 export default function KhachSanCardNho({ hotel }) {
   const {
+    hotelId,
     hotelName,
     totalRooms,
     hotelPrice,
@@ -12,8 +14,17 @@ export default function KhachSanCardNho({ hotel }) {
     mapLink,
     thumbnail,
   } = hotel;
+
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate(`/khach-san/${hotelId}`);
+  };
+
   return (
-    <div className="max-w-sm rounded-lg overflow-hidden shadow-lg bg-white mx-auto my-4">
+    <div
+      className="max-w-sm rounded-lg overflow-hidden shadow-lg bg-white mx-auto my-4"
+      onClick={handleClick}
+    >
       {/* Phần hình ảnh và đánh giá */}
       <div className="relative">
         <img
@@ -47,9 +58,6 @@ export default function KhachSanCardNho({ hotel }) {
         {/* Phần giá và nút đặt */}
         <div className="flex justify-between items-end">
           <div>
-            <p className="text-sm text-gray-400 line-through">
-              {(hotelPrice * 1.1).toLocaleString()}đ / phòng
-            </p>
             <p className="text-lg font-bold">
               {hotelPrice.toLocaleString()}đ / phòng
             </p>

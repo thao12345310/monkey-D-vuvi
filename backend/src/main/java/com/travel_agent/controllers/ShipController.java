@@ -42,8 +42,12 @@ public class ShipController {
             @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "minPrice", required = false) Integer minPrice,
             @RequestParam(value = "maxPrice", required = false) Integer maxPrice,
-            @RequestParam(value = "trip", required = false) String trip) {
-        ResultPaginationDTO result = shipService.searchShipsByNamePriceAndTrip(name, minPrice, maxPrice, trip);
+            @RequestParam(value = "trip", required = false) String trip,
+            @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
+            @RequestParam(value = "pageSize", defaultValue = "6") int pageSize) {
+        
+        Pageable pageable = PageRequest.of(currentPage - 1, pageSize);
+        ResultPaginationDTO result = shipService.searchShipsByNamePriceAndTrip(name, minPrice, maxPrice, trip, pageable);
 
         return ResponseEntity.ok(ResponseObject.builder()
                 .message("Ships retrieved successfully")

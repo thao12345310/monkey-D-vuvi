@@ -1,6 +1,8 @@
 package com.travel_agent.repositories.ship;
 
 import com.travel_agent.models.entity.ship.ShipEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,9 +15,10 @@ public interface ShipRepository extends JpaRepository<ShipEntity, Integer> {
             "((:minPrice IS NULL OR s.shipPrice >= :minPrice)) AND " +
             "((:maxPrice IS NULL OR s.shipPrice <= :maxPrice)) AND " +
             "((:trip IS NULL OR :trip = '' OR (s.address IS NOT NULL AND LOWER(s.trip) LIKE LOWER(CONCAT('%', :trip, '%')))))")
-    List<ShipEntity> findByShipNamePriceAndAddress(
+    Page<ShipEntity> findByShipNamePriceAndAddress(
             @Param("name") String name,
             @Param("minPrice") Integer minPrice,
             @Param("maxPrice") Integer maxPrice,
-            @Param("trip") String trip);
+            @Param("trip") String trip,
+            Pageable pageable);
 }

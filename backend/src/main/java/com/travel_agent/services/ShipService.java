@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -48,11 +49,17 @@ public class ShipService {
     }
 
     // Search ship
-    public ResultPaginationDTO searchShipsByNamePriceAndTrip(String name, Integer minPrice, Integer maxPrice, String trip) {
-        List<ShipEntity> ships = shipRepository.findByShipNamePriceAndAddress(name, minPrice, maxPrice, trip);
-        long total = ships.size();
+    public ResultPaginationDTO searchShipsByNamePriceAndTrip(
+            String name,
+            Integer minPrice,
+            Integer maxPrice,
+            String trip,
+            Pageable pageable) {
+        
+        Page<ShipEntity> shipPage = shipRepository.findByShipNamePriceAndAddress(
+                name, minPrice, maxPrice, trip, pageable);
 
-        List<ShipDTO> shipDtos = ships.stream().map(ship -> {
+        List<ShipDTO> shipDtos = shipPage.getContent().stream().map(ship -> {
             ShipDTO shipDto = shipMapper.shipToShipDTO(ship);
 
             // Fetch features
@@ -75,7 +82,9 @@ public class ShipService {
         ResultPaginationDTO result = new ResultPaginationDTO();
         result.setResult(shipDtos);
         Meta meta = new Meta();
-        meta.setTotal(total);
+        meta.setPage(pageable.getPageNumber() + 1);
+        meta.setPages(shipPage.getTotalPages());
+        meta.setTotal(shipPage.getTotalElements());
         result.setMeta(meta);
 
         return result;
