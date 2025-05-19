@@ -2,6 +2,7 @@
 package com.travel_agent.controllers;
 
 import com.travel_agent.services.UserService;
+import com.travel_agent.annotation.CurrentUserId;
 import com.travel_agent.dto.ResponseObject;
 import com.travel_agent.dto.UserDTO;
 import com.travel_agent.exceptions.ReflectionException;
@@ -44,8 +45,8 @@ public class UserController {
                 .build());
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<ResponseObject> getUserById(@PathVariable Integer userId) {
+    @GetMapping("/")
+    public ResponseEntity<ResponseObject> getUserById(@CurrentUserId Integer userId) {
         UserDTO user = userService.getUserById(userId);
         return ResponseEntity.ok(ResponseObject.builder()
                 .message("User retrieved successfully")
@@ -54,8 +55,8 @@ public class UserController {
                 .build());
     }
 
-    @PutMapping("/{userId}")
-    public ResponseEntity<ResponseObject> updateUser(@PathVariable Integer userId, @RequestBody UserDTO userDTO) throws ReflectionException{
+    @PutMapping("/")
+    public ResponseEntity<ResponseObject> updateUser(@CurrentUserId Integer userId, @RequestBody UserDTO userDTO) throws ReflectionException{
         UserDTO updatedUser = userService.updateUser(userId, userDTO);
         return ResponseEntity.ok(ResponseObject.builder()
                 .message("User updated successfully")
@@ -64,8 +65,8 @@ public class UserController {
                 .build());
     }
 
-    @DeleteMapping("/{userId}")
-    public ResponseEntity<ResponseObject> deleteUser(@PathVariable Integer userId) {
+    @DeleteMapping("/")
+    public ResponseEntity<ResponseObject> deleteUser(@CurrentUserId Integer userId) {
         userService.deleteUser(userId);
         return ResponseEntity.ok(ResponseObject.builder()
                 .message("User deleted successfully")

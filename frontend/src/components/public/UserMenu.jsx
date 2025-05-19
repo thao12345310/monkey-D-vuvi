@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
-
+import { useAuth } from "../../contexts/AuthContext";
 const UserMenu = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const navigate = useNavigate();
-
+    const { logout } = useAuth();
+    const { token } = useAuth();
+    
     useEffect(() => {
         // Check if user is authenticated
-        const token = localStorage.getItem("token");
         setIsAuthenticated(token !== null);
-    }, [localStorage.getItem("token")]);
+    }, [token]);
 
     const handleLogout = () => {
         // Clear authentication data
-        localStorage.removeItem("token");
-        localStorage.removeItem("role");
+        logout();
         setIsAuthenticated(false);
         // Chuyển về trang chủ sau khi đăng xuất
         navigate("/");

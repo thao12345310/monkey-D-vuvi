@@ -9,14 +9,16 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import com.travel_agent.services.UserService;
 import com.travel_agent.annotation.CurrentUserId;
 import com.travel_agent.dto.UserDTO;
+import org.springframework.stereotype.Component;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 
+@Component
+@RequiredArgsConstructor
 public class CurrentUserIdResolver implements HandlerMethodArgumentResolver {
 
-    @Autowired
-    private UserService userService; // service để lấy userId từ username
+    private final UserService userService; // service để lấy userId từ username
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
