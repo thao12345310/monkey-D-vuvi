@@ -52,7 +52,6 @@ const AppRoutes = () => {
               {/* User */}
               <Route path="/" element={<Home />} />
               <Route path="/tim-du-thuyen" element={<TimDuThuyen />} />
-              <Route path="/tim-ve-may-bay" element={<TimVeMayBay />} />
               <Route path="/tim-khach-san" element={<TimKhachSan />} />
               <Route path="/khach-san/:id" element={<ChiTietKhachSan />} />
               <Route path="/doanh-nghiep" element={<DoanhNghiep />} />

@@ -6,6 +6,8 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
+
 import com.travel_agent.services.UserService;
 import com.travel_agent.annotation.CurrentUserId;
 import com.travel_agent.dto.UserDTO;
@@ -13,6 +15,7 @@ import com.travel_agent.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 
+@Component
 public class CurrentUserIdResolver implements HandlerMethodArgumentResolver {
 
     @Autowired
