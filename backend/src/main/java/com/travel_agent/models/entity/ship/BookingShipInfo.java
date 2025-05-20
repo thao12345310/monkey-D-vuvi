@@ -1,4 +1,4 @@
-package com.travel_agent.models.entity.hotel;
+package com.travel_agent.models.entity.ship;
 
 import java.time.LocalDateTime;
 
@@ -8,8 +8,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "booking_ship_info")
 public class BookingShipInfo {
 
