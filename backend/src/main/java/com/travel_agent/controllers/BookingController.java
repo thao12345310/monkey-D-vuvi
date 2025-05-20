@@ -3,9 +3,9 @@ package com.travel_agent.controllers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.travel_agent.dto.ResponseObject;
+import com.travel_agent.dto.hotel.BookingHotelRoomDTO;
 import com.travel_agent.services.BookingHotelRoomService;
 import com.travel_agent.services.BookingShipRoomService;
-import com.travel_agent.dto.BookingHotelRoomDTO;
 import com.travel_agent.dto.BookingShipRoomDTO;
 
 import lombok.RequiredArgsConstructor;

@@ -16,13 +16,13 @@ public class BookingHotelInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "booking_id")
-    private Long bookingId;
+    private Integer bookingId;
 
     @Column(name = "hotel_id")
-    private Long hotelId;
+    private Integer hotelId;
 
     @Column(name = "user_id")
-    private Long userId;
+    private Integer userId;
 
     @Column(name = "start_date")
     private LocalDateTime startDate;
