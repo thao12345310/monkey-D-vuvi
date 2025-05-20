@@ -47,8 +47,8 @@ const AppRoutes = () => {
               {/* Admin */}
               <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<Dashboard />} />
-                {/* <Route path="/booking" element={<Booking />} /> */}
-                {/* <Route path="/manage-room" element={<ManageRoom />} /> */}
+                <Route path="booking" element={<ManageBooking />} />
+                <Route path="manage-room" element={<ManageRoom />} />
               </Route>
 
               {/* User */}
