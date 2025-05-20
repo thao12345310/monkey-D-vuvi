@@ -1,6 +1,7 @@
 package com.travel_agent.models.entity.hotel;
 
 import com.travel_agent.models.entity.UserEntity;
+import com.travel_agent.models.id.hotel.BookingHotelRoomId;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,15 +12,27 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@IdClass(BookingHotelRoomId.class)
 @Table(name = "booking_hotel_room")
 public class BookingHotelRoom {
     @Id
-    @Column(name = "booking_room_id")
-    private Integer bookingRoomId;
+    @Column(name = "booking_id")
+    private Long bookingId;
+
+    @Id
+    @Column(name = "hotel_room_id")
+    private Long hotelRoomId;
+
+    @Column(name = "quantity")
+    private Integer quantity;
 
     @ManyToOne
-    @JoinColumn(name = "hotel_room_id")
-    private HotelRoomEntity hotelRoomEntity;
+    @JoinColumn(name = "booking_id", insertable = false, updatable = false)
+    private BookingHotelInfo bookingHotelInfo;
+
+    @ManyToOne
+    @JoinColumn(name = "hotel_room_id", insertable = false, updatable = false)
+    private HotelRoomEntity hotelRoom;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

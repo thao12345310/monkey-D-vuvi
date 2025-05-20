@@ -1,16 +1,11 @@
 package com.travel_agent.models.entity.hotel;
 
-import java.time.LocalDateTime;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.travel_agent.models.entity.UserEntity;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -21,13 +16,13 @@ public class BookingHotelInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "booking_id")
-    private Integer bookingHotelId;
-    
+    private Long bookingId;
+
     @Column(name = "hotel_id")
-    private Integer hotelId;
+    private Long hotelId;
 
     @Column(name = "user_id")
-    private Integer user_id;
+    private Long userId;
 
     @Column(name = "start_date")
     private LocalDateTime startDate;
@@ -41,9 +36,17 @@ public class BookingHotelInfo {
     @Column(name = "children")
     private Integer children;
 
-    @Column(name = "total_price")
-    private Integer totalPrice;
-
     @Column(name = "state")
-    private String state;
-}
+    private Integer state;
+
+    @Column(name = "total_amount")
+    private Integer totalAmount;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    private UserEntity user;
+
+    @ManyToOne
+    @JoinColumn(name = "hotel_id", insertable = false, updatable = false)
+    private HotelEntity hotel;
+} 

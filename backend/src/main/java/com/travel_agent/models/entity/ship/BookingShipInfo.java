@@ -1,5 +1,6 @@
 package com.travel_agent.models.entity.ship;
 
+import com.travel_agent.models.entity.UserEntity;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
@@ -8,6 +9,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,13 +25,13 @@ public class BookingShipInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "booking_id")
-    private Integer bookingId;
+    private Long bookingId;
 
     @Column(name = "ship_id")
-    private Integer shipId;
+    private Long shipId;
 
     @Column(name = "user_id")
-    private Integer userId;
+    private Long userId;
     
     @Column(name = "start_date")
     private LocalDateTime startDate;
@@ -42,9 +45,17 @@ public class BookingShipInfo {
     @Column(name = "children")
     private Integer children;
 
-    @Column(name = "total_price")
-    private Integer totalPrice;
-
     @Column(name = "state")
-    private String state;
+    private Integer state;
+
+    @Column(name = "total_amount")
+    private Integer totalAmount;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    private UserEntity user;
+
+    @ManyToOne
+    @JoinColumn(name = "ship_id", insertable = false, updatable = false)
+    private ShipEntity ship;
 }
