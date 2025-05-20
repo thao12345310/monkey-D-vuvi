@@ -7,6 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public interface HotelRepository extends JpaRepository<HotelEntity, Integer> {
     @Query("SELECT h FROM HotelEntity h WHERE " +
             "((:name IS NULL OR :name = '' OR (h.hotelName IS NOT NULL AND LOWER(h.hotelName) LIKE LOWER(CONCAT('%', :name, '%'))))) AND " +
@@ -19,4 +22,6 @@ public interface HotelRepository extends JpaRepository<HotelEntity, Integer> {
             @Param("maxPrice") Integer maxPrice,
             @Param("city") String city,
             Pageable pageable);
+
+    List<HotelEntity> findByHotelNameContainingIgnoreCase(String keyword);
 }

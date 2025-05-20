@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -637,5 +638,15 @@ public class HotelService {
                 .distinct()
                 .sorted(String::compareToIgnoreCase)
                 .collect(Collectors.toList());
+    }
+
+    public List<String> suggestHotelNames(String keyword) {
+        return hotelRepository.findByHotelNameContainingIgnoreCase(keyword)
+            .stream()
+            .map(HotelEntity::getHotelName)
+            .filter(Objects::nonNull)
+            .distinct()
+            .limit(10) // Giới hạn 10 gợi ý
+            .collect(Collectors.toList());
     }
 }
