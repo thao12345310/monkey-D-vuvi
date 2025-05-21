@@ -222,4 +222,15 @@ public class HotelController {
                 .responseCode(HttpStatus.OK.value())
                 .build());
     }
+
+    // HotelController.java
+    @GetMapping("/suggest")
+    public ResponseEntity<ResponseObject> suggestHotelNames(@RequestParam("q") String keyword) {
+        List<String> names = hotelService.suggestHotelNames(keyword);
+        return ResponseEntity.ok(ResponseObject.builder()
+            .message("Hotel names suggestion")
+            .data(names)
+            .responseCode(HttpStatus.OK.value())
+            .build());
+    }
 }

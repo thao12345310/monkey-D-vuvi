@@ -16,6 +16,7 @@ import {
   Pagination,
   Stack,
   MenuItem,
+  Autocomplete,
 } from "@mui/material";
 import { Search, LocationOn, CalendarToday, Person } from "@mui/icons-material";
 import SearchIcon from "@mui/icons-material/Search";
@@ -32,6 +33,7 @@ const TimKhachSan = () => {
   const [loading, setLoading] = useState(false);
   const [cities, setCities] = useState([]);
   const [priceRangeOption, setPriceRangeOption] = useState("");
+  const [hotelOptions, setHotelOptions] = useState([]);
 
   const PRICE_OPTIONS = [
     { label: "Tất cả mức giá", value: "" },
@@ -133,6 +135,24 @@ const TimKhachSan = () => {
     setCurrentPage(value);
   };
 
+  // Hàm gọi API suggest tên khách sạn
+  const handleHotelInputChange = async (event, value) => {
+    if (!value) {
+      setHotelOptions([]);
+      setSearchParams({ ...searchParams, tenKhachSan: "" });
+      return;
+    }
+    try {
+      const res = await axios.get(
+        `${config.api.url}/api/hotel/suggest?q=${value}`
+      );
+      setHotelOptions(res.data.data || []);
+    } catch (err) {
+      setHotelOptions([]);
+    }
+    setSearchParams({ ...searchParams, tenKhachSan: value });
+  };
+
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
       <div className="absolute inset-0 bg-[url('/background-pattern.svg')] bg-cover opacity-5 -z-10"></div>
@@ -171,16 +191,24 @@ const TimKhachSan = () => {
             borderRadius="50px"
           >
             <SearchIcon sx={{ color: "#EC80B1", mr: 1 }} />
-            <input
-              type="text"
-              placeholder="Nhập tên khách sạn"
-              className="bg-transparent outline-none w-full text-sm"
-              onChange={(e) =>
-                setSearchParams({
-                  ...searchParams,
-                  tenKhachSan: e.target.value,
-                })
+            <Autocomplete
+              freeSolo
+              options={hotelOptions}
+              onInputChange={handleHotelInputChange}
+              inputValue={searchParams.tenKhachSan || ""}
+              onChange={(event, value) =>
+                setSearchParams({ ...searchParams, tenKhachSan: value || "" })
               }
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  placeholder="Nhập tên khách sạn"
+                  variant="standard"
+                  InputProps={{ ...params.InputProps, disableUnderline: true }}
+                  sx={{ bgcolor: "transparent", width: "100%" }}
+                />
+              )}
+              sx={{ width: "100%" }}
             />
           </Box>
 

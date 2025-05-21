@@ -494,30 +494,33 @@ const TimDuThuyen = () => {
             ))}
 
             {/* Phân trang */}
-            {totalPages > 1 && (
-              <Stack spacing={2} alignItems="center" mt={3}>
-                <Pagination
-                  count={totalPages}
-                  page={currentPage}
-                  onChange={handlePageChange}
-                  color="primary"
-                  shape="rounded"
-                  disabled={loading}
-                  sx={{
-                    "& .MuiPaginationItem-root": {
-                      color: "#EC80B1",
-                      "&.Mui-selected": {
-                        bgcolor: "#EC80B1",
-                        color: "#fff",
-                        "&:hover": {
-                          bgcolor: "#d66d9e",
-                        },
+            <Box
+              sx={{ display: "flex", justifyContent: "center", mt: 4, mb: 2 }}
+            >
+              <Pagination
+                count={totalPages}
+                page={currentPage}
+                onChange={handlePageChange}
+                color="primary"
+                shape="rounded"
+                disabled={loading}
+                sx={{
+                  "& .MuiPaginationItem-root": {
+                    color: "#666",
+                    "&.Mui-selected": {
+                      backgroundColor: "#EC80B1",
+                      color: "white",
+                      "&:hover": {
+                        backgroundColor: "#d66d9e",
                       },
                     },
-                  }}
-                />
-              </Stack>
-            )}
+                    "&:hover": {
+                      backgroundColor: "rgba(236, 128, 177, 0.1)",
+                    },
+                  },
+                }}
+              />
+            </Box>
           </Paper>
         </Grid>
       </Grid>

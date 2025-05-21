@@ -23,6 +23,7 @@ import Dashboard from "./pages/admin/DashBoard";
 import ManageBooking from "./pages/admin/ManageBooking";
 import ManageRoom from "./pages/admin/ManageRoom";
 import { AuthProvider } from "./contexts/AuthProvider";
+import UserMenu from "./components/public/UserMenu";
 import BookingHistoryPage from "./pages/public/BookingHistoryPage";
 
 const AppRoutes = () => {
@@ -46,8 +47,8 @@ const AppRoutes = () => {
               {/* Admin */}
               <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<Dashboard />} />
-                {/* <Route path="/booking" element={<Booking />} /> */}
-                {/* <Route path="/manage-room" element={<ManageRoom />} /> */}
+                <Route path="booking" element={<ManageBooking />} />
+                <Route path="manage-room" element={<ManageRoom />} />
               </Route>
 
               {/* User */}
