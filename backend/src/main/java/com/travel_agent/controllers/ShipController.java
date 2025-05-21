@@ -206,4 +206,14 @@ public class ShipController {
                 .responseCode(HttpStatus.OK.value())
                 .build());
     }
+
+    @GetMapping("/suggest")
+    public ResponseEntity<ResponseObject> suggestShipNames(@RequestParam("q") String keyword) {
+        List<String> names = shipService.suggestShipNames(keyword);
+        return ResponseEntity.ok(ResponseObject.builder()
+            .message("Hotel names suggestion")
+            .data(names)
+            .responseCode(HttpStatus.OK.value())
+            .build());
+    }
 }

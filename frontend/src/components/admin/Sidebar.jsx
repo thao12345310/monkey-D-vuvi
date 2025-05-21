@@ -4,6 +4,7 @@ import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../../theme";
+import adminLogo from "../../assets/admin.png";
 import EditCalendarOutlinedIcon from "@mui/icons-material/EditCalendarOutlined";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
@@ -16,6 +17,11 @@ import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import BedOutlinedIcon from "@mui/icons-material/BedOutlined";
+import DirectionsBoatOutlinedIcon from "@mui/icons-material/DirectionsBoatOutlined";
+import RestaurantOutlinedIcon from "@mui/icons-material/RestaurantOutlined";
+import CleaningServicesOutlinedIcon from "@mui/icons-material/CleaningServicesOutlined";
+import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
+import EventAvailableOutlinedIcon from "@mui/icons-material/EventAvailableOutlined";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -96,7 +102,7 @@ const Sidebar = () => {
                   alt="profile-user"
                   width="100px"
                   height="100px"
-                  src={`../../assets/user.png`}
+                  src={adminLogo}
                   style={{ cursor: "pointer", borderRadius: "50%" }}
                 />
               </Box>
@@ -107,10 +113,10 @@ const Sidebar = () => {
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
-                  Ed Roh
+                  Luxury Yacht
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
-                  VP Fancy Admin
+                  Hệ thống quản lý
                 </Typography>
               </Box>
             </Box>
@@ -118,7 +124,7 @@ const Sidebar = () => {
 
           <Box paddingLeft={isCollapsed ? undefined : "10%"}>
             <Item
-              title="Dashboard"
+              title="Tổng quan"
               to="/admin"
               icon={<HomeOutlinedIcon />}
               selected={selected}
@@ -130,26 +136,47 @@ const Sidebar = () => {
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px" }}
             >
-              Data
+              Quản lý
             </Typography>
             <Item
-              title="Quản lý đặt phòng"
+              title="Đặt phòng/Đặt thuyền"
               to="/admin/booking"
               icon={<EditCalendarOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
-              title="Thông tin phòng"
+              title="Phòng/Thuyền"
               to="/admin/manage-room"
               icon={<BedOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
-              title="Invoices Balances"
-              to="/admin/invoices"
-              icon={<ReceiptOutlinedIcon />}
+              title="Nhà hàng"
+              to="/admin/restaurant"
+              icon={<RestaurantOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Dịch vụ vệ sinh"
+              to="/admin/cleaning"
+              icon={<CleaningServicesOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Nhân viên"
+              to="/admin/staff"
+              icon={<GroupOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Sự kiện"
+              to="/admin/events"
+              icon={<EventAvailableOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
@@ -159,61 +186,32 @@ const Sidebar = () => {
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px" }}
             >
-              Pages
+              Báo cáo
             </Typography>
             <Item
-              title="Profile Form"
-              to="/admin/form"
-              icon={<PersonOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Calendar"
-              to="/admin/calendar"
-              icon={<CalendarTodayOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="FAQ Page"
-              to="/admin/faq"
-              icon={<HelpOutlineOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-
-            <Typography
-              variant="h6"
-              color={colors.grey[300]}
-              sx={{ m: "15px 0 5px 20px" }}
-            >
-              Charts
-            </Typography>
-            <Item
-              title="Bar Chart"
-              to="/admin/bar"
+              title="Doanh thu"
+              to="/admin/revenue"
               icon={<BarChartOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
-              title="Pie Chart"
-              to="/admin/pie"
+              title="Phân tích"
+              to="/admin/analytics"
               icon={<PieChartOutlineOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
-              title="Line Chart"
-              to="/admin/line"
+              title="Xu hướng"
+              to="/admin/trends"
               icon={<TimelineOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
-              title="Geography Chart"
-              to="/admin/geography"
+              title="Bản đồ"
+              to="/admin/map"
               icon={<MapOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}

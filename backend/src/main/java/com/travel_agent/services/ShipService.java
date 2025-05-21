@@ -17,6 +17,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -620,5 +622,15 @@ public class ShipService {
                 room.getMaxPersons(),
                 images.isEmpty() ? null : images
         );
+    }
+
+    public List<String> suggestShipNames(String keyword) {
+        return shipRepository.findByShipNameContainingIgnoreCase(keyword)
+            .stream()
+            .map(ShipEntity::getShipName)
+            .filter(Objects::nonNull)
+            .distinct()
+            .limit(10) // Giới hạn 10 gợi ý
+            .collect(Collectors.toList());
     }
 }
