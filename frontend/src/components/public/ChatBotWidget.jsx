@@ -41,9 +41,12 @@ const ChatBotWidget = ({ isOpen, setIsOpen }) => {
                     body: JSON.stringify({ message: trimmedInput }),
                 });
 
-                const data = response.data.data;
+                const data = await response.json();
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
                 console.log("Reponse from chatbot: ",data);
-                const botResponse = { id: messages.length + 2, text: data.message, sender: "bot" };
+                const botResponse = { id: messages.length + 2, text: data.data, sender: "bot" };
                 setMessages((prev) => [...prev, botResponse]);
             } catch (error) {
                 console.error("Error sending message:", error);
