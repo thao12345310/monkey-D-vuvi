@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface ShipRoomRepository extends JpaRepository<ShipRoomEntity, Integer> {
     List<ShipRoomEntity> findByShip_ShipId(Integer shipId);
+
+   ShipRoomEntity findByShipRoomId(Integer shipRoomId);
 }

@@ -1,7 +1,5 @@
 package com.travel_agent.dto.ship;
 
-import com.travel_agent.dto.hotel.HotelLongDescriptionDTO;
-import com.travel_agent.dto.hotel.HotelRoomDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

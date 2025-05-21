@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import com.travel_agent.services.UserService;
 import com.travel_agent.annotation.CurrentUserId;
 import com.travel_agent.dto.UserDTO;
-import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
@@ -36,10 +35,12 @@ public class CurrentUserIdResolver implements HandlerMethodArgumentResolver {
                                   WebDataBinderFactory binderFactory) throws Exception {
         // Giả sử username được lưu trong SecurityContext (ví dụ từ JWT token)
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(authentication);
         String username = authentication.getName();
-
+        System.out.println(username);
         // Lấy userId từ username
         UserDTO user = userService.findByUsername(username);
+        System.out.println(user);
         return user.getUserId();
     }
 }

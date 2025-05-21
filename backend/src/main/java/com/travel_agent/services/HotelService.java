@@ -4,13 +4,14 @@ import com.travel_agent.dto.*;
 import com.travel_agent.dto.hotel.HotelDTO;
 import com.travel_agent.dto.hotel.HotelLongDescriptionDTO;
 import com.travel_agent.dto.hotel.HotelRoomDTO;
+import com.travel_agent.mappers.HotelMapper;
 import com.travel_agent.models.entity.hotel.*;
 import com.travel_agent.repositories.*;
 import com.travel_agent.repositories.hotel.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import com.travel_agent.mapper.HotelMapper;
+
 import com.travel_agent.models.entity.CompanyEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
@@ -128,34 +129,7 @@ public class HotelService {
         // Fetch rooms
         List<HotelRoomEntity> hotelRoomEntities = hotelRoomRepository.findByHotel_HotelId(hotelId);
         List<HotelRoomDTO> roomDtos = hotelRoomEntities.stream()
-                .map(room -> {
-                    List<Integer> roomFeatureIds = hotelRoomFeatureRepository.findByHotelRoomId(room.getHotelRoomId())
-                            .stream()
-                            .map(HotelRoomFeatureEntity::getRoomFeaturesId)
-                            .toList();
-                    List<String> roomFeatures = roomFeatureIds.stream()
-                            .map(featureId -> featureRepository.findById(featureId)
-                                    .orElseThrow(() -> new IllegalArgumentException("Feature not found with ID: " + featureId))
-                                    .getFeatureDescription())
-                            .toList();
-                    List<String> images = hotelRoomImageRepository.findByRoomId(room.getHotelRoomId())
-                            .stream()
-                            .map(HotelRoomImageEntity::getImgUrl)
-                            .toList();
-
-                    return new HotelRoomDTO(
-                            room.getHotelRoomId(),
-                            room.getRoomName(),
-                            room.getRoomPrice(),
-                            roomFeatureIds,
-                            roomFeatures.isEmpty() ? null : roomFeatures,
-                            room.getSize(),
-                            room.getMaxPersons(),
-                            room.getBedType(),
-                            room.getView(),
-                            images.isEmpty() ? null : images
-                    );
-                })
+                .map(room -> getHotelRoomDetails(room.getHotelRoomId()))
                 .toList();
         hotelDto.setRooms(roomDtos.isEmpty() ? null : roomDtos);
 
@@ -178,36 +152,9 @@ public class HotelService {
         List<HotelRoomEntity> hotelRoomEntities = hotelRoomRepository.findByHotel_HotelId(hotelId);
 
         // Map entities to DTOs
-        return hotelRoomEntities.stream().map(room -> {
-            List<Integer> roomFeatureIds = hotelRoomFeatureRepository.findByHotelRoomId(room.getHotelRoomId())
-                    .stream()
-                    .map(HotelRoomFeatureEntity::getRoomFeaturesId)
-                    .toList();
-
-            List<String> roomFeatures = roomFeatureIds.stream()
-                    .map(featureId -> featureRepository.findById(featureId)
-                            .orElseThrow(() -> new IllegalArgumentException("Feature not found with ID: " + featureId))
-                            .getFeatureDescription())
-                    .toList();
-
-            List<String> images = hotelRoomImageRepository.findByRoomId(room.getHotelRoomId())
-                    .stream()
-                    .map(HotelRoomImageEntity::getImgUrl)
-                    .toList();
-
-            return new HotelRoomDTO(
-                    room.getHotelRoomId(),
-                    room.getRoomName(),
-                    room.getRoomPrice(),
-                    roomFeatureIds,
-                    roomFeatures.isEmpty() ? null : roomFeatures,
-                    room.getSize(),
-                    room.getMaxPersons(),
-                    room.getBedType(),
-                    room.getView(),
-                    images.isEmpty() ? null : images
-            );
-        }).toList();
+        return hotelRoomEntities.stream()
+                .map(room -> getHotelRoomDetails(room.getHotelRoomId()))
+                .toList();
     }
 
     private void populateHotelEntity(HotelEntity hotelEntity, HotelDTO hotelDto) {
@@ -637,5 +584,37 @@ public class HotelService {
                 .distinct()
                 .sorted(String::compareToIgnoreCase)
                 .collect(Collectors.toList());
+    }
+
+    public HotelRoomDTO getHotelRoomDetails(Integer hotelRoomId) {
+        HotelRoomEntity room = hotelRoomRepository.findById(hotelRoomId)
+                .orElseThrow(() -> new IllegalArgumentException("Hotel room not found with ID: " + hotelRoomId));
+
+        List<Integer> roomFeatureIds = hotelRoomFeatureRepository.findByHotelRoomId(hotelRoomId)
+                .stream()
+                .map(HotelRoomFeatureEntity::getRoomFeaturesId)
+                .toList();
+        List<String> roomFeatures = roomFeatureIds.stream()
+                .map(featureId -> featureRepository.findById(featureId)
+                        .orElseThrow(() -> new IllegalArgumentException("Feature not found with ID: " + featureId))
+                        .getFeatureDescription())
+                .toList();
+        List<String> images = hotelRoomImageRepository.findByRoomId(hotelRoomId)
+                .stream()
+                .map(HotelRoomImageEntity::getImgUrl)
+                .toList();
+
+        return new HotelRoomDTO(
+                room.getHotelRoomId(),
+                room.getRoomName(),
+                room.getRoomPrice(),
+                roomFeatureIds,
+                roomFeatures.isEmpty() ? null : roomFeatures,
+                room.getSize(),
+                room.getMaxPersons(),
+                room.getBedType(),
+                room.getView(),
+                images.isEmpty() ? null : images
+        );
     }
 }

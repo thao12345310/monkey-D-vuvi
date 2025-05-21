@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthProvider";
 const UserMenu = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);

@@ -22,8 +22,7 @@ import AdminLayout from "./components/admin/AdminLayout";
 import Dashboard from "./pages/admin/DashBoard";
 import ManageBooking from "./pages/admin/ManageBooking";
 import ManageRoom from "./pages/admin/ManageRoom";
-import { AuthProvider } from "./contexts/AuthContext";
-import UserBookings from "./components/UserBookings";
+import { AuthProvider } from "./contexts/AuthProvider";
 import BookingHistoryPage from "./pages/public/BookingHistoryPage";
 
 const AppRoutes = () => {
@@ -80,7 +79,7 @@ const AppRoutes = () => {
 };
 
 const App = () => {
-    return (
+    return (  
         <AuthProvider>
             <Router>
                 <AppRoutes />

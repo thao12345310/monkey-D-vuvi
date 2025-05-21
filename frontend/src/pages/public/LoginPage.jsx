@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import config from "../../config";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthProvider";
 
 function LoginPage() {
     const navigate = useNavigate();

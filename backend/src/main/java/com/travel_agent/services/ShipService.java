@@ -4,19 +4,19 @@ import com.travel_agent.dto.*;
 import com.travel_agent.dto.ship.ShipDTO;
 import com.travel_agent.dto.ship.ShipLongDescriptionDTO;
 import com.travel_agent.dto.ship.ShipRoomDTO;
+import com.travel_agent.mappers.ShipMapper;
 import com.travel_agent.models.entity.ship.*;
 import com.travel_agent.repositories.*;
 import com.travel_agent.repositories.ship.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import com.travel_agent.mapper.ShipMapper;
+
 import com.travel_agent.models.entity.CompanyEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -93,7 +93,6 @@ public class ShipService {
     public ShipDTO getShipDetails(Integer shipId) {
         ShipEntity shipEntity = shipRepository.findById(shipId)
                 .orElseThrow(() -> new IllegalArgumentException("Ship not found with ID: " + shipId));
-
         ShipDTO shipDto = shipMapper.shipToShipDTO(shipEntity);
 
         // Fetch features
@@ -127,41 +126,9 @@ public class ShipService {
         // Fetch rooms
         List<ShipRoomEntity> shipRoomEntities = shipRoomRepository.findByShip_ShipId(shipId);
         List<ShipRoomDTO> roomDtos = shipRoomEntities.stream()
-                .map(room -> {
-                    List<Integer> roomFeatureIds = shipRoomFeatureRepository.findByShipRoomId(room.getShipRoomId())
-                            .stream()
-                            .map(ShipRoomFeatureEntity::getRoomFeaturesId)
-                            .toList();
-                    List<String> roomFeatures = roomFeatureIds.stream()
-                            .map(featureId -> featureRepository.findById(featureId)
-                                    .orElseThrow(() -> new IllegalArgumentException("Feature not found with ID: " + featureId))
-                                    .getFeatureDescription())
-                            .toList();
-                    List<String> images = shipRoomImageRepository.findByRoomId(room.getShipRoomId())
-                            .stream()
-                            .map(ShipRoomImageEntity::getImgUrl)
-                            .toList();
-
-                    return new ShipRoomDTO(
-                            room.getShipRoomId(),
-                            room.getRoomName(),
-                            room.getRoomPrice(),
-                            roomFeatureIds,
-                            roomFeatures.isEmpty() ? null : roomFeatures,
-                            room.getSize(),
-                            room.getMaxPersons(),
-                            images.isEmpty() ? null : images
-                    );
-                })
+                .map(room -> getShipRoomDetails(room.getShipRoomId()))
                 .toList();
         shipDto.setRooms(roomDtos.isEmpty() ? null : roomDtos);
-
-        // Fetch images
-        List<String> images = shipImageRepository.findByShipId(shipId)
-                .stream()
-                .map(ShipImageEntity::getImgUrl)
-                .toList();
-        shipDto.setImages(images.isEmpty() ? null : images);
 
         return shipDto;
     }
@@ -616,5 +583,35 @@ public class ShipService {
 
         // Delete the ship rooms
         shipRoomRepository.deleteAll(roomsToDelete);
+    }
+
+    public ShipRoomDTO getShipRoomDetails(Integer shipRoomId) {
+        ShipRoomEntity room = shipRoomRepository.findById(shipRoomId)
+                .orElseThrow(() -> new IllegalArgumentException("Ship room not found with ID: " + shipRoomId));
+
+        List<Integer> roomFeatureIds = shipRoomFeatureRepository.findByShipRoomId(shipRoomId)
+                .stream()
+                .map(ShipRoomFeatureEntity::getRoomFeaturesId)
+                .toList();
+        List<String> roomFeatures = roomFeatureIds.stream()
+                .map(featureId -> featureRepository.findById(featureId)
+                        .orElseThrow(() -> new IllegalArgumentException("Feature not found with ID: " + featureId))
+                        .getFeatureDescription())
+                .toList();
+        List<String> images = shipRoomImageRepository.findByRoomId(shipRoomId)
+                .stream()
+                .map(ShipRoomImageEntity::getImgUrl)
+                .toList();
+
+        return new ShipRoomDTO(
+                room.getShipRoomId(),
+                room.getRoomName(),
+                room.getRoomPrice(),
+                roomFeatureIds,
+                roomFeatures.isEmpty() ? null : roomFeatures,
+                room.getSize(),
+                room.getMaxPersons(),
+                images.isEmpty() ? null : images
+        );
     }
 }

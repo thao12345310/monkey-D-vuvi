@@ -38,16 +38,21 @@ public class SecurityConfig {
     }
 
     @Bean
-    protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable())
-                .authorizeRequests(requests -> requests
-                        .requestMatchers("/api/auth/**").permitAll() // Allow login endpoints
-                        .requestMatchers("/api/**").hasAnyRole("COMPANY", "USER") // Restrict other endpoints
-                        .and()
-                        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class));
+    public SecurityFilterChain configure(HttpSecurity http) throws Exception {
+        http
+            .cors(cors -> cors.configurationSource(corsConfigurationSource())) 
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(authorize -> authorize
+                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/booking/**").permitAll()
+                .requestMatchers("/api/**").hasAnyRole("COMPANY", "USER")
+                .anyRequest().permitAll()
+            )
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+    
         return http.build();
     }
-
+    
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
@@ -55,9 +60,10 @@ public class SecurityConfig {
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
-
+    
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/api/**", config);
+        source.registerCorsConfiguration("/**", config); // Đảm bảo bắt mọi request
         return source;
     }
+    
 }
