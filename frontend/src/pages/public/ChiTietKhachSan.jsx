@@ -2,7 +2,38 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Thumbs } from "swiper/modules";
-import { FaStar, FaSwimmingPool, FaCocktail, FaUtensils, FaConciergeBell, FaBath } from "react-icons/fa";
+import {
+    FaStar,
+    FaSwimmingPool,
+    FaCocktail,
+    FaUtensils,
+    FaConciergeBell,
+    FaBath,
+    FaWifi,
+    FaSnowflake,
+    FaTv,
+    FaCoffee,
+    FaUmbrellaBeach,
+    FaParking,
+    FaShuttleVan,
+    FaWater,
+    FaDumbbell,
+    FaSpa,
+    FaMobileAlt,
+    FaWindowMaximize,
+    FaHotTub,
+    FaShip,
+    FaLock,
+    FaSmokingBan,
+    FaMinus,
+    FaDeskpro,
+    FaDoorOpen,
+    FaShower,
+    FaBed,
+    FaWineGlassAlt,
+    FaWind
+} from "react-icons/fa";
+import { IoWaterOutline } from "react-icons/io5";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -50,7 +81,7 @@ const GallerySlider = ({ images }) => {
                         <img
                             src={img}
                             alt={`Thumb ${index}`}
-                            className="w-full h-20 object-cover rounded-md border-2 border-transparent hover:border-blue-400 cursor-pointer"
+                            className="w-full h-20 object-cover rounded-md border-2 border-transparent hover:border-pink-400 cursor-pointer"
                         />
                     </SwiperSlide>
                 ))}
@@ -69,20 +100,67 @@ const tabs = [
 
 const TabNav = ({ activeTab, setActiveTab }) => {
     return (
-        <div className="flex space-x-6 border-b pb-2">
-            {tabs.map((tab) => (
-                <button
-                    key={tab.id}
-                    className={`pb-2 border-b-2 ${
-                        activeTab === tab.id ? "border-primary text-primary font-semibold" : "border-transparent text-gray-500"
-                    } transition-all`}
-                    onClick={() => setActiveTab(tab.id)}
-                >
-                    {tab.label}
-                </button>
-            ))}
+        <div className="sticky top-0 z-10 bg-white border-b border-pink-100 pb-2">
+            <div className="flex space-x-6">
+                {tabs.map((tab) => (
+                    <button
+                        key={tab.id}
+                        className={`pb-2 border-b-2 ${
+                            activeTab === tab.id
+                                ? "border-pink-500 text-pink-600 font-semibold"
+                                : "border-transparent text-gray-500 hover:text-pink-500"
+                        } transition-all`}
+                        onClick={() => setActiveTab(tab.id)}
+                    >
+                        {tab.label}
+                    </button>
+                ))}
+            </div>
         </div>
     );
+};
+
+const featureIcons = {
+    "Bồn tắm/Cabin tắm đứng": FaShower,
+    "Phòng không hút thuốc": FaSmokingBan,
+    Minibar: FaWineGlassAlt,
+    "Trà/cà phê trong tất cả các phòng": FaCoffee,
+    "Bàn làm việc": FaDeskpro,
+    "Ban công riêng": FaDoorOpen,
+    "Ban công/Cửa sổ": FaWindowMaximize,
+    "Miễn phí xe đưa đón": FaShuttleVan,
+    "Chỗ đỗ xe": FaParking,
+    "Giáp biển": FaUmbrellaBeach,
+    "Nước đóng chai miễn phí": FaWater,
+    "Lễ tân 24 giờ": FaConciergeBell,
+    "Máy sấy tóc": FaWind,
+    "Quầy bar": FaCocktail,
+    "Bể bơi ngoài trời": FaSwimmingPool,
+    Tivi: FaTv,
+    "Phòng có bồn tắm": FaBath,
+    "Wi-Fi miễn phí": FaWifi,
+    "Điều hòa": FaSnowflake,
+    "Nhà hàng": FaUtensils,
+    "Wi-Fi": FaWifi,
+    "Đi tuyến Lan Hạ": FaShip,
+    "Lễ tân 24h": FaConciergeBell,
+    "Wifi miễn phí": FaWifi,
+    "Miễn phí kayaking": IoWaterOutline,
+    "Bao gồm tất cả các bữa ăn": FaUtensils,
+    "Nhà hàng": FaUtensils,
+    "Trung tâm thể dục": FaDumbbell,
+    "Trung tâm Spa & chăm sóc sức khoẻ": FaSpa,
+    "Sạc điện thoại": FaMobileAlt,
+    "Nhìn ra biển": FaUmbrellaBeach,
+    "Phòng gia đình": FaBed,
+    "Có bể bơi ngoài trời": FaSwimmingPool,
+    "Chỗ đỗ xe miễn phí": FaParking,
+    "Cửa sổ từ sàn đến trần": FaWindowMaximize,
+    "Khu vực bãi tắm riêng": FaUmbrellaBeach,
+    "Có bể sục": FaHotTub,
+    "Hồ bơi có tầm nhìn": IoWaterOutline,
+    "Két an toàn": FaLock,
+    "Du thuyền 5 sao": FaShip,
 };
 
 // ================= HIGHLIGHTS TAB =================
@@ -98,45 +176,38 @@ const Highlights = ({ hotelData }) => {
             <div className="md:col-span-2 space-y-6">
                 {/* Features */}
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-                    {hotelData.features.map((feature, index) => (
-                        <div key={index} className="flex items-center space-x-2">
-                            <div className="text-primary">
-                                {feature === "Nhà hàng" ? (
-                                    <FaUtensils size={24} />
-                                ) : feature === "Lễ tân 24h" ? (
-                                    <FaConciergeBell size={24} />
-                                ) : feature === "Phòng gia đình" ? (
-                                    <FaBath size={24} />
-                                ) : feature === "Hồ bơi" ? (
-                                    <FaSwimmingPool size={24} />
-                                ) : (
-                                    <FaCocktail size={24} />
-                                )}
+                    {hotelData.features.map((feature, index) => {
+                        const Icon = featureIcons[feature] || FaMinus; // Fallback icon if not found
+                        return (
+                            <div key={index} className="flex items-center space-x-2">
+                                <div className="text-gray-700">
+                                    <Icon size={24} />
+                                </div>
+                                <span className="text-gray-700">{feature}</span>
                             </div>
-                            <span>{feature}</span>
-                        </div>
-                    ))}
+                        );  
+                    })}
                 </div>
 
                 {/* Description */}
                 <div className="space-y-3">
                     {hotelData.shortDescriptions.map((desc, idx) => (
                         <div key={idx} className="flex items-start space-x-2">
-                            <span className="text-primary">✔️</span>
-                            <p>{desc}</p>
+                            <span className="text-gray-700">✔️</span>
+                            <p className="text-gray-700">{desc}</p>
                         </div>
                     ))}
                 </div>
             </div>
 
             {/* Right */}
-            <div className="border p-4 rounded-xl shadow-md bg-gray-50 h-fit">
-                <h3 className="text-lg font-semibold mb-4">Thông tin khách sạn</h3>
+            <div className="border border-gray-100 p-4 rounded-xl shadow-md bg-white h-fit">
+                <h3 className="text-lg font-semibold mb-4 text-pink-600">Thông tin khách sạn</h3>
                 <div className="space-y-3">
                     {hotelInfo.map((info, idx) => (
                         <div key={idx} className="flex justify-between text-sm gap-20">
                             <span className="text-gray-600 w-30">{info.label}</span>
-                            <span className="font-semibold text-right w-full">{info.value}</span>
+                            <span className="font-semibold text-gray-800 text-right w-full">{info.value}</span>
                         </div>
                     ))}
                 </div>
@@ -204,13 +275,13 @@ const Rooms = ({ hotelData }) => {
     return (
         <div className="space-y-6 py-6">
             <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-bold">Các loại phòng & giá</h2>
-                <button onClick={resetSelections} className="text-sm text-gray-500 hover:text-primary flex items-center">
+                <h2 className="text-2xl font-bold text-gray-800">Các loại phòng & giá</h2>
+                <button onClick={resetSelections} className="text-sm text-gray-500 hover:text-gray-700 flex items-center">
                     ❌ Xoá lựa chọn
                 </button>
             </div>
 
-            <div className="bg-gray-50 p-6 rounded-2xl space-y-4">
+            <div className="bg-white p-6 rounded-2xl space-y-4 border border-gray-100">
                 {hotelData.rooms.map((room) => (
                     <RoomItem
                         key={room.roomId}
@@ -224,7 +295,7 @@ const Rooms = ({ hotelData }) => {
                 {/* Tổng tiền và nút đặt phòng */}
                 <div className="flex justify-between items-center mt-6">
                     <div className="text-lg">
-                        Tổng tiền: <span className="font-bold text-primary">{totalPrice.toLocaleString("vi-VN")} đ</span>
+                        Tổng tiền: <span className="font-bold text-gray-800">{totalPrice.toLocaleString("vi-VN")} đ</span>
                     </div>
 
                     <div className="space-x-4">
@@ -250,7 +321,7 @@ const Rooms = ({ hotelData }) => {
             />
 
             {/* Booking Modal */}
-            {showBookModal && <BookModal roomsData={selectedRoom} onClose={handleCloseModal} type="hotel" hotelId={hotelData.hotelId}/>}
+            {showBookModal && <BookModal roomsData={selectedRoom} onClose={handleCloseModal} type="hotel" hotelId={hotelData.hotelId} />}
         </div>
     );
 };
@@ -293,6 +364,10 @@ const ChiTietKhachSan = () => {
     const [hotelData, setHotelData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [showBookModal, setShowBookModal] = useState(false);
+    const [selectedRoom, setSelectedRoom] = useState(null);
+    const [showRoomDetailModal, setShowRoomDetailModal] = useState(false);
+    const [roomForDetail, setRoomForDetail] = useState(null);
 
     useEffect(() => {
         const fetchHotelData = async () => {
@@ -315,7 +390,7 @@ const ChiTietKhachSan = () => {
         return (
             <div className="container mx-auto px-4 py-8">
                 <div className="flex justify-center items-center h-64">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500"></div>
                 </div>
             </div>
         );
@@ -342,36 +417,53 @@ const ChiTietKhachSan = () => {
     }
 
     return (
-        <div className="container mx-auto p-4">
-            {/* ===== Title + Rating Section ===== */}
-            <div className="mb-10">
-                <h1 className="text-3xl font-bold mb-2">{hotelData.hotelName}</h1>
-                <div className="flex items-center space-x-4 text-gray-600 text-sm">
-                    <div className="flex items-center space-x-1 text-yellow-400">
-                        {[...Array(5)].map((_, idx) => (
-                            <FaStar key={idx} />
-                        ))}
+        <div className="min-h-screen bg-gray-50">
+            <div className="container mx-auto px-4 py-8 max-w-7xl">
+                {/* ===== Title + Rating Section ===== */}
+                <div className="mb-8">
+                    <h1 className="text-3xl font-bold mb-2 text-gray-800">{hotelData.hotelName}</h1>
+                    <div className="flex items-center space-x-4 text-gray-600 text-sm">
+                        <div className="flex items-center space-x-1 text-pink-500">
+                            {[...Array(5)].map((_, idx) => (
+                                <FaStar key={idx} />
+                            ))}
+                        </div>
+                        <span>5.0</span>
+                        <span>• 200 đánh giá</span>
+                        <span>• {hotelData.address}</span>
                     </div>
-                    <span>5.0</span>
-                    <span>• 200 đánh giá</span>
-                    <span>• {hotelData.address}</span>
+                </div>
+
+                {/* ===== GallerySlider Section ===== */}
+                <div className="mb-8">
+                    <GallerySlider images={hotelData.images} />
+                </div>
+
+                {/* ===== Tab Navigation and Content ===== */}
+                <div className="bg-white rounded-xl shadow-sm p-6">
+                    <TabNav activeTab={activeTab} setActiveTab={setActiveTab} />
+
+                    <div className="mt-6">
+                        {activeTab === 1 && <Highlights hotelData={hotelData} />}
+                        {activeTab === 2 && <Rooms hotelData={hotelData} />}
+                        {activeTab === 3 && <Introduction hotelData={hotelData} />}
+                        {activeTab === 4 && <ReviewsShip shipId={id} />}
+                    </div>
                 </div>
             </div>
 
-            {/* ===== GallerySlider Section ===== */}
-            <div className="mb-10">
-                <GallerySlider images={hotelData.images} />
-            </div>
-
-            {/* ===== Tab Navigation and Content ===== */}
-            <TabNav activeTab={activeTab} setActiveTab={setActiveTab} />
-
-            <div className="mt-6">
-                {activeTab === 1 && <Highlights hotelData={hotelData} />}
-                {activeTab === 2 && <Rooms hotelData={hotelData} />}
-                {activeTab === 3 && <Introduction hotelData={hotelData} />}
-                {activeTab === 4 && <ReviewsShip shipId={id} />}
-            </div>
+            {/* Modals */}
+            {showBookModal && (
+                <BookModal
+                    roomsData={selectedRoom}
+                    onClose={() => {
+                        setShowBookModal(false);
+                        setSelectedRoom(null);
+                    }}
+                    type="hotel"
+                    hotelId={hotelData.hotelId}
+                />
+            )}
         </div>
     );
 };

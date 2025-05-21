@@ -34,9 +34,9 @@ const UserMenu = () => {
         onClick={() => setIsMenuOpen(!isMenuOpen)}
         className="flex items-center gap-2 text-gray-900 hover:text-[#FFB8E5] transition-colors duration-200"
       >
-        <UserCircleIcon className="h-6 w-6" />
+        <UserCircleIcon className="h-7 w-7" />
         {isAuthenticated && (
-          <span className="text-sm font-semibold">Tài khoản</span>
+          <span className="text-base font-semibold">Tài khoản</span>
         )}
       </button>
 

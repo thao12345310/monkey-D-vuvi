@@ -1,14 +1,20 @@
 import BookingItemCard from "./BookingItemTab";
 
 export default function BookingList({ bookings, onItemClick, type }) {
+  // Lọc ra những booking có dữ liệu cụ thể
+  const validBookings = bookings.filter((booking) =>
+    type === "ship" ? booking.ship : booking.hotel
+  );
+
+  // Nếu không có dữ liệu hợp lệ
+  if (validBookings.length === 0) {
+    return <div className="mt-4 text-gray-500">Không có dữ liệu</div>;
+  }
+
   return (
     <div className="mt-4 space-y-4">
-      {bookings.map((booking) => {
-        // Lấy thông tin tương ứng theo loại booking
+      {validBookings.map((booking) => {
         const specificInfo = type === "ship" ? booking.ship : booking.hotel;
-
-        // Nếu thiếu dữ liệu (có thể do API trả về null), thì bỏ qua
-        if (!specificInfo) return null;
 
         return (
           <BookingItemCard
@@ -16,6 +22,7 @@ export default function BookingList({ bookings, onItemClick, type }) {
             booking={booking}
             specificInfo={specificInfo}
             onClick={onItemClick}
+            type={type}
           />
         );
       })}
