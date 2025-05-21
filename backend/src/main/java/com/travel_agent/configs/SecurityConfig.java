@@ -45,6 +45,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/booking/**").permitAll()
+                .requestMatchers("/api/chatbot/**").permitAll()
                 .requestMatchers("/api/**").hasAnyRole("COMPANY", "USER")
                 .anyRequest().permitAll()
             )
