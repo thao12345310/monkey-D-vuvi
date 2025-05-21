@@ -4,12 +4,10 @@ import MarkdownIt from "markdown-it";
 import useAuth from "../../contexts/AuthProvider";
 import config from "../../config";
 const ChatBotWidget = ({ isOpen, setIsOpen }) => {
-  const [messages, setMessages] = useState([
-    { id: 1, text: "Hey there 👋\nHow can I help you today?", sender: "bot" },
-  ]);
-  const [inputValue, setInputValue] = useState("");
-  const messagesEndRef = useRef(null);
-  const {token} = useAuth();
+    const [messages, setMessages] = useState([{ id: 1, text: "Hey there 👋\nHow can I help you today?", sender: "bot" }]);
+    const [inputValue, setInputValue] = useState("");
+    const messagesEndRef = useRef(null);
+    const { token } = useAuth();
 
     const md = new MarkdownIt({
         html: true,
@@ -33,18 +31,19 @@ const ChatBotWidget = ({ isOpen, setIsOpen }) => {
             setMessages((prev) => [...prev, newMessage]);
             setInputValue("");
 
-      try {
-        const response = await fetch(`${config.api.url}/api/chatbot`, {
-          method: "POST",
-          headers: { 
-            Authorization: `Bearer ${token}`, 
-            "Content-Type": "application/json" 
-          },
-          body: JSON.stringify({ message: trimmedInput }),
-        });
+            try {
+                const response = await fetch(`${config.api.url}/api/chatbot`, {
+                    method: "POST",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ message: trimmedInput }),
+                });
 
-                const data = await response.json();
-                const botResponse = { id: messages.length + 2, text: data.reply, sender: "bot" };
+                const data = response.data.data;
+                console.log("Reponse from chatbot: ",data);
+                const botResponse = { id: messages.length + 2, text: data.message, sender: "bot" };
                 setMessages((prev) => [...prev, botResponse]);
             } catch (error) {
                 console.error("Error sending message:", error);
