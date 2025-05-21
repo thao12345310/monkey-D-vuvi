@@ -618,4 +618,13 @@ public class HotelService {
                 images.isEmpty() ? null : images
         );
     }
+    public List<String> suggestHotelNames(String keyword) {
+        return hotelRepository.findByHotelNameContainingIgnoreCase(keyword)
+            .stream()
+            .map(HotelEntity::getHotelName)
+            .filter(Objects::nonNull)
+            .distinct()
+            .limit(10) // Giới hạn 10 gợi ý
+            .collect(Collectors.toList());
+    }
 }
