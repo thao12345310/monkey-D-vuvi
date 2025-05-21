@@ -26,12 +26,18 @@ function RegisterPage() {
         }
 
         try {
-            const response = await axios.post(`${config.api.url}/api/${role}`, {
-                username: username,
-                password: password,
-                role: role,
-                dob: new Date().toISOString().split("T")[0], // Tạm thời set ngày hiện tại
-            });
+            const response = await axios.post(
+                `${config.api.url}/api/${role}`,
+                {
+                    username: username,
+                    password: password,
+                    role: role,
+                    dob: new Date().toISOString().split("T")[0], // Tạm thời set ngày hiện tại
+                },
+                {
+                    withCredentials: true,
+                }
+            );
 
             if (response.data.responseCode === 201) {
                 // Đăng ký thành công, chuyển đến trang đăng nhập

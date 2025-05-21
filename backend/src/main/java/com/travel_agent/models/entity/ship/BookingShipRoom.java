@@ -48,3 +48,4 @@ public class BookingShipRoom {
     @Column(name = "end_date")
     private LocalDate endDate;
 }
+

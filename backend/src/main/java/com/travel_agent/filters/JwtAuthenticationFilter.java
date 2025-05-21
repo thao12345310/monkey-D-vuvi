@@ -22,13 +22,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public JwtAuthenticationFilter(JwtUtils jwtUtils) {
         this.jwtUtils = jwtUtils;
     }
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-
+    
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            response.setStatus(HttpServletResponse.SC_OK);
+            return;  // Bỏ qua JWT check cho preflight request
+        }
+    
         String token = request.getHeader("Authorization");
-
+    
         if (token != null && token.startsWith("Bearer ")) {
             token = token.substring(7);
             try {
@@ -42,17 +46,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 return;
             }
         } else {
-            // Nếu không có token, gán ROLE_USER mặc định
             if (SecurityContextHolder.getContext().getAuthentication() == null) {
                 var defaultAuth = new UsernamePasswordAuthenticationToken(
-                        "guest",  // hoặc null nếu không cần username
+                        "guest",
                         null,
                         Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"))
                 );
                 SecurityContextHolder.getContext().setAuthentication(defaultAuth);
             }
         }
-
+    
         filterChain.doFilter(request, response);
     }
+    
 }

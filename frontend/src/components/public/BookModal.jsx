@@ -1,32 +1,67 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useState, useEffect } from "react";
 import Portal from "../common/Portal";
+import { useAuth } from "../../contexts/AuthProvider";
+import config from "../../config";
 
-const BookModal = ({ bookingData, onClose }) => {
+const BookModal = ({ roomsData, onClose, type, hotelId, shipId }) => {
     const [formData, setFormData] = useState({
-        name: "",
+        hotelId: hotelId,
+        shipId: shipId,
+        customerName: "",
         phone: "",
         email: "",
-        request: "",
-        date: new Date().toISOString().split("T")[0], // mặc định hôm nay
-        guests: "1 Người lớn - 0 Trẻ em",
+        specialRequest: "",
+        startDate: "",
+        endDate: "",
         adults: 1,
         children: 0,
+        totalAmount: 0,
     });
 
     const [showGuestPicker, setShowGuestPicker] = useState(false);
+    const { token } = useAuth();
+    const createBooking = async (bookingData) => {
+        try {
+            console.log(token);
+            const response = await axios.post(config.api.url + "/api/booking", bookingData, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            return response.data;
+        } catch (error) {
+            throw error.response?.data || error.message;
+        }
+    };
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        const roomList = roomsData.map((room) => ({
+            roomId: room.roomInfo.roomId,
+            quantity: room.quantity,
+        }));
 
         // Gửi dữ liệu form tới server hoặc xử lý theo yêu cầu
-        console.log("Đặt phòng:", {
-            bookingData,
+        const bookingData = {
+            type: type.toLowerCase(),
+            roomList,
             ...formData,
-        });
+        };
+
+        console.log("Đặt phòng:", bookingData);
+
+        const response = await createBooking(bookingData);
+        if (response.responseCode === 201) {
+            alert("Booking created successfully!");
+            onClose();
+        } else {
+            alert("Failed to create booking: " + response.message);
+        }
 
         alert("Đặt phòng thành công!");
         onClose();
@@ -40,9 +75,16 @@ const BookModal = ({ bookingData, onClose }) => {
     };
 
     // Tính tổng tiền cho tất cả các phòng đã chọn
-    const totalPrice = bookingData.rooms.reduce((sum, room) => {
-        return sum + room.roomPrice * bookingData.quantities[room.roomId];
+    const totalPrice = roomsData.reduce((sum, room) => {
+        return sum + room.roomInfo.roomPrice * room.quantity;
     }, 0);
+
+    useEffect(() => {
+        setFormData((prev) => ({
+            ...prev,
+            totalAmount: totalPrice,
+        }));
+    }, [totalPrice]);
 
     return (
         <Portal>
@@ -66,24 +108,28 @@ const BookModal = ({ bookingData, onClose }) => {
 
                         {/* Selected Rooms Info */}
                         <div className="space-y-4 mb-6">
-                            {bookingData.rooms.map((room) => (
+                            {roomsData.map((roomData) => (
                                 <div
-                                    key={room.roomId}
+                                    key={roomData.roomInfo.roomId}
                                     className="flex items-center gap-4 border p-4 rounded-lg hover:border-primary transition-colors"
                                 >
-                                    <img src={room.images[0]} alt={room.roomName} className="w-24 h-24 object-cover rounded-lg" />
+                                    <img
+                                        src={roomData.roomInfo.images[0]}
+                                        alt={roomData.roomInfo.roomName}
+                                        className="w-24 h-24 object-cover rounded-lg"
+                                    />
                                     <div className="flex-grow">
-                                        <h3 className="font-semibold text-lg">{room.roomName}</h3>
+                                        <h3 className="font-semibold text-lg">{roomData.roomInfo.roomName}</h3>
                                         <p className="text-sm text-gray-600">
-                                            {room.size} m² · Tối đa {room.maxPersons} khách
+                                            {roomData.roomInfo.size} m² · Tối đa {roomData.roomInfo.maxPersons} khách
                                         </p>
-                                        <p className="text-pink-600 font-bold mt-1">{room.roomPrice.toLocaleString()} đ / KHÁCH</p>
+                                        <p className="text-pink-600 font-bold mt-1">{roomData.roomInfo.roomPrice.toLocaleString()} đ / KHÁCH</p>
                                     </div>
                                     <div className="text-right">
                                         <p className="text-sm text-gray-600">Số lượng:</p>
-                                        <p className="font-semibold">{bookingData.quantities[room.roomId]}</p>
+                                        <p className="font-semibold">{roomData.quantity}</p>
                                         <p className="text-pink-600 font-bold">
-                                            {(room.roomPrice * bookingData.quantities[room.roomId]).toLocaleString()} đ
+                                            {(roomData.roomInfo.roomPrice * roomData.quantity).toLocaleString()} đ
                                         </p>
                                     </div>
                                 </div>
@@ -97,8 +143,8 @@ const BookModal = ({ bookingData, onClose }) => {
                                     <label className="text-sm font-medium">Ngày khởi hành</label>
                                     <input
                                         type="date"
-                                        name="date"
-                                        value={formData.date}
+                                        name="startDate"
+                                        value={formData.startDate}
                                         onChange={handleChange}
                                         className="border p-2 rounded w-full focus:border-primary focus:ring-1 focus:ring-primary transition-all"
                                         required
@@ -177,9 +223,9 @@ const BookModal = ({ bookingData, onClose }) => {
 
                             <input
                                 type="text"
-                                name="name"
+                                name="customerName"
                                 placeholder="Họ và tên"
-                                value={formData.name}
+                                value={formData.customerName}
                                 onChange={handleChange}
                                 className="border p-2 rounded w-full focus:border-primary focus:ring-1 focus:ring-primary transition-all"
                                 required
@@ -206,9 +252,9 @@ const BookModal = ({ bookingData, onClose }) => {
                             />
 
                             <textarea
-                                name="request"
+                                name="specialRequest"
                                 placeholder="Yêu cầu đặc biệt của bạn"
-                                value={formData.request}
+                                value={formData.specialRequest}
                                 onChange={handleChange}
                                 className="border p-2 rounded w-full focus:border-primary focus:ring-1 focus:ring-primary transition-all"
                                 rows={3}

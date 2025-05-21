@@ -2,7 +2,7 @@ package com.travel_agent.services;
 
 import com.travel_agent.dto.CompanyDTO;
 import com.travel_agent.exceptions.ReflectionException;
-import com.travel_agent.mapper.CompanyMapper;
+import com.travel_agent.mappers.CompanyMapper;
 import com.travel_agent.models.entity.CompanyEntity;
 import com.travel_agent.repositories.CompanyRepository;
 import com.travel_agent.utils.ReflectionUtils;

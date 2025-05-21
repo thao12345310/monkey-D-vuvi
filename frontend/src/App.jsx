@@ -80,13 +80,14 @@ const AppRoutes = () => {
 };
 
 const App = () => {
-  return (
-    <AuthProvider>
-      <Router>
-        <AppRoutes />
-      </Router>
-    </AuthProvider>
-  );
+    return (  
+        <AuthProvider>
+            <Router>
+                <AppRoutes />
+            </Router>
+        </AuthProvider>
+    );
+
 };
 
 export default App;
