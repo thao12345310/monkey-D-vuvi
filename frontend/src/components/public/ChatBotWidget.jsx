@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FiMessageSquare, FiSend, FiX } from "react-icons/fi";
 import MarkdownIt from "markdown-it";
-import useAuth from "../../contexts/AuthProvider";
+import {useAuth} from "../../contexts/AuthProvider";
 import config from "../../config";
 const ChatBotWidget = ({ isOpen, setIsOpen }) => {
     const [messages, setMessages] = useState([{ id: 1, text: "Hey there 👋\nHow can I help you today?", sender: "bot" }]);

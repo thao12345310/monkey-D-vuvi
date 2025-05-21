@@ -1,0 +1,17 @@
+# Development image using Node only
+FROM node:20
+
+WORKDIR /app
+
+# Copy package files and install dependencies
+COPY package*.json ./
+RUN npm install
+
+# Copy source code
+COPY . .
+
+# Expose development port (Vite default: 5173)
+EXPOSE 5173
+
+# Start dev server
+CMD ["npm", "run", "dev"]

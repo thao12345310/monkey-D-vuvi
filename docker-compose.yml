@@ -15,7 +15,7 @@ services:
     frontend:
         build:
             context: ./frontend
-            dockerfile: Dockerfile
+            dockerfile: Dockerfile.dev
         ports:
             - "${FRONTEND_PORT:-5173}:5173"
         volumes:
