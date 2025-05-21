@@ -136,45 +136,59 @@ CREATE TABLE ship_room_features (
 );
 
 CREATE TABLE booking_ship_info  (
-  booking_id INTEGER PRIMARY KEY,
+  booking_id SERIAL PRIMARY KEY,
   ship_id INTEGER,
   user_id INTEGER,
+  customer_name VARCHAR,
+  phone VARCHAR,
+  email VARCHAR,
   start_date DATE,
   end_date DATE,
   adults INTEGER,
   children INTEGER,
+  special_request VARCHAR,
   state VARCHAR,
+  total_amount INTEGER,
   FOREIGN KEY (user_id) REFERENCES "user"(user_id),
   FOREIGN KEY (ship_id) REFERENCES ship(ship_id)
 );
 
 CREATE TABLE booking_hotel_info (
-  booking_id INTEGER PRIMARY KEY,
+  booking_id SERIAL PRIMARY KEY,
   hotel_id INTEGER,
   user_id INTEGER,
+  customer_name VARCHAR,
+  phone VARCHAR,
+  email VARCHAR,
   start_date DATE,
   end_date DATE,
   adults INTEGER,
   children INTEGER,
+  special_request VARCHAR,
   state VARCHAR,
+  total_amount INTEGER,
   FOREIGN KEY (user_id) REFERENCES "user"(user_id),
   FOREIGN KEY (hotel_id) REFERENCES hotel(hotel_id)
 );
 
 CREATE TABLE booking_ship_room (
-  booking_id INTEGER PRIMARY KEY,
-  ship_room_id INTEGER,
+  booking_id INTEGER,
+  room_id INTEGER,
+  ship_id INTEGER,
   quantity INTEGER,
-  FOREIGN KEY (ship_room_id) REFERENCES ship_room(ship_room_id),
-  FOREIGN KEY (booking_id) REFERENCES booking_ship_info(booking_id)
+  FOREIGN KEY (room_id) REFERENCES ship_room(ship_room_id),
+  FOREIGN KEY (booking_id) REFERENCES booking_ship_info(booking_id),
+  PRIMARY KEY (booking_id, room_id, ship_id)
 );
 
 CREATE TABLE booking_hotel_room (
-  booking_id INTEGER PRIMARY KEY,
-  hotel_room_id INTEGER,
+  booking_id INTEGER,
+  room_id INTEGER,
+  hotel_id INTEGER,
   quantity INTEGER,
-  FOREIGN KEY (hotel_room_id) REFERENCES hotel_room(hotel_room_id),
-  FOREIGN KEY (booking_id) REFERENCES booking_hotel_info(booking_id)  
+  FOREIGN KEY (room_id) REFERENCES hotel_room(hotel_room_id),
+  FOREIGN KEY (booking_id) REFERENCES booking_hotel_info(booking_id),
+  PRIMARY KEY (booking_id, room_id, hotel_id)
 );
 
 -- Foreign key references for descriptions

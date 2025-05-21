@@ -161,12 +161,18 @@ const Rooms = ({ hotelData }) => {
     };
 
     const handleBookRoom = () => {
-        const bookedRooms = hotelData.rooms.filter((room) => quantities[room.roomId] > 0);
+        let bookedRooms = [];
+        hotelData.rooms.forEach((room) => {
+            if (quantities[room.roomId] > 0) {
+                bookedRooms.push({
+                    roomInfo: room,
+                    quantity: quantities[room.roomId],
+                });
+            }
+        });
+
         if (bookedRooms.length > 0) {
-            setSelectedRoom({
-                rooms: bookedRooms,
-                quantities: quantities,
-            });
+            setSelectedRoom(bookedRooms);
             setShowBookModal(true);
         }
     };
@@ -244,7 +250,7 @@ const Rooms = ({ hotelData }) => {
             />
 
             {/* Booking Modal */}
-            {showBookModal && <BookModal bookingData={selectedRoom} onClose={handleCloseModal} />}
+            {showBookModal && <BookModal roomsData={selectedRoom} onClose={handleCloseModal} type="hotel" hotelId={hotelData.hotelId}/>}
         </div>
     );
 };

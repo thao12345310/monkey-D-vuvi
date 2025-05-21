@@ -1,4 +1,4 @@
-package com.travel_agent.mapper;
+package com.travel_agent.mappers;
 
 import java.util.List;
 

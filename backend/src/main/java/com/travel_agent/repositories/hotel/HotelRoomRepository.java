@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface HotelRoomRepository extends JpaRepository<HotelRoomEntity, Integer> {
     List<HotelRoomEntity> findByHotel_HotelId(Integer hotelId);
+    HotelRoomEntity findByHotelRoomId(Integer hotelRoomId);
 }

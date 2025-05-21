@@ -162,12 +162,18 @@ const Rooms = ({ shipData }) => {
     };
 
     const handleBookRoom = () => {
-        const bookedRooms = shipData.rooms.filter((room) => quantities[room.roomId] > 0);
+        let bookedRooms = [];
+        shipData.rooms.forEach((room) => {
+            if (quantities[room.roomId] > 0) {
+                bookedRooms.push({
+                    roomInfo: room,
+                    quantity: quantities[room.roomId],
+                });
+            }
+        });
+
         if (bookedRooms.length > 0) {
-            setSelectedRoom({
-                rooms: bookedRooms,
-                quantities: quantities,
-            });
+            setSelectedRoom(bookedRooms);
             setShowBookModal(true);
         }
     };
@@ -229,7 +235,7 @@ const Rooms = ({ shipData }) => {
                 </div>
             </div>
 
-            {showBookModal && selectedRoom && <BookModal bookingData={selectedRoom} onClose={handleCloseModal} />}
+            {showBookModal && selectedRoom && <BookModal roomsData={selectedRoom} onClose={handleCloseModal} type="ship" shipId={shipData.shipId}/>}
         </div>
     );
 };
