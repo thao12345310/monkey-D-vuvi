@@ -24,11 +24,15 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 })
 public abstract class BookingRequestDTO {
     private List<RoomBooking> roomList;
+    private String customerName;
+    private String phone;
+    private String email;
     private LocalDate startDate;
     private LocalDate endDate;
     private Integer adults;
     private Integer children;
     private String specialRequest;
+    private Integer totalAmount;
 
     @Data
     public static class RoomBooking {

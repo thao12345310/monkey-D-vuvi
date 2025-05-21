@@ -15,6 +15,15 @@ public abstract class BookingEntity {
     @Column(name = "user_id")
     private Integer userId;
 
+    @Column(name = "customer_name")
+    private String customerName;
+
+    @Column(name = "phone")
+    private String phone;
+
+    @Column(name = "email")
+    private String email;
+
     @Column(name = "start_date")
     private LocalDate startDate;
     
@@ -32,4 +41,7 @@ public abstract class BookingEntity {
     
     @Column(name = "state")
     private String state;
+
+    @Column(name = "total_amount")
+    private Integer totalAmount;
 } 

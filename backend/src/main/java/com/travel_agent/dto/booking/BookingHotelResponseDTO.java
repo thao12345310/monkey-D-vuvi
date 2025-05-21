@@ -5,6 +5,7 @@ import java.util.List;
 import com.travel_agent.dto.hotel.HotelDTO;
 import com.travel_agent.dto.hotel.HotelRoomDTO;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,5 +13,11 @@ import lombok.Setter;
 @Setter
 public class BookingHotelResponseDTO extends BookingResponseDTO {
     private HotelDTO hotel;
-    private List<HotelRoomDTO> rooms;
+    private List<HotelRoomBooking> rooms;
+
+    @Data
+    public static class HotelRoomBooking {
+        private HotelRoomDTO room;
+        private Integer quantity;
+    }
 }

@@ -55,6 +55,9 @@ public class BookingService {
                 .orElseThrow(() -> new IllegalArgumentException("Hotel not found"));
 
         booking.setHotel(hotel);
+        booking.setCustomerName(request.getCustomerName());
+        booking.setPhone(request.getPhone());
+        booking.setEmail(request.getEmail());
         booking.setUserId(userId);
         booking.setStartDate(request.getStartDate());
         booking.setEndDate(request.getEndDate());
@@ -62,17 +65,21 @@ public class BookingService {
         booking.setChildren(request.getChildren());
         booking.setSpecialRequest(request.getSpecialRequest());
         booking.setState("PENDING");
+        booking.setTotalAmount(request.getTotalAmount());
 
         booking = bookingHotelRepository.save(booking);
 
         BookingHotelRoomEntity bookingRoom = new BookingHotelRoomEntity();
+
         for (RoomBooking roomBooking : request.getRoomList()) {
             bookingRoom.setBookingId(booking.getBookingId());
             bookingRoom.setRoomId(roomBooking.getRoomId());
             bookingRoom.setQuantity(roomBooking.getQuantity());
             bookingRoom.setHotelId(request.getHotelId());
+
             bookingHotelRoomRepository.save(bookingRoom);
         }
+
         return bookingMapper.convertToHotelResponseDTO(booking);
     }
 
@@ -80,7 +87,11 @@ public class BookingService {
         BookingShipEntity booking = new BookingShipEntity();
         ShipEntity ship = shipRepository.findById(request.getShipId())
                 .orElseThrow(() -> new IllegalArgumentException("Ship not found"));
+                
         booking.setShip(ship);
+        booking.setCustomerName(request.getCustomerName());
+        booking.setPhone(request.getPhone());
+        booking.setEmail(request.getEmail());
         booking.setUserId(userId);
         booking.setStartDate(request.getStartDate());
         booking.setEndDate(request.getEndDate());
@@ -88,15 +99,18 @@ public class BookingService {
         booking.setChildren(request.getChildren());
         booking.setSpecialRequest(request.getSpecialRequest());
         booking.setState("PENDING");
+        booking.setTotalAmount(request.getTotalAmount());
 
         booking = bookingShipRepository.save(booking);
 
         BookingShipRoomEntity bookingRoom = new BookingShipRoomEntity();
+
         for (RoomBooking roomBooking : request.getRoomList()) {
             bookingRoom.setBookingId(booking.getBookingId());
             bookingRoom.setRoomId(roomBooking.getRoomId());
             bookingRoom.setQuantity(roomBooking.getQuantity());
             bookingRoom.setShipId(request.getShipId());
+
             bookingShipRoomRepository.save(bookingRoom);
         }
         
@@ -109,9 +123,17 @@ public class BookingService {
 
         for (BookingShipEntity booking : shipBookings) {
             List<BookingShipRoomEntity> bookingRooms = bookingShipRoomRepository.findByBookingId(booking.getBookingId());
-            List<ShipRoomDTO> shipRooms = bookingRooms.stream()
-            .map(room -> shipService.getShipRoomDetails(room.getRoomId()))
-            .toList();
+            List<BookingShipResponseDTO.ShipRoomBooking> shipRooms = new ArrayList<>();
+            Integer shipId = booking.getShip().getShipId();
+
+            for (BookingShipRoomEntity room : bookingRooms) {
+                BookingShipResponseDTO.ShipRoomBooking shipRoom = new BookingShipResponseDTO.ShipRoomBooking();
+                ShipRoomDTO shipRoomDTO = shipService.getShipRoom(shipId, room.getRoomId());
+
+                shipRoom.setRoom(shipRoomDTO);
+                shipRoom.setQuantity(room.getQuantity());
+                shipRooms.add(shipRoom);
+            }
         
             BookingShipResponseDTO bookingShipResponseDTO = bookingMapper.convertToShipResponseDTO(booking);
             bookingShipResponseDTO.setRooms(shipRooms);
@@ -126,9 +148,16 @@ public class BookingService {
 
         for (BookingHotelEntity booking : hotelBookings) {
             List<BookingHotelRoomEntity> bookingRooms = bookingHotelRoomRepository.findByBookingId(booking.getBookingId());
-            List<HotelRoomDTO> hotelRooms = bookingRooms.stream()
-            .map(room -> hotelService.getHotelRoomDetails(room.getRoomId()))
-            .toList();
+            List<BookingHotelResponseDTO.HotelRoomBooking> hotelRooms = new ArrayList<>();
+            Integer hotelId = booking.getHotel().getHotelId();
+            
+            for (BookingHotelRoomEntity room : bookingRooms) {
+                BookingHotelResponseDTO.HotelRoomBooking hotelRoom = new BookingHotelResponseDTO.HotelRoomBooking();
+                HotelRoomDTO hotelRoomDTO = hotelService.getHotelRoom(hotelId, room.getRoomId());
+                hotelRoom.setRoom(hotelRoomDTO);
+                hotelRoom.setQuantity(room.getQuantity());
+                hotelRooms.add(hotelRoom);
+            }
 
             BookingHotelResponseDTO bookingHotelResponseDTO = bookingMapper.convertToHotelResponseDTO(booking);
             bookingHotelResponseDTO.setRooms(hotelRooms);

@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Portal from "../common/Portal";
 import { useAuth } from "../../contexts/AuthProvider";
 import config from "../../config";
@@ -8,7 +8,7 @@ const BookModal = ({ roomsData, onClose, type, hotelId, shipId }) => {
     const [formData, setFormData] = useState({
         hotelId: hotelId,
         shipId: shipId,
-        name: "",
+        customerName: "",
         phone: "",
         email: "",
         specialRequest: "",
@@ -16,6 +16,7 @@ const BookModal = ({ roomsData, onClose, type, hotelId, shipId }) => {
         endDate: "",
         adults: 1,
         children: 0,
+        totalAmount: 0,
     });
 
     const [showGuestPicker, setShowGuestPicker] = useState(false);
@@ -77,6 +78,13 @@ const BookModal = ({ roomsData, onClose, type, hotelId, shipId }) => {
     const totalPrice = roomsData.reduce((sum, room) => {
         return sum + room.roomInfo.roomPrice * room.quantity;
     }, 0);
+
+    useEffect(() => {
+        setFormData((prev) => ({
+            ...prev,
+            totalAmount: totalPrice,
+        }));
+    }, [totalPrice]);
 
     return (
         <Portal>
@@ -215,9 +223,9 @@ const BookModal = ({ roomsData, onClose, type, hotelId, shipId }) => {
 
                             <input
                                 type="text"
-                                name="name"
+                                name="customerName"
                                 placeholder="Họ và tên"
-                                value={formData.name}
+                                value={formData.customerName}
                                 onChange={handleChange}
                                 className="border p-2 rounded w-full focus:border-primary focus:ring-1 focus:ring-primary transition-all"
                                 required
@@ -244,9 +252,9 @@ const BookModal = ({ roomsData, onClose, type, hotelId, shipId }) => {
                             />
 
                             <textarea
-                                name="request"
+                                name="specialRequest"
                                 placeholder="Yêu cầu đặc biệt của bạn"
-                                value={formData.request}
+                                value={formData.specialRequest}
                                 onChange={handleChange}
                                 className="border p-2 rounded w-full focus:border-primary focus:ring-1 focus:ring-primary transition-all"
                                 rows={3}

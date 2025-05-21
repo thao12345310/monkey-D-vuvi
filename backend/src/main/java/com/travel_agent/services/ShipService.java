@@ -125,6 +125,13 @@ public class ShipService {
 
         // Fetch rooms
         List<ShipRoomEntity> shipRoomEntities = shipRoomRepository.findByShip_ShipId(shipId);
+
+        List<String> images = shipImageRepository.findByShipId(shipId)
+                .stream()
+                .map(ShipImageEntity::getImgUrl)
+                .toList();
+        shipDto.setImages(images.isEmpty() ? null : images);
+
         List<ShipRoomDTO> roomDtos = shipRoomEntities.stream()
                 .map(room -> getShipRoomDetails(room.getShipRoomId()))
                 .toList();
