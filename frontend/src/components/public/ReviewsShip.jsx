@@ -11,12 +11,12 @@ const ReviewsShip = ({ shipId }) => {
     useEffect(() => {
         const fetchReviews = async () => {
             try {
-                const token = localStorage.getItem("jwt");
-                const res = await axios.get(`${config.api.url}/api/ship/${shipId}/reviews`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
+                // const token = localStorage.getItem("jwt");
+                // const res = await axios.get(`${config.api.url}/api/ship/${shipId}/reviews`, {
+                //     headers: {
+                //         Authorization: `Bearer ${token}`,
+                //     },
+                // });
                 setReviews(res.data.data || []);
             } catch (err) {
                 console.log(err);
@@ -121,7 +121,7 @@ const ReviewsShip = ({ shipId }) => {
                             ))}
                         </select>
                     </div>
-                    <button type="submit" className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-800 transition-all">
+                    <button type="submit" className="bg-pink-400 text-white px-6 py-2 rounded-full hover:bg-pink-500 transition-all">
                         Gửi đánh giá
                     </button>
                 </form>

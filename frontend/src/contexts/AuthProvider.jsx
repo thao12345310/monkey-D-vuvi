@@ -7,13 +7,16 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null);
   const [role, setRole] = useState(null);
+  const [username, setUsername] = useState(null);
 
-  const login = (newToken, newRole) => {
+  const login = (newToken, newRole, newUsername) => {
     setToken(newToken);
     setRole(newRole);
+    setUsername(newUsername);
     // (Tuỳ chọn) Lưu vào localStorage nếu muốn giữ login khi reload
     localStorage.setItem("token", newToken);
     localStorage.setItem("role", newRole);
+    localStorage.setItem("username", newUsername);
   };
 
   const logout = () => {
@@ -27,14 +30,17 @@ export const AuthProvider = ({ children }) => {
   React.useEffect(() => {
     const savedToken = localStorage.getItem("token");
     const savedRole = localStorage.getItem("role");
+    const savedUsername = localStorage.getItem("username");
+
     if (savedToken) {
       setToken(savedToken);
       setRole(savedRole);
+      setUsername(savedUsername);
     }
   }, []);
 
   return (
-    <AuthContext.Provider value={{ token, role, login, logout }}>
+    <AuthContext.Provider value={{ token, role, username, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

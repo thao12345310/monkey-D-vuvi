@@ -13,6 +13,5 @@ import lombok.Setter;
 @JsonIgnoreProperties(ignoreUnknown = false)
 
 public class CompanyDTO extends AccountDTO{
-    private Integer companyId;
     private String companyName;
 }

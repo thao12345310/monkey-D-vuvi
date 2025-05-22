@@ -27,9 +27,10 @@ public class UserController {
     public ResponseEntity<ResponseObject> createUser(@RequestBody UserDTO userDTO) {
         String username = userDTO.getUsername();
         String password = userDTO.getPassword();
+        String email = userDTO.getEmail();
         String role = userDTO.getRole() == null ? "user" : userDTO.getRole();
         LocalDate dob = userDTO.getDob();
-        if (username == null || password == null || dob == null || !role.equals("user")) {
+        if (username == null || password == null || email == null || !role.equals("user")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseObject.builder()
                     .message("Invalid input data")
                     .responseCode(HttpStatus.BAD_REQUEST.value())
@@ -37,7 +38,7 @@ public class UserController {
         }
         
         UserDTO createdUser = userService.createUser(
-            username, password, role, dob);
+            userDTO);
 
 
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseObject.builder()

@@ -21,13 +21,14 @@ public class UserService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     // CREATE: Tạo mới User
-    public UserDTO createUser(String username, String password, String role, LocalDate dob) {
+    public UserDTO createUser(UserDTO userDTO) {
         // Tạo UserEntity liên kết với Account
         UserEntity user = new UserEntity();
-        user.setDob(dob);
-        user.setUsername(username);
-        user.setPassword(passwordEncoder.encode(password));
-        user.setRole(role);
+        user.setDob(userDTO.getDob());
+        user.setUsername(userDTO.getUsername());
+        user.setEmail(userDTO.getEmail());
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        user.setRole(userDTO.getRole());
 
         userRepository.save(user);
 
@@ -65,8 +66,8 @@ public class UserService {
     }
 
     // Find user by username
-    public UserDTO findByUsername(String username) {
-        UserEntity user = userRepository.findByUsername(username)
+    public UserDTO findByUsernameOrEmail(String username) {
+        UserEntity user = userRepository.findByUsernameOrEmail(username)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with username: " + username));
         return userMapper.UserToUserDTO(user);
     }
