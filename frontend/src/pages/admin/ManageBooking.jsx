@@ -306,7 +306,7 @@ const ManageBooking = () => {
             transform: "translate(-50%, -50%)",
             width: "80%",
             maxWidth: 800,
-            bgcolor: colors.primary[500],
+            bgcolor: "background.paper",
             boxShadow: 24,
             p: 4,
             borderRadius: 2,

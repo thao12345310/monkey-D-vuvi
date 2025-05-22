@@ -34,6 +34,7 @@ const TimKhachSan = () => {
   const [cities, setCities] = useState([]);
   const [priceRangeOption, setPriceRangeOption] = useState("");
   const [hotelOptions, setHotelOptions] = useState([]);
+  const [availableFeatures, setAvailableFeatures] = useState([]);
 
   const PRICE_OPTIONS = [
     { label: "Tất cả mức giá", value: "" },
@@ -56,6 +57,20 @@ const TimKhachSan = () => {
       }
     };
     fetchCities();
+  }, []);
+
+  useEffect(() => {
+    const fetchFeatures = async () => {
+      try {
+        const response = await axios.get(
+          `${config.api.url}/api/hotel/features`
+        );
+        setAvailableFeatures(response.data.data || []);
+      } catch (error) {
+        console.error("Lỗi khi lấy danh sách features:", error);
+      }
+    };
+    fetchFeatures();
   }, []);
 
   const [searchParams, setSearchParams] = useState({
@@ -88,6 +103,10 @@ const TimKhachSan = () => {
           city: searchParams.diaDiem,
           currentPage: page,
           pageSize: 6,
+          features:
+            availableFeatures.length > 0
+              ? availableFeatures.join(",")
+              : undefined,
         },
       });
       const data = response.data.data;
@@ -434,6 +453,7 @@ const TimKhachSan = () => {
                 nameField="hotelName"
                 priceField="hotelPrice"
                 imageField="thumbnail"
+                features={hotel.features}
               />
             ))}
 

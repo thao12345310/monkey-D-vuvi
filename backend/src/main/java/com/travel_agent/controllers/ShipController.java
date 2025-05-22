@@ -43,11 +43,12 @@ public class ShipController {
             @RequestParam(value = "minPrice", required = false) Integer minPrice,
             @RequestParam(value = "maxPrice", required = false) Integer maxPrice,
             @RequestParam(value = "trip", required = false) String trip,
+            @RequestParam(value = "features", required = false) String features,
             @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
             @RequestParam(value = "pageSize", defaultValue = "6") int pageSize) {
         
         Pageable pageable = PageRequest.of(currentPage - 1, pageSize);
-        ResultPaginationDTO result = shipService.searchShipsByNamePriceAndTrip(name, minPrice, maxPrice, trip, pageable);
+        ResultPaginationDTO result = shipService.searchShipsByNamePriceAndTrip(name, minPrice, maxPrice, trip, features, pageable);
 
         return ResponseEntity.ok(ResponseObject.builder()
                 .message("Ships retrieved successfully")
@@ -215,5 +216,15 @@ public class ShipController {
             .data(names)
             .responseCode(HttpStatus.OK.value())
             .build());
+    }
+
+    @GetMapping("/features")
+    public ResponseEntity<ResponseObject> getAllFeatures() {
+        List<String> features = shipService.getAllFeatures();
+        return ResponseEntity.ok(ResponseObject.builder()
+                .message("Features retrieved successfully")
+                .data(features)
+                .responseCode(HttpStatus.OK.value())
+                .build());
     }
 }

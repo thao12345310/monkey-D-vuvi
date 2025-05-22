@@ -23,6 +23,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import axios from "axios";
+import { Pool, Wifi, Restaurant, Spa } from "@mui/icons-material";
 
 const TimDuThuyen = () => {
   const [ships, setShips] = useState([]);
@@ -33,6 +34,7 @@ const TimDuThuyen = () => {
   const [trip, setTrip] = useState("");
   const [priceRangeOption, setPriceRangeOption] = useState(""); // dùng preset khoảng giá
   const [shipOptions, setShipOptions] = useState([]);
+  const [availableFeatures, setAvailableFeatures] = useState([]);
 
   const DIA_DIEM_OPTIONS = [
     { value: "", label: "Tất cả địa điểm" },
@@ -47,13 +49,6 @@ const TimDuThuyen = () => {
     { label: "Trên 6 triệu", value: "6000000-999999999" },
   ];
 
-  const TIEN_ICH_OPTIONS = [
-    { id: "hoBoi", label: "Hồ bơi", field: "hasPool" },
-    { id: "wifi", label: "Wifi miễn phí", field: "hasWifi" },
-    { id: "nhaHang", label: "Nhà hàng", field: "hasRestaurant" },
-    { id: "spa", label: "Spa", field: "hasSpa" },
-  ];
-
   const [searchParams, setSearchParams] = useState({
     tenDuThuyen: "",
     diaDiem: "",
@@ -65,13 +60,22 @@ const TimDuThuyen = () => {
   const [filters, setFilters] = useState({
     giaRange: [0, 5000000],
     rating: 0,
-    tienIch: {
-      hoBoi: false,
-      wifi: false,
-      nhaHang: false,
-      spa: false,
-    },
   });
+
+  const [selectedFeatures, setSelectedFeatures] = useState([]);
+
+  // Fetch available features when component mounts
+  useEffect(() => {
+    const fetchFeatures = async () => {
+      try {
+        const response = await axios.get(`${config.api.url}/api/ship/features`);
+        setAvailableFeatures(response.data.data || []);
+      } catch (error) {
+        console.error("Lỗi khi lấy danh sách features:", error);
+      }
+    };
+    fetchFeatures();
+  }, []);
 
   const fetchShips = async (page) => {
     try {
@@ -82,9 +86,13 @@ const TimDuThuyen = () => {
           name: searchParams.tenDuThuyen,
           minPrice: filters.giaRange[0],
           maxPrice: filters.giaRange[1],
-          city: trip,
+          trip: trip,
           currentPage: page,
           pageSize: 6,
+          features:
+            selectedFeatures.length > 0
+              ? selectedFeatures.join(",")
+              : undefined,
         },
       });
       const data = response.data.data;
@@ -98,9 +106,10 @@ const TimDuThuyen = () => {
     }
   };
 
+  // Thêm useEffect để gọi lại search khi currentPage thay đổi
   useEffect(() => {
     fetchShips(currentPage);
-  }, [currentPage]);
+  }, [currentPage, searchParams, filters, selectedFeatures]);
 
   const handleSearch = () => {
     console.log("Tìm kiếm với params:", searchParams);
@@ -108,15 +117,10 @@ const TimDuThuyen = () => {
     fetchShips(1);
   };
 
-  // Thêm useEffect để gọi lại search khi currentPage thay đổi
-  useEffect(() => {
-    handleSearch();
-  }, [currentPage]);
-
   // Thêm useEffect để reset về trang 1 khi thay đổi bộ lọc
   useEffect(() => {
     setCurrentPage(1);
-  }, [name, trip, filters.giaRange, filters.rating, filters.tienIch]);
+  }, [searchParams, filters, selectedFeatures]);
 
   const handleGiaRangeChange = (event, newValue) => {
     setFilters({ ...filters, giaRange: newValue });
@@ -135,12 +139,6 @@ const TimDuThuyen = () => {
   const handlePageChange = (event, value) => {
     console.log("Chuyển sang trang:", value);
     setCurrentPage(value);
-
-    // Cuộn lên đầu danh sách du thuyền
-    const element = document.getElementById("danh-sach-du-thuyen");
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
   };
 
   const handleShipInputChange = async (event, value) => {
@@ -421,13 +419,21 @@ const TimDuThuyen = () => {
                 Tiện ích
               </Typography>
               <FormGroup>
-                {TIEN_ICH_OPTIONS.map((option) => (
+                {availableFeatures.map((feature) => (
                   <FormControlLabel
-                    key={option.id}
+                    key={feature}
                     control={
                       <Checkbox
-                        checked={filters.tienIch[option.id]}
-                        onChange={handleTienIchChange(option.id)}
+                        checked={selectedFeatures.includes(feature)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setSelectedFeatures([...selectedFeatures, feature]);
+                          } else {
+                            setSelectedFeatures(
+                              selectedFeatures.filter((f) => f !== feature)
+                            );
+                          }
+                        }}
                         sx={{
                           color: "#EC80B1",
                           "&.Mui-checked": {
@@ -436,7 +442,7 @@ const TimDuThuyen = () => {
                         }}
                       />
                     }
-                    label={option.label}
+                    label={feature}
                   />
                 ))}
               </FormGroup>
@@ -482,6 +488,7 @@ const TimDuThuyen = () => {
                 nameField="shipName"
                 priceField="shipPrice"
                 imageField="thumbnail"
+                features={ship.features}
               />
             ))}
 
