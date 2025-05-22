@@ -36,10 +36,27 @@ const BookModal = ({ roomsData, onClose, type, hotelId, shipId }) => {
             handleErrorToast(err, "Đã có lỗi xảy ra khi đặt phòng!");
         }
     };
+};
 
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+};
+
+const handleSubmit = async (e) => {
+    e.preventDefault();
+    const roomList = roomsData.map((room) => ({
+        roomId: room.roomInfo.roomId,
+        quantity: room.quantity,
+    }));
+
+    // Gửi dữ liệu form tới server hoặc xử lý theo yêu cầu
+    const bookingData = {
+        type: type.toLowerCase(),
+        roomList,
+        ...formData,
     };
+
+    console.log("Đặt phòng:", bookingData);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -48,23 +65,6 @@ const BookModal = ({ roomsData, onClose, type, hotelId, shipId }) => {
             roomId: room.roomInfo.roomId,
             quantity: room.quantity,
         }));
-
-        // Gửi dữ liệu form tới server hoặc xử lý theo yêu cầu
-        const bookingData = {
-            type: type.toLowerCase(),
-            roomList,
-            ...formData,
-        };
-
-        console.log("Đặt phòng:", bookingData);
-
-        const response = await createBooking(bookingData);
-        if (response.responseCode === 201) {
-            alert("Booking created successfully!");
-            onClose();
-        } else {
-            alert("Failed to create booking: " + response.message);
-        }
 
         alert("Đặt phòng thành công!");
         onClose();

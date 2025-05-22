@@ -1,6 +1,9 @@
 package com.travel_agent.repositories.ship;
 
 import com.travel_agent.models.entity.ship.ShipEntity;
+
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,4 +22,6 @@ public interface ShipRepository extends JpaRepository<ShipEntity, Integer> {
             @Param("maxPrice") Integer maxPrice,
             @Param("trip") String trip,
             Pageable pageable);
+
+    List<ShipEntity> findByShipNameContainingIgnoreCase(String keyword);
 }

@@ -166,4 +166,119 @@ public class BookingService {
 
         return bookingHotelResponseDTOs;
     }
+
+    public List<BookingShipResponseDTO> getAllShipBookings() {
+        List<BookingShipEntity> shipBookings = bookingShipRepository.findAll();
+        List<BookingShipResponseDTO> bookingShipResponseDTOs = new ArrayList<>();
+
+        for (BookingShipEntity booking : shipBookings) {
+            List<BookingShipRoomEntity> bookingRooms = bookingShipRoomRepository.findByBookingId(booking.getBookingId());
+            List<BookingShipResponseDTO.ShipRoomBooking> shipRooms = new ArrayList<>();
+            Integer shipId = booking.getShip().getShipId();
+
+            for (BookingShipRoomEntity room : bookingRooms) {
+                BookingShipResponseDTO.ShipRoomBooking shipRoom = new BookingShipResponseDTO.ShipRoomBooking();
+                ShipRoomDTO shipRoomDTO = shipService.getShipRoom(shipId, room.getRoomId());
+
+                shipRoom.setRoom(shipRoomDTO);
+                shipRoom.setQuantity(room.getQuantity());
+                shipRooms.add(shipRoom);
+            }
+        
+            BookingShipResponseDTO bookingShipResponseDTO = bookingMapper.convertToShipResponseDTO(booking);
+            bookingShipResponseDTO.setRooms(shipRooms);
+            bookingShipResponseDTOs.add(bookingShipResponseDTO);
+        }
+        return bookingShipResponseDTOs;
+    }
+
+    public List<BookingHotelResponseDTO> getAllHotelBookings() {
+        List<BookingHotelEntity> hotelBookings = bookingHotelRepository.findAll();
+        List<BookingHotelResponseDTO> bookingHotelResponseDTOs = new ArrayList<>();
+
+        for (BookingHotelEntity booking : hotelBookings) {
+            List<BookingHotelRoomEntity> bookingRooms = bookingHotelRoomRepository.findByBookingId(booking.getBookingId());
+            List<BookingHotelResponseDTO.HotelRoomBooking> hotelRooms = new ArrayList<>();
+            Integer hotelId = booking.getHotel().getHotelId();
+            
+            for (BookingHotelRoomEntity room : bookingRooms) {
+                BookingHotelResponseDTO.HotelRoomBooking hotelRoom = new BookingHotelResponseDTO.HotelRoomBooking();
+                HotelRoomDTO hotelRoomDTO = hotelService.getHotelRoom(hotelId, room.getRoomId());
+                hotelRoom.setRoom(hotelRoomDTO);
+                hotelRoom.setQuantity(room.getQuantity());
+                hotelRooms.add(hotelRoom);
+            }
+
+            BookingHotelResponseDTO bookingHotelResponseDTO = bookingMapper.convertToHotelResponseDTO(booking);
+            bookingHotelResponseDTO.setRooms(hotelRooms);
+            bookingHotelResponseDTOs.add(bookingHotelResponseDTO);
+        }
+
+        return bookingHotelResponseDTOs;
+    }
+
+    public List<BookingShipResponseDTO> getShipBookingsByShipId(Integer shipId) {
+        List<BookingShipEntity> shipBookings = bookingShipRepository.findByShipShipId(shipId);
+        List<BookingShipResponseDTO> bookingShipResponseDTOs = new ArrayList<>();
+
+        for (BookingShipEntity booking : shipBookings) {
+            List<BookingShipRoomEntity> bookingRooms = bookingShipRoomRepository.findByBookingId(booking.getBookingId());
+            List<BookingShipResponseDTO.ShipRoomBooking> shipRooms = new ArrayList<>();
+
+            for (BookingShipRoomEntity room : bookingRooms) {
+                BookingShipResponseDTO.ShipRoomBooking shipRoom = new BookingShipResponseDTO.ShipRoomBooking();
+                ShipRoomDTO shipRoomDTO = shipService.getShipRoom(shipId, room.getRoomId());
+
+                shipRoom.setRoom(shipRoomDTO);
+                shipRoom.setQuantity(room.getQuantity());
+                shipRooms.add(shipRoom);
+            }
+        
+            BookingShipResponseDTO bookingShipResponseDTO = bookingMapper.convertToShipResponseDTO(booking);
+            bookingShipResponseDTO.setRooms(shipRooms);
+            bookingShipResponseDTOs.add(bookingShipResponseDTO);
+        }
+        return bookingShipResponseDTOs;
+    }
+
+    public List<BookingHotelResponseDTO> getHotelBookingsByHotelId(Integer hotelId) {
+        List<BookingHotelEntity> hotelBookings = bookingHotelRepository.findByHotelHotelId(hotelId);
+        List<BookingHotelResponseDTO> bookingHotelResponseDTOs = new ArrayList<>();
+
+        for (BookingHotelEntity booking : hotelBookings) {
+            List<BookingHotelRoomEntity> bookingRooms = bookingHotelRoomRepository.findByBookingId(booking.getBookingId());
+            List<BookingHotelResponseDTO.HotelRoomBooking> hotelRooms = new ArrayList<>();
+            
+            for (BookingHotelRoomEntity room : bookingRooms) {
+                BookingHotelResponseDTO.HotelRoomBooking hotelRoom = new BookingHotelResponseDTO.HotelRoomBooking();
+                HotelRoomDTO hotelRoomDTO = hotelService.getHotelRoom(hotelId, room.getRoomId());
+                hotelRoom.setRoom(hotelRoomDTO);
+                hotelRoom.setQuantity(room.getQuantity());
+                hotelRooms.add(hotelRoom);
+            }
+        }
+        return bookingHotelResponseDTOs;
+    }
+
+    public void updateBookingStatus(Integer bookingId, String status, String note) {
+        // Tìm đơn đặt chỗ trong cả 2 bảng
+        BookingHotelEntity hotelBooking = bookingHotelRepository.findById(bookingId).orElse(null);
+        BookingShipEntity shipBooking = bookingShipRepository.findById(bookingId).orElse(null);
+
+        if (hotelBooking != null) {
+            hotelBooking.setState(status);
+            if (note != null) {
+                hotelBooking.setSpecialRequest(note);
+            }
+            bookingHotelRepository.save(hotelBooking);
+        } else if (shipBooking != null) {
+            shipBooking.setState(status);
+            if (note != null) {
+                shipBooking.setSpecialRequest(note);
+            }
+            bookingShipRepository.save(shipBooking);
+        } else {
+            throw new IllegalArgumentException("Booking not found");
+        }
+    }
 }
