@@ -1,23 +1,22 @@
 import React, { useState, useEffect } from "react";
 import config from "../../config";
 import {
-  Container,
-  Grid,
-  Paper,
-  TextField,
-  Button,
-  Box,
-  Typography,
-  InputAdornment,
-  Slider,
-  FormGroup,
-  FormControlLabel,
-  Checkbox,
-  Pagination,
-  Autocomplete,
-  MenuItem,
+    Container,
+    Grid,
+    Paper,
+    TextField,
+    Button,
+    Box,
+    Typography,
+    InputAdornment,
+    Slider,
+    FormGroup,
+    FormControlLabel,
+    Checkbox,
+    Pagination,
+    Stack,
+    MenuItem,
 } from "@mui/material";
-import { Search, LocationOn, CalendarToday, Person } from "@mui/icons-material";
 import LongCard from "../../components/public/LongCard";
 import SearchIcon from "@mui/icons-material/Search";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
@@ -26,27 +25,28 @@ import axios from "axios";
 import { handleErrorToast } from "../../utils/toastHandler";
 
 const TimDuThuyen = () => {
-  const [ships, setShips] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [name, setName] = useState("");
-  const [trip, setTrip] = useState("");
-  const [priceRangeOption, setPriceRangeOption] = useState(""); // dùng preset khoảng giá
-  const [shipOptions, setShipOptions] = useState([]);
-
-  const DIA_DIEM_OPTIONS = [
-    { value: "", label: "Tất cả địa điểm" },
-    { value: "Vịnh Hạ Long", label: "Vịnh Hạ Long" },
-    { value: "Vịnh Lan Hạ", label: "Vịnh Lan Hạ" },
-    { value: "Vịnh Bái Tử Long", label: "Vịnh Bái Tử Long" },
-  ];
-  const PRICE_OPTIONS = [
-    { label: "Tất cả mức giá", value: "" },
-    { label: "Từ 1 đến 3 triệu", value: "1000000-3000000" },
-    { label: "Từ 3 đến 6 triệu", value: "3000000-6000000" },
-    { label: "Trên 6 triệu", value: "6000000-999999999" },
-  ];
+    const [ships, setShips] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const [loading, setLoading] = useState(false);
+    const [name, setName] = useState("");
+    const [minPrice, setMinPrice] = useState("");
+    const [maxPrice, setMaxPrice] = useState("");
+    const [trip, setTrip] = useState("");
+    const [priceRangeOption, setPriceRangeOption] = useState(""); // dùng preset khoảng giá
+    const [results, setResults] = useState([]);
+    const DIA_DIEM_OPTIONS = [
+        { value: "", label: "Tất cả địa điểm" },
+        { value: "Vịnh Hạ Long", label: "Vịnh Hạ Long" },
+        { value: "Vịnh Lan Hạ", label: "Vịnh Lan Hạ" },
+        { value: "Vịnh Bái Tử Long", label: "Vịnh Bái Tử Long" },
+    ];
+    const PRICE_OPTIONS = [
+        { label: "Tất cả mức giá", value: "" },
+        { label: "Từ 1 đến 3 triệu", value: "1000000-3000000" },
+        { label: "Từ 3 đến 6 triệu", value: "3000000-6000000" },
+        { label: "Trên 6 triệu", value: "6000000-999999999" },
+    ];
 
     const TIEN_ICH_OPTIONS = [
         { id: "hoBoi", label: "Hồ bơi", field: "hasPool" },
@@ -55,13 +55,12 @@ const TimDuThuyen = () => {
         { id: "spa", label: "Spa", field: "hasSpa" },
     ];
 
-  const [searchParams, setSearchParams] = useState({
-    tenDuThuyen: "",
-    diaDiem: "",
-    ngayNhanPhong: "",
-    ngayTraPhong: "",
-    soNguoi: 1,
-  });
+    const [searchParams, setSearchParams] = useState({
+        diaDiem: "",
+        ngayNhanPhong: "",
+        ngayTraPhong: "",
+        soNguoi: 1,
+    });
 
     const [filters, setFilters] = useState({
         giaRange: [0, 5000000],
@@ -74,40 +73,72 @@ const TimDuThuyen = () => {
         },
     });
 
-  const fetchShips = async (page) => {
-    try {
-      setLoading(true);
-      console.log("Đang tải dữ liệu cho trang:", page);
-      const response = await axios.get(`${config.api.url}/api/ship/search`, {
-        params: {
-          name: searchParams.tenDuThuyen,
-          minPrice: filters.giaRange[0],
-          maxPrice: filters.giaRange[1],
-          city: trip,
-          currentPage: page,
-          pageSize: 6,
-        },
-      });
-      const data = response.data.data;
-      console.log("Dữ liệu nhận được:", data);
-      setShips(data.result || []);
-      setTotalPages(data.meta?.pages || 1);
-    } catch (error) {
-      console.error("Lỗi khi gọi API:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    const fetchShips = async (page) => {
+        try {
+            setLoading(true);
+            console.log("Đang tải dữ liệu cho trang:", page);
+            const response = await axios.get(`${config.api.url}/api/ship?currentPage=${page}&pageSize=6`);
+            const data = response.data;
+            console.log("Dữ liệu nhận được:", data);
+            setShips(data.result || []);
+            setTotalPages(data.meta?.pages || 1);
+        } catch (error) {
+            console.error("Lỗi khi gọi API:", error);
+            handleErrorToast(error, "Đã có lỗi xảy ra khi tìm kiếm du thuyền!");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
         fetchShips(currentPage);
     }, [currentPage]);
 
-  const handleSearch = () => {
-    console.log("Tìm kiếm với params:", searchParams);
-    setCurrentPage(1); // Reset về trang 1 khi tìm kiếm
-    fetchShips(1);
-  };
+    const handleSearch = async () => {
+        const params = {};
+
+        // Chỉ thêm name nếu có giá trị
+        if (name && name.trim()) {
+            params.name = name.trim();
+        }
+
+        // Chỉ thêm trip nếu có chọn địa điểm cụ thể
+        if (trip && trip !== "") {
+            params.trip = trip;
+        }
+
+        // Chỉ thêm khoảng giá nếu có thay đổi từ mặc định
+        if (filters.giaRange[0] > 0 || filters.giaRange[1] < 10000000) {
+            params.minPrice = filters.giaRange[0];
+            params.maxPrice = filters.giaRange[1];
+        }
+
+        // Thêm tham số phân trang
+        params.currentPage = currentPage;
+        params.pageSize = 6;
+
+        try {
+            console.log("Search params:", params); // Log để debug
+            const res = await axios.get(`${config.api.url}/api/ship/search`, {
+                params,
+            });
+
+            // Xử lý response theo cấu trúc ResponseObject
+            if (res.data && res.data.data) {
+                const result = res.data.data;
+                const shipsData = Array.isArray(result.result) ? result.result : [];
+                setShips(shipsData);
+                setTotalPages(result.meta?.pages || 1);
+            } else {
+                setShips([]);
+                setTotalPages(1);
+            }
+        } catch (err) {
+            console.error("Lỗi khi tìm kiếm du thuyền:", err);
+            setShips([]);
+            setTotalPages(1);
+        }
+    };
 
     // Thêm useEffect để gọi lại search khi currentPage thay đổi
     useEffect(() => {
@@ -137,29 +168,12 @@ const TimDuThuyen = () => {
         console.log("Chuyển sang trang:", value);
         setCurrentPage(value);
 
-    // Cuộn lên đầu danh sách du thuyền
-    const element = document.getElementById("danh-sach-du-thuyen");
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  };
-
-  const handleShipInputChange = async (event, value) => {
-    if (!value) {
-      setShipOptions([]);
-      setSearchParams({ ...searchParams, tenDuThuyen: "" });
-      return;
-    }
-    try {
-      const res = await axios.get(
-        `${config.api.url}/api/ship/suggest?q=${value}`
-      );
-      setShipOptions(res.data.data || []);
-    } catch (err) {
-      setShipOptions([]);
-    }
-    setSearchParams({ ...searchParams, tenDuThuyen: value });
-  };
+        // Cuộn lên đầu danh sách du thuyền
+        const element = document.getElementById("danh-sach-du-thuyen");
+        if (element) {
+            element.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+    };
 
     return (
         <Container maxWidth="lg" sx={{ py: 4 }}>
@@ -174,43 +188,30 @@ const TimDuThuyen = () => {
                     Hơn 100 du thuyền hạng sang giá tốt đang chờ bạn
                 </Typography>
 
-        <Box
-          display="flex"
-          flexDirection={{ xs: "column", lg: "row" }}
-          alignItems="center"
-          gap={2}
-        >
-          <Box
-            display="flex"
-            alignItems="center"
-            width={{ xs: "100%", lg: "40%" }}
-            bgcolor="grey.100"
-            px={2}
-            py={1.5}
-            borderRadius="50px"
-            height="50px"
-          >
-            <SearchIcon sx={{ color: "#EC80B1", mr: 1 }} />
-            <Autocomplete
-              freeSolo
-              options={shipOptions}
-              onInputChange={handleShipInputChange}
-              inputValue={searchParams.tenDuThuyen || ""}
-              onChange={(event, value) =>
-                setSearchParams({ ...searchParams, tenDuThuyen: value || "" })
-              }
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  placeholder="Nhập tên du thuyền"
-                  variant="standard"
-                  InputProps={{ ...params.InputProps, disableUnderline: true }}
-                  sx={{ bgcolor: "transparent", width: "100%" }}
-                />
-              )}
-              sx={{ width: "100%" }}
-            />
-          </Box>
+                <Box display="flex" flexDirection={{ xs: "column", lg: "row" }} alignItems="center" gap={2}>
+                    <Box
+                        display="flex"
+                        alignItems="center"
+                        width={{ xs: "100%", lg: "40%" }}
+                        bgcolor="grey.100"
+                        px={2}
+                        py={1.5}
+                        borderRadius="50px"
+                        height="50px"
+                    >
+                        <SearchIcon sx={{ color: "#EC80B1", mr: 1 }} />
+                        <input
+                            type="text"
+                            placeholder="Nhập tên khách sạn"
+                            className="bg-transparent outline-none w-full text-sm"
+                            onChange={(e) =>
+                                setSearchParams({
+                                    ...searchParams,
+                                    tenDuThuyen: e.target.value,
+                                })
+                            }
+                        />
+                    </Box>
 
                     {/* Chọn địa điểm */}
                     <Box
