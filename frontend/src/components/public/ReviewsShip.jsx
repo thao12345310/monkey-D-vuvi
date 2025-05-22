@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FaStar } from "react-icons/fa";
 import config from "../../config";
+import { handleErrorToast } from "../../utils/toastHandler";
 const ReviewsShip = ({ shipId }) => {
     const [reviews, setReviews] = useState([]);
     const [filteredStar, setFilteredStar] = useState(null);
@@ -10,15 +11,16 @@ const ReviewsShip = ({ shipId }) => {
     useEffect(() => {
         const fetchReviews = async () => {
             try {
-                const token = localStorage.getItem("jwt");
-                const res = await axios.get(`${config.api.url}/api/ship/${shipId}/reviews`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
+                // const token = localStorage.getItem("jwt");
+                // const res = await axios.get(`${config.api.url}/api/ship/${shipId}/reviews`, {
+                //     headers: {
+                //         Authorization: `Bearer ${token}`,
+                //     },
+                // });
                 setReviews(res.data.data || []);
             } catch (err) {
-                console.error("Lỗi tải đánh giá:", err);
+                console.log(err);
+                handleErrorToast(err, "Đã có lỗi xảy ra khi tải dữ liệu đánh giá!");
             }
         };
         fetchReviews();
@@ -38,6 +40,7 @@ const ReviewsShip = ({ shipId }) => {
             setReviews(res.data.data || []);
         } catch (err) {
             console.error("Lỗi gửi đánh giá:", err);
+            handleErrorToast(err, "Đã có lỗi xảy ra khi gửi đánh giá!");
         }
     };
 
@@ -118,7 +121,7 @@ const ReviewsShip = ({ shipId }) => {
                             ))}
                         </select>
                     </div>
-                    <button type="submit" className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-800 transition-all">
+                    <button type="submit" className="bg-pink-400 text-white px-6 py-2 rounded-full hover:bg-pink-500 transition-all">
                         Gửi đánh giá
                     </button>
                 </form>

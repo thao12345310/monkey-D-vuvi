@@ -2,6 +2,7 @@ CREATE TABLE "user" (
   user_id SERIAL PRIMARY KEY,
   dob DATE,
   username VARCHAR UNIQUE,
+  email VARCHAR UNIQUE,
   password VARCHAR,
   role VARCHAR
 );
@@ -28,7 +29,8 @@ CREATE TABLE features (
 CREATE TABLE company (
   company_id SERIAL PRIMARY KEY,
   company_name VARCHAR,
-  username VARCHAR,
+  username VARCHAR UNIQUE,
+  email VARCHAR UNIQUE,
   password VARCHAR,
   role VARCHAR
 );

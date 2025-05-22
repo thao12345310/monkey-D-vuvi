@@ -15,7 +15,7 @@ services:
     frontend:
         build:
             context: ./frontend
-            dockerfile: Dockerfile
+            dockerfile: Dockerfile.dev
         ports:
             - "${FRONTEND_PORT:-5173}:5173"
         volumes:
@@ -42,6 +42,8 @@ services:
             - SPRING_DATASOURCE_USERNAME=${DB_USERNAME:-admin}
             - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD:-admin}
             - CORS_ALLOWED_ORIGINS=${CORS_ALLOWED_ORIGINS:-http://localhost:5173,https://monkey-d-vuvi-frontend.onrender.com}
+            - CHATBOT_HOST=host.docker.internal
+            - CHATBOT_PORT=${CHATBOT_PORT:-8000}
         extra_hosts:
             - "host.docker.internal:host-gateway"
         depends_on:

@@ -10,6 +10,7 @@ import lombok.Setter;
 @JsonIgnoreProperties(ignoreUnknown = false)
 public abstract class AccountDTO {
     private String username;
+    private String email;
     private String password;
     private String role;
 }

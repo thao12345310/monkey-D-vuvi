@@ -1,16 +1,21 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FiMessageSquare, FiSend, FiX } from "react-icons/fi";
 import MarkdownIt from "markdown-it";
+import { useAuth } from "../../contexts/AuthProvider";
+import config from "../../config";
 
 const ChatBotWidget = ({ isOpen, setIsOpen }) => {
     const [messages, setMessages] = useState([{ id: 1, text: "Hey there 👋\nHow can I help you today?", sender: "bot" }]);
     const [inputValue, setInputValue] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
     const messagesEndRef = useRef(null);
+    const { token } = useAuth();
 
     const md = new MarkdownIt({
         html: true,
         linkify: true,
-        breaks: true, // giữ xuống dòng \n chuẩn Markdown
+        breaks: true,
+        typographer: true,
     });
 
     const scrollToBottom = () => {
@@ -28,21 +33,39 @@ const ChatBotWidget = ({ isOpen, setIsOpen }) => {
             const newMessage = { id: messages.length + 1, text: trimmedInput, sender: "user" };
             setMessages((prev) => [...prev, newMessage]);
             setInputValue("");
+            setIsLoading(true);
 
             try {
-                const response = await fetch("http://127.0.0.1:8000/chat", {
+                const response = await fetch(`${config.api.url}/api/chatbot`, {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ message: trimmedInput, user_id: "user_123" }),
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ message: trimmedInput }),
                 });
 
                 const data = await response.json();
-                const botResponse = { id: messages.length + 2, text: data.reply, sender: "bot" };
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+
+                const botResponse = {
+                    id: messages.length + 2,
+                    text: data.data || "Sorry, I couldn't process that request.",
+                    sender: "bot",
+                };
                 setMessages((prev) => [...prev, botResponse]);
             } catch (error) {
                 console.error("Error sending message:", error);
-                const botResponse = { id: messages.length + 2, text: "Error: Unable to get response from server.", sender: "bot" };
+                const botResponse = {
+                    id: messages.length + 2,
+                    text: "Error: Unable to get response from server.",
+                    sender: "bot",
+                };
                 setMessages((prev) => [...prev, botResponse]);
+            } finally {
+                setIsLoading(false);
             }
         }
     };
@@ -87,15 +110,14 @@ const ChatBotWidget = ({ isOpen, setIsOpen }) => {
                                     </div>
                                 )}
                                 <div
-                                    className={`px-4 py-2 rounded-lg text-sm ${
-                                        msg.sender === "user"
-                                            ? "bg-[#EC80B1] text-white rounded-br-none"
-                                            : "bg-gray-100 text-gray-800 rounded-bl-none"
-                                    }`}
+                                    className={`px-4 py-2 rounded-lg text-sm ${msg.sender === "user"
+                                        ? "bg-[#EC80B1] text-white rounded-br-none"
+                                        : "bg-gray-100 text-gray-800 rounded-bl-none"
+                                        }`}
                                 >
                                     {msg.sender === "bot" ? (
                                         <div
-                                            className="prose prose-sm max-w-none [&_ul]:list-disc [&_ul]:pl-5 [&_li]:mb-1 [&_a]:text-pink-500 [&_a]:underline"
+                                            className="prose prose-sm max-w-none [&_ul]:list-disc [&_ul]:pl-5 [&_li]:mb-1 [&_a]:text-pink-500 [&_a]:underline [&_strong]:font-bold [&_em]:italic [&_p]:mb-2 [&_h1]:text-xl [&_h2]:text-lg [&_h3]:text-base [&_h4]:text-sm [&_h5]:text-xs [&_h6]:text-xs [&_blockquote]:border-l-4 [&_blockquote]:border-gray-300 [&_blockquote]:pl-4 [&_blockquote]:italic"
                                             dangerouslySetInnerHTML={{ __html: md.render(msg.text) }}
                                         />
                                     ) : (
@@ -105,6 +127,22 @@ const ChatBotWidget = ({ isOpen, setIsOpen }) => {
                             </div>
                         </div>
                     ))}
+                    {isLoading && (
+                        <div className="flex justify-start">
+                            <div className="flex items-start max-w-[80%]">
+                                <div className="flex-shrink-0 w-7 h-7 rounded-full bg-[#EC80B1] text-white flex items-center justify-center mr-2">
+                                    <FiMessageSquare size={16} />
+                                </div>
+                                <div className="px-4 py-2 rounded-lg text-sm bg-gray-100 text-gray-800 rounded-bl-none">
+                                    <div className="flex items-center space-x-2">
+                                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }}></div>
+                                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "150ms" }}></div>
+                                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "300ms" }}></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                     <div ref={messagesEndRef} />
                 </div>
 
@@ -118,11 +156,12 @@ const ChatBotWidget = ({ isOpen, setIsOpen }) => {
                             placeholder="Message..."
                             className="flex-grow px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#EC80B1] text-sm"
                             autoComplete="off"
+                            disabled={isLoading}
                         />
                         <button
                             type="submit"
                             className="p-2 bg-pink-600 text-white rounded-md hover:bg-pink-700 disabled:opacity-50 flex-shrink-0"
-                            disabled={!inputValue.trim()}
+                            disabled={!inputValue.trim() || isLoading}
                             aria-label="Send Message"
                         >
                             <FiSend size={18} />

@@ -7,17 +7,25 @@ function RegisterPage() {
     const navigate = useNavigate();
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
-    const [role, setRole] = useState("user"); // Default role
 
-    const handleRegisterSubmit = async (event) => {
-        event.preventDefault();
+    const [formData, setFormData] = useState({
+        username: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        dob: "",
+    });
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleRegisterSubmit = async (e) => {
+        e.preventDefault();
         setError("");
         setLoading(true);
 
-        const username = event.target.username.value;
-        const email = event.target.email.value;
-        const password = event.target.password.value;
-        const confirmPassword = event.target.confirmPassword.value;
+        const { username, email, password, confirmPassword, dob } = formData;
 
         if (password !== confirmPassword) {
             setError("Mật khẩu xác nhận không khớp!");
@@ -25,22 +33,14 @@ function RegisterPage() {
             return;
         }
 
+        const data = { username, email, password, role: "user", dob };
+
         try {
-            const response = await axios.post(
-                `${config.api.url}/api/${role}`,
-                {
-                    username: username,
-                    password: password,
-                    role: role,
-                    dob: new Date().toISOString().split("T")[0], // Tạm thời set ngày hiện tại
-                },
-                {
-                    withCredentials: true,
-                }
-            );
+            const response = await axios.post(`${config.api.url}/api/user`, data, {
+                withCredentials: true,
+            });
 
             if (response.data.responseCode === 201) {
-                // Đăng ký thành công, chuyển đến trang đăng nhập
                 navigate("/login");
             } else {
                 setError(response.data.message || "Đăng ký thất bại");
@@ -57,10 +57,13 @@ function RegisterPage() {
             <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-sm">
                 <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">Đăng ký</h2>
 
-                {error && <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">{error}</div>}
+                {error && (
+                    <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+                        {error}
+                    </div>
+                )}
 
                 <form onSubmit={handleRegisterSubmit}>
-                    {/* Trường Username */}
                     <div className="mb-4">
                         <label htmlFor="username" className="block text-sm font-medium text-gray-600 mb-1">
                             Tên người dùng
@@ -69,14 +72,15 @@ function RegisterPage() {
                             type="text"
                             id="username"
                             name="username"
+                            value={formData.username}
+                            onChange={handleChange}
                             required
                             placeholder="Nhập tên người dùng"
-                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-300 focus:border-transparent"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-300"
                             disabled={loading}
                         />
                     </div>
 
-                    {/* Trường Email */}
                     <div className="mb-4">
                         <label htmlFor="email" className="block text-sm font-medium text-gray-600 mb-1">
                             Email
@@ -85,14 +89,31 @@ function RegisterPage() {
                             type="email"
                             id="email"
                             name="email"
+                            value={formData.email}
+                            onChange={handleChange}
                             required
                             placeholder="you@example.com"
-                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-300 focus:border-transparent"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-300"
                             disabled={loading}
                         />
                     </div>
 
-                    {/* Trường Mật khẩu */}
+                    <div className="mb-4">
+                        <label htmlFor="dob" className="block text-sm font-medium text-gray-600 mb-1">
+                            Ngày sinh
+                        </label>
+                        <input
+                            type="date"
+                            id="dob"
+                            name="dob"
+                            value={formData.dob}
+                            onChange={handleChange}
+                            required
+                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-300"
+                            disabled={loading}
+                        />
+                    </div>
+
                     <div className="mb-4">
                         <label htmlFor="password" className="block text-sm font-medium text-gray-600 mb-1">
                             Mật khẩu
@@ -101,14 +122,15 @@ function RegisterPage() {
                             type="password"
                             id="password"
                             name="password"
+                            value={formData.password}
+                            onChange={handleChange}
                             required
                             placeholder="••••••••"
-                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-300 focus:border-transparent"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-300"
                             disabled={loading}
                         />
                     </div>
 
-                    {/* Trường Xác nhận Mật khẩu */}
                     <div className="mb-6">
                         <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-600 mb-1">
                             Xác nhận mật khẩu
@@ -117,36 +139,18 @@ function RegisterPage() {
                             type="password"
                             id="confirmPassword"
                             name="confirmPassword"
+                            value={formData.confirmPassword}
+                            onChange={handleChange}
                             required
                             placeholder="••••••••"
-                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-300 focus:border-transparent"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-300"
                             disabled={loading}
                         />
                     </div>
 
-                    {/* Role chọn */}
-                    <div className="mb-6">
-                        <label htmlFor="login-role" className="block text-sm font-medium text-gray-600 mb-1">
-                            Vai trò
-                        </label>
-                        <select
-                            id="login-role"
-                            name="role"
-                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-300 focus:border-transparent"
-                            value={role}
-                            onChange={(e) => setRole(e.target.value)}
-                            disabled={loading}
-                        >
-                            <option value="user">Người dùng</option>
-                            <option value="company">Công ty</option>
-                            <option value="admin">Quản trị viên</option>
-                        </select>
-                    </div>
-
-                    {/* Nút Đăng ký */}
                     <button
                         type="submit"
-                        className={`w-full bg-pink-200 text-gray-800 font-semibold py-2 px-4 rounded-md hover:bg-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-400 focus:ring-opacity-50 transition duration-200 ${
+                        className={`w-full bg-pink-200 text-gray-800 font-semibold py-2 px-4 rounded-md hover:bg-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-400 transition duration-200 ${
                             loading ? "opacity-50 cursor-not-allowed" : ""
                         }`}
                         disabled={loading}
@@ -154,7 +158,6 @@ function RegisterPage() {
                         {loading ? "Đang đăng ký..." : "Đăng ký"}
                     </button>
 
-                    {/* Link chuyển sang Đăng nhập */}
                     <p className="text-center text-sm text-gray-600 mt-4">
                         Đã có tài khoản?{" "}
                         <button

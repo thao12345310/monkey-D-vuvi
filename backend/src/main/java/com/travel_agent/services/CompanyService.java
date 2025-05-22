@@ -19,13 +19,14 @@ public class CompanyService {
     private final CompanyMapper companyMapper;
 
     // CREATE: Create a new Company
-    public CompanyDTO createCompany(String username, String password, String role, String companyName) {
+    public CompanyDTO createCompany(CompanyDTO companyDTO) {
         // Tạo CompanyEntity liên kết với Account
         CompanyEntity company = new CompanyEntity();
-        company.setUsername(username);
-        company.setPassword(password);
-        company.setCompanyName(companyName);
-        company.setRole(role);
+        company.setUsername(companyDTO.getUsername());
+        company.setPassword(companyDTO.getPassword());
+        company.setEmail(companyDTO.getEmail());
+        company.setCompanyName(companyDTO.getCompanyName());
+        company.setRole(companyDTO.getRole());
 
         companyRepository.save(company);
         return companyMapper.companyToCompanyDTO(company);
@@ -62,8 +63,8 @@ public class CompanyService {
     }
 
     // Find company by username
-    public CompanyDTO findByUsername(String username) {
-        CompanyEntity company = companyRepository.findByUsername(username)
+    public CompanyDTO findByUsernameOrEmail(String username) {
+        CompanyEntity company = companyRepository.findByUsernameOrEmail(username)
                 .orElseThrow(() -> new IllegalArgumentException("Company not found with username: " + username));
         return companyMapper.companyToCompanyDTO(company);
     }

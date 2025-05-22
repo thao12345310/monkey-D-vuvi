@@ -12,6 +12,7 @@ import com.travel_agent.services.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +30,7 @@ public class BookingController {
     private final BookingService bookingService;
 
     @PostMapping
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<ResponseObject> createBooking(@CurrentUserId Integer userId,
             @RequestBody BookingRequestDTO request) {
         try {
@@ -62,6 +64,7 @@ public class BookingController {
     }
 
     @GetMapping("/my-bookings/ship")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<ResponseObject> getMyShipBookings(
             @CurrentUserId Integer userId) {
         try {
@@ -81,6 +84,7 @@ public class BookingController {
     }
 
     @GetMapping("/my-bookings/hotel")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<ResponseObject> getMyHotelBookings(
             @CurrentUserId Integer userId) {
         try {

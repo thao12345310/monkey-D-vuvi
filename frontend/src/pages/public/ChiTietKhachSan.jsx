@@ -31,7 +31,7 @@ import {
     FaShower,
     FaBed,
     FaWineGlassAlt,
-    FaWind
+    FaWind,
 } from "react-icons/fa";
 import { IoWaterOutline } from "react-icons/io5";
 
@@ -45,6 +45,8 @@ import BookModal from "../../components/public/BookModal";
 import axios from "axios";
 import ReviewsShip from "../../components/public/ReviewsShip";
 import config from "../../config";
+import { handleErrorToast } from "../../utils/toastHandler";
+import { useAuth } from "../../contexts/AuthProvider";
 // ================= GALLERY SLIDER =================
 const GallerySlider = ({ images }) => {
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
@@ -185,7 +187,7 @@ const Highlights = ({ hotelData }) => {
                                 </div>
                                 <span className="text-gray-700">{feature}</span>
                             </div>
-                        );  
+                        );
                     })}
                 </div>
 
@@ -230,8 +232,12 @@ const Rooms = ({ hotelData }) => {
             [roomId]: Math.max(0, (prev[roomId] || 0) + delta),
         }));
     };
-
+    const { token } = useAuth();
     const handleBookRoom = () => {
+        if (!token) {
+            handleErrorToast(null, "Bạn cần đăng nhập để đặt phòng!");
+            return;
+        }
         let bookedRooms = [];
         hotelData.rooms.forEach((room) => {
             if (quantities[room.roomId] > 0) {
@@ -378,6 +384,7 @@ const ChiTietKhachSan = () => {
             } catch (err) {
                 console.error("Lỗi khi tải dữ liệu:", err);
                 setError(err.message);
+                handleErrorToast(err, "Đã có lỗi xảy ra khi tải dữ liệu khách sạn!");
             } finally {
                 setLoading(false);
             }
