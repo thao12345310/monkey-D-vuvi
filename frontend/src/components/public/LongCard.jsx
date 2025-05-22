@@ -104,7 +104,7 @@ const LongCard = ({
                         variant="contained"
                         onClick={(e) => {
                             e.stopPropagation();
-                            navigate(`/${type}/${id}/dat-phong`);
+                            navigate(`/${type}/${id}`);
                         }}
                         sx={{
                             backgroundColor: "#EC80B1",

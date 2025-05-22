@@ -11,6 +11,7 @@ import com.travel_agent.dto.ChatbotRequestDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +22,7 @@ public class ChatbotController {
     private final ChatbotService chatbotService;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('USER', 'GUEST')")
     public ResponseEntity<ResponseObject> handleChatbotRequest(@CurrentUserId Integer userId, @RequestBody ChatbotRequestDTO request) {
         try {
             // Call the chatbot service to get a response

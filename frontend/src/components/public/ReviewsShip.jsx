@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FaStar } from "react-icons/fa";
 import config from "../../config";
+import { handleErrorToast } from "../../utils/toastHandler";
 const ReviewsShip = ({ shipId }) => {
     const [reviews, setReviews] = useState([]);
     const [filteredStar, setFilteredStar] = useState(null);
@@ -18,7 +19,8 @@ const ReviewsShip = ({ shipId }) => {
                 });
                 setReviews(res.data.data || []);
             } catch (err) {
-                console.error("Lỗi tải đánh giá:", err);
+                console.log(err);
+                handleErrorToast(err, "Đã có lỗi xảy ra khi tải dữ liệu đánh giá!");
             }
         };
         fetchReviews();
@@ -38,6 +40,7 @@ const ReviewsShip = ({ shipId }) => {
             setReviews(res.data.data || []);
         } catch (err) {
             console.error("Lỗi gửi đánh giá:", err);
+            handleErrorToast(err, "Đã có lỗi xảy ra khi gửi đánh giá!");
         }
     };
 

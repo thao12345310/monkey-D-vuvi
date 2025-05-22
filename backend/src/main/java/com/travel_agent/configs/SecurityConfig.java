@@ -43,10 +43,6 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource())) 
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/api/booking/**").permitAll()
-                .requestMatchers("/api/chatbot/**").permitAll()
-                .requestMatchers("/api/**").hasAnyRole("COMPANY", "USER")
                 .anyRequest().permitAll()
             )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

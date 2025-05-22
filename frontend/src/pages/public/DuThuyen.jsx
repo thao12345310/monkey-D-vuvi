@@ -31,7 +31,7 @@ import {
     FaShower,
     FaBed,
     FaWineGlassAlt,
-    FaWind
+    FaWind,
 } from "react-icons/fa";
 import {
     IoWaterOutline,
@@ -52,6 +52,8 @@ import axios from "axios";
 import ReviewsShip from "../../components/public/ReviewsShip";
 import BookModal from "../../components/public/BookModal";
 import config from "../../config";
+import { handleErrorToast } from "../../utils/toastHandler";
+import { useAuth } from "../../contexts/AuthProvider";
 
 // Feature Icon Mapping
 const featureIcons = {
@@ -240,8 +242,13 @@ const Rooms = ({ shipData }) => {
             [roomId]: Math.max(0, (prev[roomId] || 0) + delta),
         }));
     };
-
+    const { token } = useAuth();
     const handleBookRoom = () => {
+        console.log(token);
+        if (!token) {
+            handleErrorToast(null, "Bạn cần đăng nhập để đặt phòng!");
+            return;
+        }
         let bookedRooms = [];
         shipData.rooms.forEach((room) => {
             if (quantities[room.roomId] > 0) {
@@ -298,18 +305,13 @@ const Rooms = ({ shipData }) => {
                     </div>
 
                     <div className="space-x-4">
-                        <button className="border-2 border-gray-800 text-gray-800 px-4 py-2 rounded-full hover:bg-gray-50 transition-all duration-300">
-                            Thuê trọn tàu
-                        </button>
-
                         <button
                             onClick={handleBookRoom}
                             disabled={totalPrice === 0}
-                            className={`px-4 py-2 rounded-full text-white transition-colors ${
-                                totalPrice === 0 ? "bg-gray-400 cursor-not-allowed" : "bg-pink-500 hover:bg-pink-600"
-                            }`}
+                            className={`bg-pink-500 text-white px-6 py-2 rounded-full transition-all duration-300 
+                                ${totalPrice === 0 ? "opacity-50 cursor-not-allowed" : "hover:bg-pink-600"}`}
                         >
-                            Đặt ngay
+                            Đặt ngay →
                         </button>
                     </div>
                 </div>
@@ -371,6 +373,7 @@ const DuThuyen = () => {
             } catch (err) {
                 console.error("Lỗi khi tải dữ liệu:", err);
                 setError(err.message);
+                handleErrorToast(err, "Đã có lỗi xảy ra khi tải dữ liệu du thuyền!");
             } finally {
                 setLoading(false);
             }

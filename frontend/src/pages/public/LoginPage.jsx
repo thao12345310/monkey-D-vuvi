@@ -115,7 +115,6 @@ function LoginPage() {
             >
               <option value="user">Người dùng</option>
               <option value="company">Công ty</option>
-              <option value="admin">Quản trị viên</option>
             </select>
           </div>
 

@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 import java.util.Optional;
@@ -92,6 +93,7 @@ public class ShipController {
     }
 
     @PostMapping("/add")
+    @PreAuthorize("hasRole('COMPANY')")
     public ResponseEntity<ResponseObject> addShip(@RequestBody ShipDTO shipDto) {
         ShipDTO addedShip = shipService.addShip(shipDto);
 
@@ -107,6 +109,7 @@ public class ShipController {
     }
 
     @PutMapping("/{shipId}")
+    @PreAuthorize("hasRole('COMPANY')")
     public ResponseEntity<ResponseObject> updateShip(@PathVariable("shipId") Integer shipId, @RequestBody ShipDTO shipDto) {
         ShipDTO updatedShip = shipService.updateShip(shipId, shipDto);
 
@@ -122,6 +125,7 @@ public class ShipController {
     }
 
     @DeleteMapping("/delete")
+    @PreAuthorize("hasRole('COMPANY')")
     public ResponseEntity<ResponseObject> deleteShips(@RequestBody List<Integer> shipIds) {
         if (shipIds.size() > 10) {
             return ResponseEntity.badRequest().body(ResponseObject.builder()
@@ -156,6 +160,7 @@ public class ShipController {
 
     // Add room
     @PostMapping("/{shipId}/add-room")
+    @PreAuthorize("hasRole('COMPANY')")
     public ResponseEntity<ResponseObject> addShipRoom(@PathVariable("shipId") Integer shipId, @RequestBody ShipRoomDTO roomDto) {
         ShipRoomDTO addedRoom = shipService.addShipRoom(shipId, roomDto);
 
@@ -172,6 +177,7 @@ public class ShipController {
 
     // Update room
     @PutMapping("/{shipId}/{roomId}")
+    @PreAuthorize("hasRole('COMPANY')")
     public ResponseEntity<ResponseObject> updateShipRoom(
             @PathVariable("shipId") Integer shipId,
             @PathVariable("roomId") Integer roomId,
@@ -191,6 +197,7 @@ public class ShipController {
 
     // Delete room
     @DeleteMapping("/{shipId}/delete-room")
+    @PreAuthorize("hasRole('COMPANY')")
     public ResponseEntity<ResponseObject> deleteShipRooms(
             @PathVariable("shipId") Integer shipId,
             @RequestBody List<Integer> roomIds) {
