@@ -7,7 +7,7 @@ const UserMenu = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
   const { logout } = useAuth();
-  const { token } = useAuth();
+  const { token, username } = useAuth();
 
   useEffect(() => {
     // Check if user is authenticated
@@ -36,7 +36,7 @@ const UserMenu = () => {
       >
         <UserCircleIcon className="h-7 w-7" />
         {isAuthenticated && (
-          <span className="text-base font-semibold">Tài khoản</span>
+          <span className="text-base font-semibold">{username}</span>
         )}
       </button>
 

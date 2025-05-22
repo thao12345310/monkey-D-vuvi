@@ -8,9 +8,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import com.travel_agent.services.UserService;
+import com.travel_agent.repositories.UserRepository;
 import com.travel_agent.annotation.CurrentUserId;
 import com.travel_agent.dto.UserDTO;
+import com.travel_agent.models.entity.UserEntity;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
@@ -20,7 +21,7 @@ import org.springframework.core.MethodParameter;
 
 public class CurrentUserIdResolver implements HandlerMethodArgumentResolver {
 
-    private final UserService userService; // service để lấy userId từ username
+    private final UserRepository userRepository; // service để lấy userId từ username
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -39,7 +40,8 @@ public class CurrentUserIdResolver implements HandlerMethodArgumentResolver {
         String username = authentication.getName();
         System.out.println(username);
         // Lấy userId từ username
-        UserDTO user = userService.findByUsername(username);
+        UserEntity user = userRepository.findByUsernameOrEmail(username)
+        .orElseThrow(() -> new IllegalArgumentException("User not found with username: " + username));
         System.out.println(user);
         return user.getUserId();
     }

@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { Routes, Route, BrowserRouter as Router, useLocation } from "react-router-dom";
 import NavBar from "./components/public/NavBar";
 import ScrollToTop from "./components/public/ScrollToTop";
@@ -59,6 +61,7 @@ const AppRoutes = () => {
                         </Routes>
                     </div>
                 </div>
+                <ToastContainer position="top-right" autoClose={3000} />
                 {!isAdminPath && <ChatBotWidget isOpen={isChatOpen} setIsOpen={setIsChatOpen} />}
 
                 {!isAdminPath && <Footer />}

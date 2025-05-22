@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 import java.util.Optional;
@@ -96,6 +97,7 @@ public class HotelController {
 
     // Add hotel
     @PostMapping("/add")
+    @PreAuthorize("hasRole('COMPANY')")
     public ResponseEntity<ResponseObject> addHotel(@RequestBody HotelDTO hotelDto) {
         HotelDTO addedHotel = hotelService.addHotel(hotelDto);
 
@@ -112,6 +114,7 @@ public class HotelController {
 
     // Update hotel
     @PutMapping("/{hotelId}")
+    @PreAuthorize("hasRole('COMPANY')")
     public ResponseEntity<ResponseObject> updateHotel(@PathVariable("hotelId") Integer hotelId, @RequestBody HotelDTO hotelDto) {
         HotelDTO updatedHotel = hotelService.updateHotel(hotelId, hotelDto);
 
@@ -128,6 +131,7 @@ public class HotelController {
 
     // Delete hotel
     @DeleteMapping("/delete")
+    @PreAuthorize("hasRole('COMPANY')")
     public ResponseEntity<ResponseObject> deleteHotels(@RequestBody List<Integer> hotelIds) {
         if (hotelIds.size() > 10) {
             return ResponseEntity.badRequest().body(ResponseObject.builder()
@@ -162,6 +166,7 @@ public class HotelController {
 
     // Add room to hotel
     @PostMapping("/{hotelId}/add-room")
+    @PreAuthorize("hasRole('COMPANY')")
     public ResponseEntity<ResponseObject> addHotelRoom(@PathVariable("hotelId") Integer hotelId, @RequestBody HotelRoomDTO roomDto) {
         HotelRoomDTO addedRoom = hotelService.addHotelRoom(hotelId, roomDto);
 
@@ -178,6 +183,7 @@ public class HotelController {
 
     // Update room in hotel
     @PutMapping("/{hotelId}/{roomId}")
+    @PreAuthorize("hasRole('COMPANY')")
     public ResponseEntity<ResponseObject> updateHotelRoom(
             @PathVariable("hotelId") Integer hotelId,
             @PathVariable("roomId") Integer roomId,
@@ -197,6 +203,7 @@ public class HotelController {
 
     // Delete room from hotel
     @DeleteMapping("/{hotelId}/delete-room")
+    @PreAuthorize("hasRole('COMPANY')")
     public ResponseEntity<ResponseObject> deleteHotelRooms(
             @PathVariable("hotelId") Integer hotelId,
             @RequestBody List<Integer> roomIds) {

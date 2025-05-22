@@ -89,6 +89,8 @@ public class JwtUtils {
         String role = extractRole(token);
         String password = extractPassword(token);   
 
+        role = "ROLE_" + role.toUpperCase();
+
         // Tạo ra 1 Authentication object có username, password và quyền
         return new UsernamePasswordAuthenticationToken(
                 username,

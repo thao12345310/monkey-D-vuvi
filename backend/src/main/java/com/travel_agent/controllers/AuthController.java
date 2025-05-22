@@ -1,5 +1,6 @@
 package com.travel_agent.controllers;
 
+import com.travel_agent.dto.CompanyDTO;
 import com.travel_agent.dto.LoginRequest;
 import com.travel_agent.dto.LoginResponse;
 import com.travel_agent.dto.ResponseObject;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import com.travel_agent.dto.UserDTO;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -28,9 +31,12 @@ public class AuthController {
 
 
     @PostMapping("/login/user")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<ResponseObject> loginUser(@RequestBody LoginRequest request) {
         try {
-            var user = userService.findByUsername(request.getUsername());
+            // Check if the username is username or email then find the user
+            UserDTO user = userService.findByUsernameOrEmail(request.getUsername());
+            // var user = userService.findByUsername(request.getUsername());
             System.out.println(user);
             // Kiểm tra password bằng passwordEncoder.matches()
             if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
@@ -56,12 +62,13 @@ public class AuthController {
     }
 
     @PostMapping("/login/company")
+    @PreAuthorize("hasRole('COMPANY')")
     public ResponseEntity<ResponseObject> loginCompany(@RequestBody LoginRequest request) {
         try {
-            var company = companyService.findByUsername(request.getUsername());
+            CompanyDTO company = companyService.findByUsernameOrEmail(request.getUsername());
             
             // Kiểm tra password bằng passwordEncoder.matches()
-            if (!passwordEncoder.matches(request.getPassword(), company.getPassword())) {
+            if (!request.getPassword().equals(company.getPassword())) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseObject.builder()
                     .message("Invalid password")
                     .responseCode(HttpStatus.BAD_REQUEST.value())

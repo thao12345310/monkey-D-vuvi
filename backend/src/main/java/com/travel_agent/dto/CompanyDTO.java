@@ -11,7 +11,7 @@ import lombok.Setter;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @JsonIgnoreProperties(ignoreUnknown = false)
+
 public class CompanyDTO extends AccountDTO{
-    private Integer companyId;
     private String companyName;
 }

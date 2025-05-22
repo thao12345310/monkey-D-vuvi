@@ -14,10 +14,9 @@ import {
   FormControlLabel,
   Checkbox,
   Pagination,
-  Autocomplete,
+  Stack,
   MenuItem,
 } from "@mui/material";
-import { Search, LocationOn, CalendarToday, Person } from "@mui/icons-material";
 import LongCard from "../../components/public/LongCard";
 import SearchIcon from "@mui/icons-material/Search";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
@@ -50,7 +49,6 @@ const TimDuThuyen = () => {
   ];
 
   const [searchParams, setSearchParams] = useState({
-    tenDuThuyen: "",
     diaDiem: "",
     ngayNhanPhong: "",
     ngayTraPhong: "",
@@ -194,24 +192,16 @@ const TimDuThuyen = () => {
             height="50px"
           >
             <SearchIcon sx={{ color: "#EC80B1", mr: 1 }} />
-            <Autocomplete
-              freeSolo
-              options={shipOptions}
-              onInputChange={handleShipInputChange}
-              inputValue={searchParams.tenDuThuyen || ""}
-              onChange={(event, value) =>
-                setSearchParams({ ...searchParams, tenDuThuyen: value || "" })
+            <input
+              type="text"
+              placeholder="Nhập tên khách sạn"
+              className="bg-transparent outline-none w-full text-sm"
+              onChange={(e) =>
+                setSearchParams({
+                  ...searchParams,
+                  tenDuThuyen: e.target.value,
+                })
               }
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  placeholder="Nhập tên du thuyền"
-                  variant="standard"
-                  InputProps={{ ...params.InputProps, disableUnderline: true }}
-                  sx={{ bgcolor: "transparent", width: "100%" }}
-                />
-              )}
-              sx={{ width: "100%" }}
             />
           </Box>
 

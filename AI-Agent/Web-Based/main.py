@@ -1,65 +1,60 @@
-from fastapi import FastAPI, Request
-from fastapi.middleware.cors import CORSMiddleware  # ✅ Thêm CORS ở đây
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import sys
 import os
 
-# Setup path
+# Setup path để import graph
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from graph.your_graph import graph
 
 from langchain_core.chat_history import InMemoryChatMessageHistory
 
-# --- Init FastAPI ---
+# --- FastAPI init ---
 app = FastAPI()
 
 # --- Cấu hình CORS ---
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost"],  # ✅ Origin của React frontend
+    allow_origins=["*"],  # hoặc giới hạn cụ thể origin như "http://localhost"
     allow_credentials=True,
-    allow_methods=["*"],  # ✅ Cho phép tất cả method (GET, POST, OPTIONS, ...)
-    allow_headers=["*"],  # ✅ Cho phép tất cả headers
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
-# --- Chat History ---
+# --- DTO tương thích với Spring ---
+class ChatRequest(BaseModel):
+    userId: int
+    message: str
+
+# --- Dùng chat history (bạn có thể thay đổi về session nếu cần thiết) ---
 chat_history = InMemoryChatMessageHistory()
 
-# --- Request body model ---
-class ChatRequest(BaseModel):
-    message: str
-    user_id: str
-
-# --- API Endpoint ---
+# --- Endpoint chính ---
 @app.post("/chat")
 def chat_endpoint(chat: ChatRequest):
     user_msg = chat.message
-    user_id = chat.user_id
 
-    # --- Lưu message của user ---
+    # Lưu tin nhắn người dùng
     chat_history.add_user_message(user_msg)
 
-    # --- Prepare input cho graph ---
+    # Gọi LangGraph
     inputs = {
-        "messages": chat_history.messages,  # Full history
+        "messages": chat_history.messages,
         "query": user_msg,
         "context": [],
     }
-
-    # --- Invoke graph ---
     graph_response = graph.invoke(inputs)
 
-    # --- Lấy reply từ graph ---
+    # Trích xuất phản hồi từ bot
     if isinstance(graph_response, dict) and "messages" in graph_response:
         bot_reply = graph_response["messages"][-1].content if graph_response["messages"] else "No reply"
     else:
         bot_reply = "Error: No valid response from LangGraph"
 
-    # --- Lưu message của bot ---
+    # Lưu phản hồi bot
     chat_history.add_ai_message(bot_reply)
 
-    # --- Trả response ---
-    return {
-        "reply": bot_reply,
-        "user_id": user_id,
-    }
+    # Trả về dạng chuỗi, tương thích với .bodyToMono(String.class)
+    return {"data": bot_reply}
+

@@ -24,6 +24,7 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import axios from "axios";
 import LongCard from "../../components/public/LongCard";
+import { handleErrorToast } from "../../utils/toastHandler";
 
 const TimKhachSan = () => {
   const [hotels, setHotels] = useState([]);
