@@ -110,11 +110,10 @@ const ChatBotWidget = ({ isOpen, setIsOpen }) => {
                                     </div>
                                 )}
                                 <div
-                                    className={`px-4 py-2 rounded-lg text-sm ${
-                                        msg.sender === "user"
-                                            ? "bg-[#EC80B1] text-white rounded-br-none"
-                                            : "bg-gray-100 text-gray-800 rounded-bl-none"
-                                    }`}
+                                    className={`px-4 py-2 rounded-lg text-sm ${msg.sender === "user"
+                                        ? "bg-[#EC80B1] text-white rounded-br-none"
+                                        : "bg-gray-100 text-gray-800 rounded-bl-none"
+                                        }`}
                                 >
                                     {msg.sender === "bot" ? (
                                         <div

@@ -56,4 +56,5 @@ def chat_endpoint(chat: ChatRequest):
     chat_history.add_ai_message(bot_reply)
 
     # Trả về dạng chuỗi, tương thích với .bodyToMono(String.class)
-    return bot_reply
+    return {"data": bot_reply}
+
