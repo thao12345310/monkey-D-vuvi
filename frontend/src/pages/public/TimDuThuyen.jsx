@@ -14,7 +14,7 @@ import {
   FormControlLabel,
   Checkbox,
   Pagination,
-  Stack,
+  Autocomplete,
   MenuItem,
 } from "@mui/material";
 import LongCard from "../../components/public/LongCard";
@@ -49,6 +49,7 @@ const TimDuThuyen = () => {
   ];
 
   const [searchParams, setSearchParams] = useState({
+    tenDuThuyen: "",
     diaDiem: "",
     ngayNhanPhong: "",
     ngayTraPhong: "",
@@ -107,7 +108,7 @@ const TimDuThuyen = () => {
   // Thêm useEffect để gọi lại search khi currentPage thay đổi
   useEffect(() => {
     fetchShips(currentPage);
-  }, [currentPage, searchParams, filters, selectedFeatures]);
+  }, [currentPage, searchParams, filters, selectedFeatures, trip]);
 
   const handleSearch = () => {
     console.log("Tìm kiếm với params:", searchParams);
@@ -118,7 +119,7 @@ const TimDuThuyen = () => {
   // Thêm useEffect để reset về trang 1 khi thay đổi bộ lọc
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchParams, filters, selectedFeatures]);
+  }, [searchParams, filters, selectedFeatures, trip]);
 
   const handleGiaRangeChange = (event, newValue) => {
     setFilters({ ...filters, giaRange: newValue });
@@ -192,16 +193,24 @@ const TimDuThuyen = () => {
             height="50px"
           >
             <SearchIcon sx={{ color: "#EC80B1", mr: 1 }} />
-            <input
-              type="text"
-              placeholder="Nhập tên khách sạn"
-              className="bg-transparent outline-none w-full text-sm"
-              onChange={(e) =>
-                setSearchParams({
-                  ...searchParams,
-                  tenDuThuyen: e.target.value,
-                })
-              }
+            <Autocomplete
+              freeSolo
+              options={shipOptions}
+              onInputChange={(event, value) => {
+                setSearchParams({ ...searchParams, tenDuThuyen: value });
+                handleShipInputChange(event, value);
+              }}
+              inputValue={searchParams.tenDuThuyen}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  placeholder="Nhập tên du thuyền"
+                  variant="standard"
+                  InputProps={{ ...params.InputProps, disableUnderline: true }}
+                  sx={{ bgcolor: "transparent", width: "100%" }}
+                />
+              )}
+              sx={{ width: "100%" }}
             />
           </Box>
 

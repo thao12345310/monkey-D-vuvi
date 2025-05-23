@@ -75,6 +75,7 @@ const TimKhachSan = () => {
   }, []);
 
   const [searchParams, setSearchParams] = useState({
+    tenKhachSan: "",
     diaDiem: "",
     ngayNhanPhong: "",
     ngayTraPhong: "",
@@ -209,16 +210,17 @@ const TimKhachSan = () => {
             px={2}
             py={1.5}
             borderRadius="50px"
+            height="50px"
           >
             <SearchIcon sx={{ color: "#EC80B1", mr: 1 }} />
             <Autocomplete
               freeSolo
               options={hotelOptions}
-              onInputChange={handleHotelInputChange}
-              inputValue={searchParams.tenKhachSan || ""}
-              onChange={(event, value) =>
-                setSearchParams({ ...searchParams, tenKhachSan: value || "" })
-              }
+              onInputChange={(event, value) => {
+                setSearchParams({ ...searchParams, tenKhachSan: value });
+                handleHotelInputChange(event, value);
+              }}
+              inputValue={searchParams.tenKhachSan}
               renderInput={(params) => (
                 <TextField
                   {...params}
