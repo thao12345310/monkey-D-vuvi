@@ -3,6 +3,7 @@ import { FiMessageSquare, FiSend, FiX } from "react-icons/fi";
 import MarkdownIt from "markdown-it";
 import { useAuth } from "../../contexts/AuthProvider";
 import config from "../../config";
+import { axiosRequest } from "../../utils/axiosUtils";
 
 const ChatBotWidget = ({ isOpen, setIsOpen }) => {
     const [messages, setMessages] = useState([{ id: 1, text: "Hey there 👋\nHow can I help you today?", sender: "bot" }]);
@@ -36,13 +37,14 @@ const ChatBotWidget = ({ isOpen, setIsOpen }) => {
             setIsLoading(true);
 
             try {
-                const response = await fetch(`${config.api.url}/api/chatbot`, {
+                const response = await axiosRequest({
+                    url: `${config.api.url}/api/chatbot`,
                     method: "POST",
+                    data: { message: trimmedInput },
                     headers: {
-                        Authorization: `Bearer ${token}`,
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({ message: trimmedInput }),
+                    token: token,
                 });
 
                 const data = await response.json();
@@ -110,10 +112,11 @@ const ChatBotWidget = ({ isOpen, setIsOpen }) => {
                                     </div>
                                 )}
                                 <div
-                                    className={`px-4 py-2 rounded-lg text-sm ${msg.sender === "user"
-                                        ? "bg-[#EC80B1] text-white rounded-br-none"
-                                        : "bg-gray-100 text-gray-800 rounded-bl-none"
-                                        }`}
+                                    className={`px-4 py-2 rounded-lg text-sm ${
+                                        msg.sender === "user"
+                                            ? "bg-[#EC80B1] text-white rounded-br-none"
+                                            : "bg-gray-100 text-gray-800 rounded-bl-none"
+                                    }`}
                                 >
                                     {msg.sender === "bot" ? (
                                         <div

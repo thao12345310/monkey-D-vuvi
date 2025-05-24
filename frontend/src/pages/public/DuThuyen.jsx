@@ -48,13 +48,12 @@ import "swiper/css/navigation";
 import "swiper/css/thumbs";
 
 import RoomItem from "../../components/public/RoomItem";
-import axios from "axios";
 import ReviewsShip from "../../components/public/ReviewsShip";
 import BookModal from "../../components/public/BookModal";
 import config from "../../config";
 import { handleErrorToast } from "../../utils/toastHandler";
 import { useAuth } from "../../contexts/AuthProvider";
-
+import { axiosRequest } from "../../utils/axiosUtils";
 // Feature Icon Mapping
 const featureIcons = {
     "Bồn tắm/Cabin tắm đứng": FaShower,
@@ -367,7 +366,10 @@ const DuThuyen = () => {
         const fetchShipData = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get(`${config.api.url}/api/ship/${id}`);
+                const response = await axiosRequest({
+                    url: `${config.api.url}/api/ship/${id}`,
+                    method: "GET",
+                });
                 setShipData(response.data.data);
                 console.log("Dữ liệu du thuyền:", response.data.data);
             } catch (err) {

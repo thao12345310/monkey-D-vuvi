@@ -48,7 +48,7 @@ public class UserController {
                 .build());
     }
 
-    @GetMapping("/")
+    @GetMapping
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<ResponseObject> getUserById(@CurrentUserId Integer userId) {
         if (userId == null) {
@@ -66,7 +66,7 @@ public class UserController {
                 .build());
     }
 
-    @PutMapping("/")
+    @PutMapping
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<ResponseObject> updateUser(@CurrentUserId Integer userId, @RequestBody UserDTO userDTO) throws ReflectionException{
         if (userId == null) {
@@ -84,7 +84,7 @@ public class UserController {
                 .build());
     }
 
-    @DeleteMapping("/")
+    @DeleteMapping
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<ResponseObject> deleteUser(@CurrentUserId Integer userId) {
         if (userId == null) {

@@ -42,11 +42,11 @@ import "swiper/css/thumbs";
 import RoomItem from "../../components/public/RoomItem";
 import RoomDetailModal from "../../components/public/RoomDetailModal";
 import BookModal from "../../components/public/BookModal";
-import axios from "axios";
 import ReviewsShip from "../../components/public/ReviewsShip";
 import config from "../../config";
 import { handleErrorToast } from "../../utils/toastHandler";
 import { useAuth } from "../../contexts/AuthProvider";
+import { axiosRequest } from "../../utils/axiosUtils";
 // ================= GALLERY SLIDER =================
 const GallerySlider = ({ images }) => {
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
@@ -379,7 +379,10 @@ const ChiTietKhachSan = () => {
         const fetchHotelData = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get(`${config.api.url}/api/hotel/${id}`);
+                const response = await axiosRequest({
+                    url: `${config.api.url}/api/hotel/${id}`,
+                    method: "GET",
+                });
                 setHotelData(response.data.data);
             } catch (err) {
                 console.error("Lỗi khi tải dữ liệu:", err);

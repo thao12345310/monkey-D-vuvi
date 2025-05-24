@@ -6,8 +6,8 @@ import BookingDetailModal from "../../components/public/BookingDetailModal";
 import config from "../../config";
 import { useAuth } from "../../contexts/AuthProvider";
 import { useEffect } from "react";
-import axios from "axios";
 import { handleErrorToast } from "../../utils/toastHandler";
+import { axiosRequest } from "../../utils/axiosUtils";
 
 export default function BookingHistoryPage() {
     const [selectedType, setSelectedType] = useState("ship");
@@ -22,10 +22,10 @@ export default function BookingHistoryPage() {
 
         const fetchBookings = async () => {
             try {
-                const response = await axios.get(`${config.api.baseUrl}/api/booking/my-bookings/${selectedType}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
+                const response = await axiosRequest({
+                    url: `${config.api.baseUrl}/api/booking/my-bookings/${selectedType}`,
+                    method: "GET",
+                    token: token,
                 });
                 setBookingList(response.data.data);
             } catch (error) {

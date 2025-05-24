@@ -22,10 +22,9 @@ import { Search, LocationOn, CalendarToday, Person } from "@mui/icons-material";
 import SearchIcon from "@mui/icons-material/Search";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import axios from "axios";
 import LongCard from "../../components/public/LongCard";
 import { handleErrorToast } from "../../utils/toastHandler";
-
+import { axiosRequest } from "../../utils/axiosUtils";
 const TimKhachSan = () => {
   const [hotels, setHotels] = useState([]);
   const [location, setLocation] = useState("");

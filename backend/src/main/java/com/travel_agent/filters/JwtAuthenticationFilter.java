@@ -37,9 +37,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             token = token.substring(7);
             try {
                 String username = jwtUtils.extractUsername(token);
+                System.out.println("Authentication: " + SecurityContextHolder.getContext().getAuthentication());
                 if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                     var authentication = jwtUtils.getAuthentication(token);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
+                    System.out.println("Null Authentication: " + SecurityContextHolder.getContext().getAuthentication());
                 }
             } catch (Exception e) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

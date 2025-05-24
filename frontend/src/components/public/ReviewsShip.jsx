@@ -1,43 +1,44 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { FaStar } from "react-icons/fa";
 import config from "../../config";
 import { handleErrorToast } from "../../utils/toastHandler";
+import { axiosRequest } from "../../utils/axiosUtils";
+import { useAuth } from "../../contexts/AuthProvider";
 const ReviewsShip = ({ shipId }) => {
     const [reviews, setReviews] = useState([]);
     const [filteredStar, setFilteredStar] = useState(null);
     const [newReview, setNewReview] = useState({ name: "", content: "", stars: 5 });
+    const { token } = useAuth();    
+
+    const fetchReviews = async () => {
+        try {
+            const res = await axiosRequest({
+                url: `${config.api.url}/api/ship/${shipId}/reviews`,
+                method: "GET",
+            });
+            setReviews(res.data.data || []);
+        } catch (err) {
+            console.log(err);
+            handleErrorToast(err, "Đã có lỗi xảy ra khi tải dữ liệu đánh giá!");
+        }
+    };
 
     useEffect(() => {
-        const fetchReviews = async () => {
-            try {
-                // const token = localStorage.getItem("jwt");
-                // const res = await axios.get(`${config.api.url}/api/ship/${shipId}/reviews`, {
-                //     headers: {
-                //         Authorization: `Bearer ${token}`,
-                //     },
-                // });
-                setReviews(res.data.data || []);
-            } catch (err) {
-                console.log(err);
-                handleErrorToast(err, "Đã có lỗi xảy ra khi tải dữ liệu đánh giá!");
-            }
-        };
         fetchReviews();
     }, [shipId]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post(`${config.api.url}/api/ship/${shipId}/reviews`, newReview);
-            setNewReview({ name: "", content: "", stars: 5 });
-            const token = localStorage.getItem("jwt");
-            const res = await axios.get(`${config.api.url}/api/ship/${shipId}/reviews`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
+            await axiosRequest({
+                url: `${config.api.url}/api/ship/${shipId}/reviews`,
+                method: "POST",
+                data: newReview,
+                token: token,
             });
-            setReviews(res.data.data || []);
+
+            setNewReview({ name: "", content: "", stars: 5 });
+            fetchReviews();
         } catch (err) {
             console.error("Lỗi gửi đánh giá:", err);
             handleErrorToast(err, "Đã có lỗi xảy ra khi gửi đánh giá!");
