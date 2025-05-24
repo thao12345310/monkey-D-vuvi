@@ -24,6 +24,7 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import axios from "axios";
 import LongCard from "../../components/public/LongCard";
+import { handleErrorToast } from "../../utils/toastHandler";
 
 const TimKhachSan = () => {
   const [hotels, setHotels] = useState([]);
@@ -34,6 +35,7 @@ const TimKhachSan = () => {
   const [cities, setCities] = useState([]);
   const [priceRangeOption, setPriceRangeOption] = useState("");
   const [hotelOptions, setHotelOptions] = useState([]);
+  const [availableFeatures, setAvailableFeatures] = useState([]);
 
   const PRICE_OPTIONS = [
     { label: "Tất cả mức giá", value: "" },
@@ -58,7 +60,22 @@ const TimKhachSan = () => {
     fetchCities();
   }, []);
 
+  useEffect(() => {
+    const fetchFeatures = async () => {
+      try {
+        const response = await axios.get(
+          `${config.api.url}/api/hotel/features`
+        );
+        setAvailableFeatures(response.data.data || []);
+      } catch (error) {
+        console.error("Lỗi khi lấy danh sách features:", error);
+      }
+    };
+    fetchFeatures();
+  }, []);
+
   const [searchParams, setSearchParams] = useState({
+    tenKhachSan: "",
     diaDiem: "",
     ngayNhanPhong: "",
     ngayTraPhong: "",
@@ -88,6 +105,10 @@ const TimKhachSan = () => {
           city: searchParams.diaDiem,
           currentPage: page,
           pageSize: 6,
+          features:
+            availableFeatures.length > 0
+              ? availableFeatures.join(",")
+              : undefined,
         },
       });
       const data = response.data.data;
@@ -189,16 +210,17 @@ const TimKhachSan = () => {
             px={2}
             py={1.5}
             borderRadius="50px"
+            height="50px"
           >
             <SearchIcon sx={{ color: "#EC80B1", mr: 1 }} />
             <Autocomplete
               freeSolo
               options={hotelOptions}
-              onInputChange={handleHotelInputChange}
-              inputValue={searchParams.tenKhachSan || ""}
-              onChange={(event, value) =>
-                setSearchParams({ ...searchParams, tenKhachSan: value || "" })
-              }
+              onInputChange={(event, value) => {
+                setSearchParams({ ...searchParams, tenKhachSan: value });
+                handleHotelInputChange(event, value);
+              }}
+              inputValue={searchParams.tenKhachSan}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -434,6 +456,7 @@ const TimKhachSan = () => {
                 nameField="hotelName"
                 priceField="hotelPrice"
                 imageField="thumbnail"
+                features={hotel.features}
               />
             ))}
 

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Portal from "../common/Portal";
 import { useAuth } from "../../contexts/AuthProvider";
 import config from "../../config";
+import { handleErrorToast } from "../../utils/toastHandler";
 
 const BookModal = ({ roomsData, onClose, type, hotelId, shipId }) => {
     const [formData, setFormData] = useState({
@@ -30,8 +31,9 @@ const BookModal = ({ roomsData, onClose, type, hotelId, shipId }) => {
                 },
             });
             return response.data;
-        } catch (error) {
-            throw error.response?.data || error.message;
+        } catch (err) {
+            console.log(err);
+            handleErrorToast(err, "Đã có lỗi xảy ra khi đặt phòng!");
         }
     };
 
@@ -41,6 +43,7 @@ const BookModal = ({ roomsData, onClose, type, hotelId, shipId }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         const roomList = roomsData.map((room) => ({
             roomId: room.roomInfo.roomId,
             quantity: room.quantity,

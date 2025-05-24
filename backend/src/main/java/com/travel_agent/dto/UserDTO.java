@@ -15,6 +15,5 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @EqualsAndHashCode(callSuper = true)
 @JsonIgnoreProperties(ignoreUnknown = false)
 public class UserDTO extends AccountDTO{
-    private Integer userId;
     private LocalDate dob;
 }

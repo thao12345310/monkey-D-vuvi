@@ -14,15 +14,15 @@ import {
   FormControlLabel,
   Checkbox,
   Pagination,
-  Stack,
+  Autocomplete,
   MenuItem,
 } from "@mui/material";
-import { Search, LocationOn, CalendarToday, Person } from "@mui/icons-material";
 import LongCard from "../../components/public/LongCard";
 import SearchIcon from "@mui/icons-material/Search";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import axios from "axios";
+import { Pool, Wifi, Restaurant, Spa } from "@mui/icons-material";
 
 const TimDuThuyen = () => {
   const [ships, setShips] = useState([]);
@@ -30,11 +30,11 @@ const TimDuThuyen = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
-  const [minPrice, setMinPrice] = useState("");
-  const [maxPrice, setMaxPrice] = useState("");
   const [trip, setTrip] = useState("");
   const [priceRangeOption, setPriceRangeOption] = useState(""); // dùng preset khoảng giá
-  const [results, setResults] = useState([]);
+  const [shipOptions, setShipOptions] = useState([]);
+  const [availableFeatures, setAvailableFeatures] = useState([]);
+
   const DIA_DIEM_OPTIONS = [
     { value: "", label: "Tất cả địa điểm" },
     { value: "Vịnh Hạ Long", label: "Vịnh Hạ Long" },
@@ -48,14 +48,8 @@ const TimDuThuyen = () => {
     { label: "Trên 6 triệu", value: "6000000-999999999" },
   ];
 
-  const TIEN_ICH_OPTIONS = [
-    { id: "hoBoi", label: "Hồ bơi", field: "hasPool" },
-    { id: "wifi", label: "Wifi miễn phí", field: "hasWifi" },
-    { id: "nhaHang", label: "Nhà hàng", field: "hasRestaurant" },
-    { id: "spa", label: "Spa", field: "hasSpa" },
-  ];
-
   const [searchParams, setSearchParams] = useState({
+    tenDuThuyen: "",
     diaDiem: "",
     ngayNhanPhong: "",
     ngayTraPhong: "",
@@ -65,22 +59,42 @@ const TimDuThuyen = () => {
   const [filters, setFilters] = useState({
     giaRange: [0, 5000000],
     rating: 0,
-    tienIch: {
-      hoBoi: false,
-      wifi: false,
-      nhaHang: false,
-      spa: false,
-    },
   });
+
+  const [selectedFeatures, setSelectedFeatures] = useState([]);
+
+  // Fetch available features when component mounts
+  useEffect(() => {
+    const fetchFeatures = async () => {
+      try {
+        const response = await axios.get(`${config.api.url}/api/ship/features`);
+        setAvailableFeatures(response.data.data || []);
+      } catch (error) {
+        console.error("Lỗi khi lấy danh sách features:", error);
+      }
+    };
+    fetchFeatures();
+  }, []);
 
   const fetchShips = async (page) => {
     try {
       setLoading(true);
       console.log("Đang tải dữ liệu cho trang:", page);
-      const response = await axios.get(
-        `${config.api.url}/api/ship?currentPage=${page}&pageSize=6`
-      );
-      const data = response.data;
+      const response = await axios.get(`${config.api.url}/api/ship/search`, {
+        params: {
+          name: searchParams.tenDuThuyen,
+          minPrice: filters.giaRange[0],
+          maxPrice: filters.giaRange[1],
+          trip: trip,
+          currentPage: page,
+          pageSize: 6,
+          features:
+            selectedFeatures.length > 0
+              ? selectedFeatures.join(",")
+              : undefined,
+        },
+      });
+      const data = response.data.data;
       console.log("Dữ liệu nhận được:", data);
       setShips(data.result || []);
       setTotalPages(data.meta?.pages || 1);
@@ -91,65 +105,21 @@ const TimDuThuyen = () => {
     }
   };
 
-  useEffect(() => {
-    fetchShips(currentPage);
-  }, [currentPage]);
-
-  const handleSearch = async () => {
-    const params = {};
-
-    // Chỉ thêm name nếu có giá trị
-    if (name && name.trim()) {
-      params.name = name.trim();
-    }
-
-    // Chỉ thêm trip nếu có chọn địa điểm cụ thể
-    if (trip && trip !== "") {
-      params.trip = trip;
-    }
-
-    // Chỉ thêm khoảng giá nếu có thay đổi từ mặc định
-    if (filters.giaRange[0] > 0 || filters.giaRange[1] < 10000000) {
-      params.minPrice = filters.giaRange[0];
-      params.maxPrice = filters.giaRange[1];
-    }
-
-    // Thêm tham số phân trang
-    params.currentPage = currentPage;
-    params.pageSize = 6;
-
-    try {
-      console.log("Search params:", params); // Log để debug
-      const res = await axios.get(`${config.api.url}/api/ship/search`, {
-        params,
-      });
-
-      // Xử lý response theo cấu trúc ResponseObject
-      if (res.data && res.data.data) {
-        const result = res.data.data;
-        const shipsData = Array.isArray(result.result) ? result.result : [];
-        setShips(shipsData);
-        setTotalPages(result.meta?.pages || 1);
-      } else {
-        setShips([]);
-        setTotalPages(1);
-      }
-    } catch (err) {
-      console.error("Lỗi khi tìm kiếm du thuyền:", err);
-      setShips([]);
-      setTotalPages(1);
-    }
-  };
-
   // Thêm useEffect để gọi lại search khi currentPage thay đổi
   useEffect(() => {
-    handleSearch();
-  }, [currentPage]);
+    fetchShips(currentPage);
+  }, [currentPage, searchParams, filters, selectedFeatures, trip]);
+
+  const handleSearch = () => {
+    console.log("Tìm kiếm với params:", searchParams);
+    setCurrentPage(1); // Reset về trang 1 khi tìm kiếm
+    fetchShips(1);
+  };
 
   // Thêm useEffect để reset về trang 1 khi thay đổi bộ lọc
   useEffect(() => {
     setCurrentPage(1);
-  }, [name, trip, filters.giaRange, filters.rating, filters.tienIch]);
+  }, [searchParams, filters, selectedFeatures, trip]);
 
   const handleGiaRangeChange = (event, newValue) => {
     setFilters({ ...filters, giaRange: newValue });
@@ -168,12 +138,23 @@ const TimDuThuyen = () => {
   const handlePageChange = (event, value) => {
     console.log("Chuyển sang trang:", value);
     setCurrentPage(value);
+  };
 
-    // Cuộn lên đầu danh sách du thuyền
-    const element = document.getElementById("danh-sach-du-thuyen");
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
+  const handleShipInputChange = async (event, value) => {
+    if (!value) {
+      setShipOptions([]);
+      setSearchParams({ ...searchParams, tenDuThuyen: "" });
+      return;
     }
+    try {
+      const res = await axios.get(
+        `${config.api.url}/api/ship/suggest?q=${value}`
+      );
+      setShipOptions(res.data.data || []);
+    } catch (err) {
+      setShipOptions([]);
+    }
+    setSearchParams({ ...searchParams, tenDuThuyen: value });
   };
 
   return (
@@ -212,16 +193,24 @@ const TimDuThuyen = () => {
             height="50px"
           >
             <SearchIcon sx={{ color: "#EC80B1", mr: 1 }} />
-            <input
-              type="text"
-              placeholder="Nhập tên khách sạn"
-              className="bg-transparent outline-none w-full text-sm"
-              onChange={(e) =>
-                setSearchParams({
-                  ...searchParams,
-                  tenDuThuyen: e.target.value,
-                })
-              }
+            <Autocomplete
+              freeSolo
+              options={shipOptions}
+              onInputChange={(event, value) => {
+                setSearchParams({ ...searchParams, tenDuThuyen: value });
+                handleShipInputChange(event, value);
+              }}
+              inputValue={searchParams.tenDuThuyen}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  placeholder="Nhập tên du thuyền"
+                  variant="standard"
+                  InputProps={{ ...params.InputProps, disableUnderline: true }}
+                  sx={{ bgcolor: "transparent", width: "100%" }}
+                />
+              )}
+              sx={{ width: "100%" }}
             />
           </Box>
 
@@ -429,13 +418,21 @@ const TimDuThuyen = () => {
                 Tiện ích
               </Typography>
               <FormGroup>
-                {TIEN_ICH_OPTIONS.map((option) => (
+                {availableFeatures.map((feature) => (
                   <FormControlLabel
-                    key={option.id}
+                    key={feature}
                     control={
                       <Checkbox
-                        checked={filters.tienIch[option.id]}
-                        onChange={handleTienIchChange(option.id)}
+                        checked={selectedFeatures.includes(feature)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setSelectedFeatures([...selectedFeatures, feature]);
+                          } else {
+                            setSelectedFeatures(
+                              selectedFeatures.filter((f) => f !== feature)
+                            );
+                          }
+                        }}
                         sx={{
                           color: "#EC80B1",
                           "&.Mui-checked": {
@@ -444,7 +441,7 @@ const TimDuThuyen = () => {
                         }}
                       />
                     }
-                    label={option.label}
+                    label={feature}
                   />
                 ))}
               </FormGroup>
@@ -490,6 +487,7 @@ const TimDuThuyen = () => {
                 nameField="shipName"
                 priceField="shipPrice"
                 imageField="thumbnail"
+                features={ship.features}
               />
             ))}
 

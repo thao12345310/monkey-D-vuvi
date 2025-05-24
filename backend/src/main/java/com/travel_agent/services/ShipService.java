@@ -17,6 +17,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -54,6 +56,7 @@ public class ShipService {
             Integer minPrice,
             Integer maxPrice,
             String trip,
+            String features,
             Pageable pageable) {
         
         Page<ShipEntity> shipPage = shipRepository.findByShipNamePriceAndAddress(
@@ -79,12 +82,22 @@ public class ShipService {
             return shipDto;
         }).toList();
 
+        // Lọc theo features nếu có
+        if (features != null && !features.isEmpty()) {
+            List<String> requiredFeatures = List.of(features.split(","));
+            shipDtos = shipDtos.stream()
+                    .filter(ship -> ship.getFeatures() != null && 
+                            ship.getFeatures().stream()
+                                    .anyMatch(feature -> requiredFeatures.contains(feature)))
+                    .toList();
+        }
+
         ResultPaginationDTO result = new ResultPaginationDTO();
         result.setResult(shipDtos);
         Meta meta = new Meta();
         meta.setPage(pageable.getPageNumber() + 1);
         meta.setPages(shipPage.getTotalPages());
-        meta.setTotal(shipPage.getTotalElements());
+        meta.setTotal(shipDtos.size());
         result.setMeta(meta);
 
         return result;
@@ -620,5 +633,22 @@ public class ShipService {
                 room.getMaxPersons(),
                 images.isEmpty() ? null : images
         );
+    }
+
+    public List<String> suggestShipNames(String keyword) {
+        return shipRepository.findByShipNameContainingIgnoreCase(keyword)
+            .stream()
+            .map(ShipEntity::getShipName)
+            .filter(Objects::nonNull)
+            .distinct()
+            .limit(10) // Giới hạn 10 gợi ý
+            .collect(Collectors.toList());
+    }
+
+    public List<String> getAllFeatures() {
+        return featureRepository.findAll().stream()
+                .map(feature -> feature.getFeatureDescription())
+                .distinct()
+                .collect(Collectors.toList());
     }
 }

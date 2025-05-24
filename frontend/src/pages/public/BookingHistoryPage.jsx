@@ -7,6 +7,7 @@ import config from "../../config";
 import { useAuth } from "../../contexts/AuthProvider";
 import { useEffect } from "react";
 import axios from "axios";
+import { handleErrorToast } from "../../utils/toastHandler";
 
 export default function BookingHistoryPage() {
     const [selectedType, setSelectedType] = useState("ship");
@@ -29,6 +30,7 @@ export default function BookingHistoryPage() {
                 setBookingList(response.data.data);
             } catch (error) {
                 console.error("Error fetching bookings:", error);
+                handleErrorToast(error, "Đã có lỗi xảy ra khi tải lịch sử đặt phòng!");
             } finally {
                 setIsLoading(false);
             }

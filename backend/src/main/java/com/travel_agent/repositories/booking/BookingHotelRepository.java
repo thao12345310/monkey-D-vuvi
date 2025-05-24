@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface BookingHotelRepository extends JpaRepository<BookingHotelEntity, Integer> {
     List<BookingHotelEntity> findByUserId(Integer userId);
+    List<BookingHotelEntity> findByHotelHotelId(Integer hotelId);
 } 

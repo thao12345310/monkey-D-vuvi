@@ -31,7 +31,7 @@ function LoginPage() {
       const data = metadata.data;
 
       if (metadata.responseCode === 200) {
-        login(data.token, data.role);
+        login(data.token, data.role, data.username);
         navigate("/");
       } else {
         setError(metadata.message || "Đăng nhập thất bại");
@@ -115,7 +115,6 @@ function LoginPage() {
             >
               <option value="user">Người dùng</option>
               <option value="company">Công ty</option>
-              <option value="admin">Quản trị viên</option>
             </select>
           </div>
 

@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -22,12 +23,14 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
+    @PreAuthorize("hasRole('GUEST')")
     public ResponseEntity<ResponseObject> createUser(@RequestBody UserDTO userDTO) {
         String username = userDTO.getUsername();
         String password = userDTO.getPassword();
+        String email = userDTO.getEmail();
         String role = userDTO.getRole() == null ? "user" : userDTO.getRole();
         LocalDate dob = userDTO.getDob();
-        if (username == null || password == null || dob == null || !role.equals("user")) {
+        if (username == null || password == null || email == null || !role.equals("user")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseObject.builder()
                     .message("Invalid input data")
                     .responseCode(HttpStatus.BAD_REQUEST.value())
@@ -35,7 +38,7 @@ public class UserController {
         }
         
         UserDTO createdUser = userService.createUser(
-            username, password, role, dob);
+            userDTO);
 
 
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseObject.builder()
@@ -46,7 +49,15 @@ public class UserController {
     }
 
     @GetMapping("/")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<ResponseObject> getUserById(@CurrentUserId Integer userId) {
+        if (userId == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseObject.builder()
+                    .message("User has not logged in!")
+                    .responseCode(HttpStatus.BAD_REQUEST.value())
+                    .build());
+        }
+
         UserDTO user = userService.getUserById(userId);
         return ResponseEntity.ok(ResponseObject.builder()
                 .message("User retrieved successfully")
@@ -56,7 +67,15 @@ public class UserController {
     }
 
     @PutMapping("/")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<ResponseObject> updateUser(@CurrentUserId Integer userId, @RequestBody UserDTO userDTO) throws ReflectionException{
+        if (userId == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseObject.builder()
+                    .message("User has not logged in!")
+                    .responseCode(HttpStatus.BAD_REQUEST.value())
+                    .build());
+        }
+        
         UserDTO updatedUser = userService.updateUser(userId, userDTO);
         return ResponseEntity.ok(ResponseObject.builder()
                 .message("User updated successfully")
@@ -66,7 +85,14 @@ public class UserController {
     }
 
     @DeleteMapping("/")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<ResponseObject> deleteUser(@CurrentUserId Integer userId) {
+        if (userId == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseObject.builder()
+                    .message("User has not logged in!")
+                    .responseCode(HttpStatus.BAD_REQUEST.value())
+                    .build());
+        }
         userService.deleteUser(userId);
         return ResponseEntity.ok(ResponseObject.builder()
                 .message("User deleted successfully")
@@ -74,13 +100,14 @@ public class UserController {
                 .build());
     }
 
-    @GetMapping
-    public ResponseEntity<ResponseObject> getAllUsers() {
-        List<UserDTO> users = userService.getAllUsers();
-        return ResponseEntity.ok(ResponseObject.builder()
-                .message("List of users retrieved successfully")
-                .data(users)
-                .responseCode(HttpStatus.OK.value())
-                .build());
-    }
+    // @GetMapping
+    // @PreAuthorize("hasRole('ADMIN')")
+    // public ResponseEntity<ResponseObject> getAllUsers() {
+    //     List<UserDTO> users = userService.getAllUsers();
+    //     return ResponseEntity.ok(ResponseObject.builder()
+    //             .message("List of users retrieved successfully")
+    //             .data(users)
+    //             .responseCode(HttpStatus.OK.value())
+    //             .build());
+    // }
 }

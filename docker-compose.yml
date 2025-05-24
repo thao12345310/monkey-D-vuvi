@@ -37,7 +37,6 @@ services:
             dockerfile: Dockerfile
         ports:
             - "${BACKEND_PORT:-8080}:8080"
-            - 8000:8000
         environment:
             - SPRING_DATASOURCE_URL=${DB_URL:-jdbc:postgresql://host.docker.internal:5432/monkey_d_vuvi}
             - SPRING_DATASOURCE_USERNAME=${DB_USERNAME:-admin}
