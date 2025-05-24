@@ -17,7 +17,7 @@ from langchain_community.document_loaders import WikipediaLoader
 import operator
 from typing import Annotated
 from langchain_openai import ChatOpenAI
-from settings import OPENAI_API_KEY
+from .settings import OPENAI_API_KEY
 llm = ChatOpenAI(model="gpt-4o", api_key=OPENAI_API_KEY)
 
 class SearchState(MessagesState):

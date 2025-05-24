@@ -6,7 +6,7 @@ from langgraph.graph import MessagesState
 from langchain_core.messages import SystemMessage
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
-from settings import OPENAI_API_KEY
+from .settings import OPENAI_API_KEY
 from langchain_community.document_loaders import WikipediaLoader
 import operator
 from typing import Annotated

@@ -7,7 +7,7 @@ from langchain.embeddings import OpenAIEmbeddings
 from langchain_community.tools import TavilySearchResults
 from langgraph.graph import MessagesState
 from langchain_core.messages import SystemMessage
-from settings import OPENAI_API_KEY
+from .settings import OPENAI_API_KEY
 
 import operator
 from typing import Annotated
@@ -62,7 +62,7 @@ Bạn là một trợ lý ảo của web du lịch MonkeyDvuvi, một website h�
 Dưới đây là thông tin về một khách sạn mà tôi đã tìm thấy: {context}
 
 Hãy chỉ đưa ra các khách sạn, du thuyền, nhà hàng trên cơ sở dữ liệu của website MonkeyDvuvi, không lấy từ search web. Còn lại có thể dùng các thông
-tin khác từ search web nếu muốn. Hãy cung cấp thông tin chi tiết về khách sạn, nhà hàng và tour du lịch theo như tôi yêu cầu, sử dụng các thông tin đã có và bổ sung thêm nếu có. Nếu có các thông tin về đường dẫn tới map hay facebook, website của khách sạn hay nhà hàng, hãy cung cấp cho tôi, đặc biệt là link trên website MonkeyDvuvi. Nếu không có thông tin nào, hãy nói là không có thông tin nào.
+tin khác từ search web nếu muốn. Hãy cung cấp thông tin chi tiết về khách sạn, nhà hàng và tour du lịch theo như tôi yêu cầu, sử dụng các thông tin đã có và bổ sung thêm nếu có. Nếu có các thông tin về đường dẫn tới map hay facebook, website của khách sạn hay nhà hàng, hãy cung cấp cho tôi, đặc biệt là link của khách sạn hay nhà hàng đó trên website MonkeyDvuvi. Nếu không có thông tin nào, hãy nói là không có thông tin nào.
 """
     answer_instructions = prompt_template.format(context=context)
     response = llm.invoke([SystemMessage(content=answer_instructions)] + state['messages'])

@@ -29,44 +29,56 @@ const ChatBotWidget = ({ isOpen, setIsOpen }) => {
     const handleSendMessage = async (e) => {
         e.preventDefault();
         const trimmedInput = inputValue.trim();
-        if (trimmedInput) {
-            const newMessage = { id: messages.length + 1, text: trimmedInput, sender: "user" };
-            setMessages((prev) => [...prev, newMessage]);
-            setInputValue("");
-            setIsLoading(true);
+        if (!trimmedInput) return;
 
-            try {
-                const response = await fetch(`${config.api.url}/api/chatbot`, {
-                    method: "POST",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ message: trimmedInput }),
-                });
+        const newMessage = { id: messages.length + 1, text: trimmedInput, sender: "user" };
+        setMessages((prev) => [...prev, newMessage]);
+        setInputValue("");
+        setIsLoading(true);
 
-                const data = await response.json();
-                if (!response.ok) {
-                    throw new Error("Network response was not ok");
-                }
+        try {
+            const response = await fetch(`${config.api.url}/api/chatbot`, {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ message: trimmedInput }),
+            });
 
-                const botResponse = {
-                    id: messages.length + 2,
-                    text: data.data || "Sorry, I couldn't process that request.",
-                    sender: "bot",
-                };
-                setMessages((prev) => [...prev, botResponse]);
-            } catch (error) {
-                console.error("Error sending message:", error);
-                const botResponse = {
-                    id: messages.length + 2,
-                    text: "Error: Unable to get response from server.",
-                    sender: "bot",
-                };
-                setMessages((prev) => [...prev, botResponse]);
-            } finally {
-                setIsLoading(false);
+            const responseText = await response.text();
+            console.log("🚨 Raw response from server:", responseText); // 👈 Bắt buộc thêm
+
+            if (!response.ok) {
+                throw new Error(`Server error ${response.status}: ${response.statusText}`);
             }
+
+            let data;
+            try {
+                data = JSON.parse(responseText);
+            } catch (err) {
+                console.error("❌ JSON parse error:", err);
+                throw new Error("Invalid JSON from server");
+            }
+
+            const botResponse = {
+                id: messages.length + 2,
+                text: data.data || "Sorry, I couldn't process that request.",
+                sender: "bot",
+            };
+            setMessages((prev) => [...prev, botResponse]);
+        } catch (error) {
+            console.error("Error sending message:", error);
+            setMessages((prev) => [
+                ...prev,
+                {
+                    id: messages.length + 2,
+                    text: "❌ Error: Unable to get response from server.",
+                    sender: "bot",
+                },
+            ]);
+        } finally {
+            setIsLoading(false);
         }
     };
 

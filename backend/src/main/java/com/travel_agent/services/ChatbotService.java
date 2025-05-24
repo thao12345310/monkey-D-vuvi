@@ -2,8 +2,6 @@ package com.travel_agent.services;
 
 import org.springframework.web.reactive.function.client.WebClient;
 import com.travel_agent.dto.ChatbotRequestDTO;
-import com.travel_agent.dto.ChatbotResponseDTO;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import java.time.Duration;
@@ -24,14 +22,15 @@ public class ChatbotService {
         System.out.println("URL chatbot: " + "http://" + chatbotHost + ":" + chatbotPort + "/chat");
 
         try {
-            ChatbotResponseDTO response = webClient.post()
+            String response = webClient.post()
                     .uri("http://" + chatbotHost + ":" + chatbotPort + "/chat")
                     .bodyValue(request)
                     .retrieve()
-                    .bodyToMono(ChatbotResponseDTO.class)
+                    .bodyToMono(String.class)
+
                     .block();
             System.out.println("Response from chatbot: " + response);
-            return response.getData();
+            return response;
         } catch (Exception e) {
             System.err.println("Error when calling chatbot:");
             e.printStackTrace();
