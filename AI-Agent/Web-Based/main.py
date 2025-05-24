@@ -6,6 +6,7 @@ import os
 from langchain.schema import HumanMessage, SystemMessage
 
 from graph.memoryCcollection import PostgresStore
+from typing import Optional
 
 # Setup path để import graph
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -27,7 +28,7 @@ app.add_middleware(
 
 # --- DTO tương thích với Spring ---
 class ChatRequest(BaseModel):
-    userId: int
+    userId: Optional[int] = None
     message: str
 
 # --- Dùng chat history (bạn có thể thay đổi về session nếu cần thiết) ---

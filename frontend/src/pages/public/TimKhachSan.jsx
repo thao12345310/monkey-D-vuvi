@@ -46,7 +46,10 @@ const TimKhachSan = () => {
   useEffect(() => {
     const fetchCities = async () => {
       try {
-        const response = await axios.get(`${config.api.url}/api/hotel/cities`);
+        const response = await axiosRequest({
+          url: `${config.api.url}/api/hotel/cities`,
+          method: "GET",
+        });
         const cityList = response.data.data;
         setCities([
           { value: "", label: "Tất cả địa điểm" },
@@ -62,9 +65,10 @@ const TimKhachSan = () => {
   useEffect(() => {
     const fetchFeatures = async () => {
       try {
-        const response = await axios.get(
-          `${config.api.url}/api/hotel/features`
-        );
+        const response = await axiosRequest({
+          url: `${config.api.url}/api/hotel/features`,
+          method: "GET",
+        });
         setAvailableFeatures(response.data.data || []);
       } catch (error) {
         console.error("Lỗi khi lấy danh sách features:", error);
@@ -96,7 +100,9 @@ const TimKhachSan = () => {
     try {
       setLoading(true);
       console.log("Đang tải dữ liệu cho trang:", page);
-      const response = await axios.get(`${config.api.url}/api/hotel/search`, {
+      const response = await axiosRequest({
+        url: `${config.api.url}/api/hotel/search`,
+        method: "GET",
         params: {
           name: searchParams.tenKhachSan,
           minPrice: filters.giaRange[0],
@@ -163,9 +169,10 @@ const TimKhachSan = () => {
       return;
     }
     try {
-      const res = await axios.get(
-        `${config.api.url}/api/hotel/suggest?q=${value}`
-      );
+      const res = await axiosRequest({
+        url: `${config.api.url}/api/hotel/suggest?q=${value}`,
+        method: "GET",
+      });
       setHotelOptions(res.data.data || []);
     } catch (err) {
       setHotelOptions([]);

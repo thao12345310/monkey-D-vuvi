@@ -37,35 +37,35 @@ const ChatBotWidget = ({ isOpen, setIsOpen }) => {
         setInputValue("");
         setIsLoading(true);
 
-            try {
-                const response = await axiosRequest({
-                    url: `${config.api.url}/api/chatbot`,
-                    method: "POST",
-                    data: { message: trimmedInput },
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    token: token,
-                });
+        try {
+            const response = await axiosRequest({
+                url: `${config.api.url}/api/chatbot`,
+                method: "POST",
+                data: { message: trimmedInput },
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                token: token,
+            });
+            
+            console.log("🚨 Raw response from server:", response);
 
-            const responseText = await response.text();
-            console.log("🚨 Raw response from server:", responseText); // 👈 Bắt buộc thêm
-
-            if (!response.ok) {
-                throw new Error(`Server error ${response.status}: ${response.statusText}`);
+            if (!response.responseCode === 200) {
+                throw new Error(`Server error ${response.responseCode}: ${response.message}`);
             }
 
             let data;
             try {
-                data = JSON.parse(responseText);
+                data = JSON.parse(response.data.data);
             } catch (err) {
                 console.error("❌ JSON parse error:", err);
                 throw new Error("Invalid JSON from server");
             }
 
+            const botMessage = data.data;
             const botResponse = {
                 id: messages.length + 2,
-                text: data.data || "Sorry, I couldn't process that request.",
+                text: botMessage || "Sorry, I couldn't process that request.",
                 sender: "bot",
             };
             setMessages((prev) => [...prev, botResponse]);

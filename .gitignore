@@ -22,6 +22,6 @@
 **/.env.production
 **/.env.test
 
-/AI-Agent/venv
-/AI-Agent/graph/__pycache__
-/AI-Agent/qdrant_storage
+**/venv
+**/__pycache__
+**/qdrant_storage

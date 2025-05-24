@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import config from "../../config";
 import { useAuth } from "../../contexts/AuthProvider";
-
+import { axiosRequest } from "../../utils/axiosUtils";
 function LoginPage() {
   const navigate = useNavigate();
   const [error, setError] = useState("");
@@ -19,13 +18,14 @@ function LoginPage() {
     const password = event.target.password.value;
 
     try {
-      const response = await axios.post(
-        `${config.api.url}/api/auth/login/${role}`,
-        {
+      const response = await axiosRequest({
+        url: `${config.api.url}/api/auth/login/${role}`,
+        method: "POST",
+        data: {
           username: email,
           password: password,
-        }
-      );
+        },
+      });
 
       const metadata = response.data;
       const data = metadata.data;

@@ -37,12 +37,17 @@ public class CurrentUserIdResolver implements HandlerMethodArgumentResolver {
         // Giả sử username được lưu trong SecurityContext (ví dụ từ JWT token)
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         System.out.println(authentication);
+
         String username = authentication.getName();
         System.out.println(username);
+
+        String role = authentication.getAuthorities().iterator().next().getAuthority();
+        System.out.println("Role: " + role);
+
         // Lấy userId từ username
-        UserEntity user = userRepository.findByUsernameOrEmail(username)
-        .orElseThrow(() -> new IllegalArgumentException("User not found with username: " + username));
-        System.out.println(user);
+        UserEntity user = userRepository.findByUsernameOrEmail(username).orElse(null);
+        System.out.println("UserInfo: " + user);
+        if (user == null) return null;
         return user.getUserId();
     }
 }

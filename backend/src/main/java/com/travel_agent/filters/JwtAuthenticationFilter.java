@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import com.travel_agent.utils.JwtUtils;
+import org.springframework.security.core.Authentication;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -28,37 +29,46 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     
         if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
             response.setStatus(HttpServletResponse.SC_OK);
-            return;  // Bỏ qua JWT check cho preflight request
+            filterChain.doFilter(request, response); // Vẫn phải cho request tiếp tục
+            return;
         }
+        
     
         String token = request.getHeader("Authorization");
-    
+        Authentication currentAuth = SecurityContextHolder.getContext().getAuthentication();
+        
         if (token != null && token.startsWith("Bearer ")) {
             token = token.substring(7);
             try {
                 String username = jwtUtils.extractUsername(token);
-                System.out.println("Authentication: " + SecurityContextHolder.getContext().getAuthentication());
-                if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        
+                // nếu chưa có auth hoặc là guest → override
+                boolean shouldSetAuth = currentAuth == null ||
+                    currentAuth.getAuthorities().stream()
+                        .anyMatch(a -> a.getAuthority().equals("ROLE_GUEST"));
+        
+                if (username != null && shouldSetAuth) {
                     var authentication = jwtUtils.getAuthentication(token);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
-                    System.out.println("Null Authentication: " + SecurityContextHolder.getContext().getAuthentication());
                 }
+        
             } catch (Exception e) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
             }
         } else {
-            if (SecurityContextHolder.getContext().getAuthentication() == null) {
+            // chỉ set guest nếu chưa có auth
+            if (currentAuth == null) {
+
                 var defaultAuth = new UsernamePasswordAuthenticationToken(
                         "guest",
-                        null,
+                        "guest",
                         Collections.singletonList(new SimpleGrantedAuthority("ROLE_GUEST"))
                 );
                 SecurityContextHolder.getContext().setAuthentication(defaultAuth);
             }
         }
-    
         filterChain.doFilter(request, response);
-    }
     
+    }
 }

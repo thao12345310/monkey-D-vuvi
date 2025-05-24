@@ -25,7 +25,7 @@ public class ChatbotController {
     private final JwtUtils jwtUtils;
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('USER', 'GUEST')")
+    @PreAuthorize("hasAnyRole('USER', 'GUEST')") 
     public ResponseEntity<ResponseObject> handleChatbotRequest(@CurrentUserId Integer userId, @RequestBody ChatbotRequestDTO request) {
         try {
             // Call the chatbot service to get a response

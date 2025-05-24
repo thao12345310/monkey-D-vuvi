@@ -27,6 +27,7 @@ import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import PendingOutlinedIcon from "@mui/icons-material/PendingOutlined";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import config from "../../config";
+import { axiosRequest } from "../../utils/axiosUtils";
 
 const ManageBooking = () => {
   const theme = useTheme();
@@ -54,9 +55,11 @@ const ManageBooking = () => {
 
       let response;
       if (type === "HOTEL") {
-        const url = `${config.api.url}/api/booking/hotel/${id}`;
         console.log("Calling hotel API:", url);
-        response = await axios.get(url);
+        response = await axiosRequest({
+          url: `${config.api.url}/api/booking/hotel/${id}`,
+          method: "GET",
+        });
         console.log("Hotel booking response:", response.data);
         if (response.data && response.data.data) {
           const hotelBookings = response.data.data.map((booking) => ({
@@ -69,9 +72,11 @@ const ManageBooking = () => {
           setBookings([]);
         }
       } else if (type === "SHIP") {
-        const url = `${config.api.url}/api/booking/ship/${id}`;
         console.log("Calling ship API:", url);
-        response = await axios.get(url);
+        response = await axiosRequest({
+          url: `${config.api.url}/api/booking/ship/${id}`,
+          method: "GET",
+        });
         console.log("Ship booking response:", response.data);
         if (response.data && response.data.data) {
           const shipBookings = response.data.data.map((booking) => ({
@@ -100,8 +105,10 @@ const ManageBooking = () => {
 
   const handleStatusChange = async (bookingId, newStatus) => {
     try {
-      await axios.put(`${config.api.url}/api/booking/${bookingId}/status`, {
-        status: newStatus,
+      await axiosRequest({
+        url: `${config.api.url}/api/booking/${bookingId}/status`,
+        method: "PUT",
+        data: { status: newStatus },
       });
       fetchBookings(); // Refresh data after update
     } catch (error) {
@@ -121,13 +128,14 @@ const ManageBooking = () => {
 
   const handleConfirmSubmit = async () => {
     try {
-      await axios.put(
-        `${config.api.url}/api/booking/${selectedBookingForConfirm.bookingId}/status`,
-        {
+      await axiosRequest({
+        url: `${config.api.url}/api/booking/${selectedBookingForConfirm.bookingId}/status`,
+        method: "PUT",
+        data: {
           status: "CONFIRMED",
           note: confirmNote,
-        }
-      );
+        },
+      });
       setConfirmModalOpen(false);
       setConfirmNote("");
       fetchBookings();

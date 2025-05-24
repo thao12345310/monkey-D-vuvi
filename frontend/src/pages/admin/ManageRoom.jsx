@@ -6,7 +6,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 import { tokens } from "../../theme";
 import { handleErrorToast } from "../../utils/toastHandler";
-
+import { axiosRequest } from "../../utils/axiosUtils";
 export default function ManageRoom() {
     const [rooms, setRooms] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -33,7 +33,10 @@ export default function ManageRoom() {
 
     const fetchRooms = async () => {
         try {
-            const response = await axios.get(`${config.api.url}/api/hotel/${hotelId}/rooms`);
+            const response = await axiosRequest({
+                url: `${config.api.url}/api/hotel/${hotelId}/rooms`,
+                method: "GET",
+            });
             setRooms(response.data.data || []);
         } catch (err) {
             console.error("Failed to fetch rooms", error);
@@ -72,7 +75,11 @@ export default function ManageRoom() {
                 roomFeatureIds: featureIds,
                 images: editRoom.images || [],
             };
-            await axios.put(`${config.api.url}/api/hotel/${hotelId}/${editRoom.roomId}`, updatedData);
+            await axiosRequest({
+                url: `${config.api.url}/api/hotel/${hotelId}/${editRoom.roomId}`,
+                method: "PUT",
+                data: updatedData,
+            });
 
             fetchRooms(); // reload data
             handleClose();

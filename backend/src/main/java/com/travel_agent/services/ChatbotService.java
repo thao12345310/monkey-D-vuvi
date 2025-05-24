@@ -30,6 +30,7 @@ public class ChatbotService {
 
                     .block();
             System.out.println("Response from chatbot: " + response);
+
             return response;
         } catch (Exception e) {
             System.err.println("Error when calling chatbot:");

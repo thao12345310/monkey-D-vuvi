@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import config from "../../config";
-
+import { axiosRequest } from "../../utils/axiosUtils";
 function RegisterPage() {
     const navigate = useNavigate();
     const [error, setError] = useState("");
@@ -36,11 +35,13 @@ function RegisterPage() {
         const data = { username, email, password, role: "user", dob };
 
         try {
-            const response = await axios.post(`${config.api.url}/api/user`, data, {
-                withCredentials: true,
+            const response = await axiosRequest({
+                url: `${config.api.url}/api/user`,
+                method: "POST",
+                data,
             });
 
-            if (response.data.responseCode === 201) {
+            if (response.data.responseCode === 200) {
                 navigate("/login");
             } else {
                 setError(response.data.message || "Đăng ký thất bại");
