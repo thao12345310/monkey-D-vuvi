@@ -8,7 +8,6 @@ from qdrant_client import QdrantClient
 from IPython.display import Image, display
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.tools import tool
-from serpapi import GoogleSearch
 import os
 from langchain_community.tools import TavilySearchResults
 from langgraph.graph import MessagesState
@@ -17,7 +16,7 @@ from langchain_community.document_loaders import WikipediaLoader
 import operator
 from typing import Annotated
 from langchain_openai import ChatOpenAI
-from settings import OPENAI_API_KEY
+from .settings import OPENAI_API_KEY
 llm = ChatOpenAI(model="gpt-4o", api_key=OPENAI_API_KEY)
 
 class SearchState(MessagesState):
