@@ -47,7 +47,7 @@ class PostgresStore:
 
 if __name__ == "__main__":
     # ⚠️ Đảm bảo DB 'monkey' đã tồn tại trước
-    DSN = "postgresql://postgres:31072004@localhost:5432/monkey"
+    DSN = "postgresql://admin:admin@localhost:5432/monkey_d_vuvi"
 
     store = PostgresStore(DSN)
 

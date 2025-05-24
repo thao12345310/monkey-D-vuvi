@@ -33,7 +33,7 @@ class ChatRequest(BaseModel):
 # --- Dùng chat history (bạn có thể thay đổi về session nếu cần thiết) ---
 chat_history = InMemoryChatMessageHistory()
 user_sessions = {}
-dsn = "postgresql://postgres:31072004@localhost:5432/monkey"
+dsn = "postgresql://admin:admin@localhost:5432/monkey_d_vuvi"
 across_thread_memory = PostgresStore(dsn) 
 # --- Endpoint chính ---
 @app.post("/chat")

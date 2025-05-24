@@ -151,7 +151,7 @@ def condition_tools(state):
     elif state['subgraph_name'] == "answer":
         return "answer" 
     
-dsn = "postgresql://postgres:31072004@localhost:5432/monkey"
+dsn = "postgresql://admin:admin@localhost:5432/monkey_d_vuvi"
 across_thread_memory = PostgresStore(dsn) 
 
 builder = StateGraph(EntryGraphState)

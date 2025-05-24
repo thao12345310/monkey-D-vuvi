@@ -8,7 +8,6 @@ from qdrant_client import QdrantClient
 from IPython.display import Image, display
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.tools import tool
-from serpapi import GoogleSearch
 import os
 from langchain_community.tools import TavilySearchResults
 from langgraph.graph import MessagesState
