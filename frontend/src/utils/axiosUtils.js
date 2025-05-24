@@ -6,10 +6,11 @@ export const axiosRequest = async ({
     method = "GET",
     data = null,
     params = null,
-    token = null,
     signal = null, // từ AbortController
     headers = {},
 }) => {
+    const token = localStorage.getItem("token");
+    console.log("Token:", token);
     const finalHeaders = {
         "Content-Type": "application/json",
         ...headers,
@@ -20,7 +21,14 @@ export const axiosRequest = async ({
     }
 
     const fullUrl = url.startsWith("http") ? url : `${config.api.url}${url}`;
-
+    console.log({
+        url: fullUrl,
+        method,
+        data,
+        params,
+        headers: finalHeaders,
+        signal,
+    });
     const response = await axios({
         url: fullUrl,
         method,
@@ -29,6 +37,7 @@ export const axiosRequest = async ({
         headers: finalHeaders,
         signal,
     });
+    console.log("Response from server:", response);
 
     return response;
 };

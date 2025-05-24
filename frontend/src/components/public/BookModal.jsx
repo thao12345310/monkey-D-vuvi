@@ -4,6 +4,7 @@ import Portal from "../common/Portal";
 import { useAuth } from "../../contexts/AuthProvider";
 import config from "../../config";
 import { handleErrorToast } from "../../utils/toastHandler";
+import { axiosRequest } from "../../utils/axiosUtils";
 
 const BookModal = ({ roomsData, onClose, type, hotelId, shipId }) => {
     const [formData, setFormData] = useState({
@@ -25,7 +26,10 @@ const BookModal = ({ roomsData, onClose, type, hotelId, shipId }) => {
     const createBooking = async (bookingData) => {
         try {
             console.log(token);
-            const response = await axios.post(config.api.url + "/api/booking", bookingData, {
+            const response = await axiosRequest({
+                url: `${config.api.url}/api/booking`,
+                method: "POST",
+                data: bookingData,
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

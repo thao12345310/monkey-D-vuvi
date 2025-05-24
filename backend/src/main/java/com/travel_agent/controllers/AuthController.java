@@ -36,7 +36,7 @@ public class AuthController {
         try {
             // Check if the username is username or email then find the user
             UserDTO user = userService.findByUsernameOrEmail(request.getUsername());
-            // var user = userService.findByUsername(request.getUsername());
+            
             System.out.println(user);
             // Kiểm tra password bằng passwordEncoder.matches()
             if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {

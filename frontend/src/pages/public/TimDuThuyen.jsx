@@ -21,7 +21,7 @@ import LongCard from "../../components/public/LongCard";
 import SearchIcon from "@mui/icons-material/Search";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import axios from "axios";
+import { axiosRequest } from "../../utils/axiosUtils";
 import { Pool, Wifi, Restaurant, Spa } from "@mui/icons-material";
 
 const TimDuThuyen = () => {
@@ -67,7 +67,10 @@ const TimDuThuyen = () => {
   useEffect(() => {
     const fetchFeatures = async () => {
       try {
-        const response = await axios.get(`${config.api.url}/api/ship/features`);
+        const response = await axiosRequest({
+          url: `${config.api.url}/api/ship/features`,
+          method: "GET",
+        });
         setAvailableFeatures(response.data.data || []);
       } catch (error) {
         console.error("Lỗi khi lấy danh sách features:", error);
@@ -80,7 +83,9 @@ const TimDuThuyen = () => {
     try {
       setLoading(true);
       console.log("Đang tải dữ liệu cho trang:", page);
-      const response = await axios.get(`${config.api.url}/api/ship/search`, {
+      const response = await axiosRequest({
+        url: `${config.api.url}/api/ship/search`,
+        method: "GET",
         params: {
           name: searchParams.tenDuThuyen,
           minPrice: filters.giaRange[0],
@@ -147,9 +152,10 @@ const TimDuThuyen = () => {
       return;
     }
     try {
-      const res = await axios.get(
-        `${config.api.url}/api/ship/suggest?q=${value}`
-      );
+      const res = await axiosRequest({
+        url: `${config.api.url}/api/ship/suggest?q=${value}`,
+        method: "GET",
+      });
       setShipOptions(res.data.data || []);
     } catch (err) {
       setShipOptions([]);
