@@ -22,6 +22,8 @@
 **/.env.production
 **/.env.test
 
-**/venv
+**/.venv
 **/__pycache__
 **/qdrant_storage
+
+**/venv

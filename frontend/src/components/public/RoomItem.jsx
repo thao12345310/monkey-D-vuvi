@@ -33,7 +33,7 @@ const RoomItem = ({ room, quantity, onQuantityChange }) => {
                 <div className="flex items-center space-x-6">
                     <div className="text-right">
                         <div className="text-primary font-bold text-lg">{room.roomPrice.toLocaleString("vi-VN")} đ</div>
-                        <div className="text-gray-500 text-xs">/khách</div>
+                        <div className="text-gray-500 text-xs">/đêm</div>
                     </div>
 
                     <div className="flex items-center border rounded-full px-2 py-1 space-x-2">

@@ -11,6 +11,7 @@ from typing import Optional
 # Setup path để import graph
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from graph.your_graph import graph
+from config import DATABASE_URL
 
 from langchain_core.chat_history import InMemoryChatMessageHistory
 
@@ -34,8 +35,8 @@ class ChatRequest(BaseModel):
 # --- Dùng chat history (bạn có thể thay đổi về session nếu cần thiết) ---
 chat_history = InMemoryChatMessageHistory()
 user_sessions = {}
-dsn = "postgresql://admin:admin@localhost:5432/monkey_d_vuvi"
-across_thread_memory = PostgresStore(dsn) 
+across_thread_memory = PostgresStore(DATABASE_URL)
+
 # --- Endpoint chính ---
 @app.post("/chat")
 def chat_endpoint(chat: ChatRequest):

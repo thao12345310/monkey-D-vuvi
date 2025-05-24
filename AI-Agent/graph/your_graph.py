@@ -20,6 +20,7 @@ from langchain_core.messages import merge_message_runs
 from fastapi import FastAPI
 load_dotenv()
 from langchain_core.chat_history import InMemoryChatMessageHistory
+from config import DATABASE_URL
 chat_history = InMemoryChatMessageHistory()
 # Khởi tạo SQLite connection
 app = FastAPI()
@@ -151,8 +152,7 @@ def condition_tools(state):
     elif state['subgraph_name'] == "answer":
         return "answer" 
     
-dsn = "postgresql://admin:admin@localhost:5432/monkey_d_vuvi"
-across_thread_memory = PostgresStore(dsn) 
+across_thread_memory = PostgresStore(DATABASE_URL) 
 
 builder = StateGraph(EntryGraphState)
 builder.add_node("call_model", call_model)
