@@ -196,7 +196,7 @@ public class BookingService {
         for (BookingHotelEntity booking : hotelBookings) {
             List<BookingHotelRoomEntity> bookingRooms = bookingHotelRoomRepository.findByBookingId(booking.getBookingId());
             List<BookingHotelResponseDTO.HotelRoomBooking> hotelRooms = new ArrayList<>();
-            
+
             for (BookingHotelRoomEntity room : bookingRooms) {
                 BookingHotelResponseDTO.HotelRoomBooking hotelRoom = new BookingHotelResponseDTO.HotelRoomBooking();
                 HotelRoomDTO hotelRoomDTO = hotelService.getHotelRoom(hotelId, room.getRoomId());
@@ -204,6 +204,10 @@ public class BookingService {
                 hotelRoom.setQuantity(room.getQuantity());
                 hotelRooms.add(hotelRoom);
             }
+
+            BookingHotelResponseDTO bookingHotelResponseDTO = bookingMapper.convertToHotelResponseDTO(booking);
+            bookingHotelResponseDTO.setRooms(hotelRooms);
+            bookingHotelResponseDTOs.add(bookingHotelResponseDTO);
         }
         return bookingHotelResponseDTOs;
     }
