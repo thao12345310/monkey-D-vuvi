@@ -47,7 +47,7 @@ public class BookingService {
 
     public BookingHotelResponseDTO createHotelBooking(BookingHotelRequestDTO request, Integer userId) {
         BookingHotelEntity booking = new BookingHotelEntity();
-        HotelEntity hotel = hotelRepository.findById(request.getHotel().getHotelId())
+        HotelEntity hotel = hotelRepository.findById(request.getHotelId())
                 .orElseThrow(() -> new IllegalArgumentException("Hotel not found"));
 
         booking.setHotel(hotel);
@@ -71,7 +71,7 @@ public class BookingService {
             bookingRoom.setBookingId(booking.getBookingId());
             bookingRoom.setRoomId(roomBooking.getRoomId());
             bookingRoom.setQuantity(roomBooking.getQuantity());
-            bookingRoom.setHotelId(request.getHotel().getHotelId());
+            bookingRoom.setHotelId(request.getHotelId());
 
             bookingHotelRoomRepository.save(bookingRoom);
         }
