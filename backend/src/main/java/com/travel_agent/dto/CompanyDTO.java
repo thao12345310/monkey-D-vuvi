@@ -14,4 +14,5 @@ import lombok.Setter;
 
 public class CompanyDTO extends AccountDTO{
     private String companyName;
+    
 }

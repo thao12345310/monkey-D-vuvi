@@ -32,7 +32,11 @@ function LoginPage() {
 
       if (metadata.responseCode === 200) {
         login(data.token, data.role, data.username);
-        navigate("/");
+        if (role === "company") {
+          navigate("/admin");
+        } else {
+          navigate("/");
+        }
       } else {
         setError(metadata.message || "Đăng nhập thất bại");
       }

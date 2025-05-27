@@ -44,35 +44,10 @@ export default function ManageRoom() {
 
   const fetchRooms = async () => {
     try {
-      // Lấy thông tin công ty hiện tại
-      const companyResponse = await axiosRequest({
-        url: `${config.api.url}/api/company/current`,
+      const response = await axiosRequest({
+        url: `${config.api.url}/api/company/rooms`,
         method: "GET",
       });
-
-      if (!companyResponse.data || !companyResponse.data.data) {
-        throw new Error("Không thể lấy thông tin công ty");
-      }
-
-      const { companyId } = companyResponse.data.data;
-      setCompanyId(companyId);
-
-      // Xác định type dựa vào companyId
-      const type = companyId <= 217 ? "HOTEL" : "SHIP";
-      console.log("Company ID:", companyId, "Type:", type);
-
-      let response;
-      if (type === "HOTEL") {
-        response = await axiosRequest({
-          url: `${config.api.url}/api/hotel/${companyId}/rooms`,
-          method: "GET",
-        });
-      } else if (type === "SHIP") {
-        response = await axiosRequest({
-          url: `${config.api.url}/api/ship/${companyId}/rooms`,
-          method: "GET",
-        });
-      }
 
       if (response.data && response.data.data) {
         setRooms(response.data.data);

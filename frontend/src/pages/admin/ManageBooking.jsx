@@ -52,16 +52,10 @@ const ManageBooking = () => {
         method: "GET",
       });
 
-      console.log("Booking response:", response.data);
-      console.log(
-        "Company ID from response:",
-        response.data?.data?.[0]?.companyId
-      );
-
       if (response.data && response.data.data) {
         const bookings = response.data.data.map((booking) => ({
           ...booking,
-          id: `${booking.type.toLowerCase()}-${booking.bookingId}`,
+          id: `booking-${booking.bookingId}`,
         }));
         setBookings(bookings);
       } else {

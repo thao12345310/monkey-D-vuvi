@@ -117,7 +117,7 @@ const Sidebar = () => {
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
-                  Luxury Yacht
+                  ADMIN
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
                   Hệ thống quản lý
