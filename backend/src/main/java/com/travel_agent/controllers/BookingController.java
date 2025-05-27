@@ -104,46 +104,51 @@ public class BookingController {
         }
     }
 
-    @GetMapping("/admin/all-ship-bookings")
-    public ResponseEntity<ResponseObject> getAllShipBookings() {
-        try {
-            List<BookingShipResponseDTO> bookings = bookingService.getAllShipBookings();
+
+    @GetMapping("/company")
+    @PreAuthorize("hasRole('COMPANY')")
+    public ResponseEntity<ResponseObject> getCompanyBookings(
+            @CurrentUserId Integer companyId) {
+
+        System.out.println("Current company ID: " + companyId);
+        String type = companyId <= 217 ? "HOTEL" : "SHIP";
+        System.out.println("Company type: " + type);
+        if (type == "HOTEL") {
+            try {
+                System.out.println("Calling getHotelBookingsByHotelId with companyId: " + companyId);
+                List<BookingHotelResponseDTO> bookings = bookingService.getHotelBookingsByHotelId(companyId);
+                System.out.println("Number of bookings found: " + (bookings != null ? bookings.size() : 0));
+                return ResponseEntity.ok(ResponseObject.builder()
+                        .message("Hotel bookings retrieved successfully")
+                        .data(bookings)
+                        .responseCode(HttpStatus.OK.value())
+                        .build());
+            } catch (Exception e) {
+                System.err.println("Error getting hotel bookings: " + e.getMessage());
+                e.printStackTrace();
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(ResponseObject.builder()
+                                .message("Failed to retrieve hotel bookings: " + e.getMessage())
+                                .responseCode(HttpStatus.BAD_REQUEST.value())
+                                .build());
+            }
+        } else {
+            List<BookingShipResponseDTO> bookings = bookingService.getShipBookingsByShipId(companyId);
             return ResponseEntity.ok(ResponseObject.builder()
-                    .message("All ship bookings retrieved successfully")
+                    .message("Ship bookings retrieved successfully")
                     .data(bookings)
                     .responseCode(HttpStatus.OK.value())
                     .build());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(ResponseObject.builder()
-                            .message("Failed to retrieve ship bookings: " + e.getMessage())
-                            .responseCode(HttpStatus.BAD_REQUEST.value())
-                            .build());
         }
+        
     }
 
-    @GetMapping("/admin/all-hotel-bookings")
-    public ResponseEntity<ResponseObject> getAllHotelBookings() {
+    @GetMapping("/company/ship")
+    @PreAuthorize("hasRole('COMPANY')")
+    public ResponseEntity<ResponseObject> getCompanyShipBookings(
+            @CurrentUserId Integer companyId) {
         try {
-            List<BookingHotelResponseDTO> bookings = bookingService.getAllHotelBookings();
-            return ResponseEntity.ok(ResponseObject.builder()
-                    .message("All hotel bookings retrieved successfully")
-                    .data(bookings)
-                    .responseCode(HttpStatus.OK.value())
-                    .build());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(ResponseObject.builder()
-                            .message("Failed to retrieve hotel bookings: " + e.getMessage())
-                            .responseCode(HttpStatus.BAD_REQUEST.value())
-                            .build());
-        }
-    }
-
-    @GetMapping("/ship/{shipId}")
-    public ResponseEntity<ResponseObject> getShipBookingsByShipId(@PathVariable Integer shipId) {
-        try {
-            List<BookingShipResponseDTO> bookings = bookingService.getShipBookingsByShipId(shipId);
+            List<BookingShipResponseDTO> bookings = bookingService.getShipBookingsByShipId(companyId);
             return ResponseEntity.ok(ResponseObject.builder()
                     .message("Ship bookings retrieved successfully")
                     .data(bookings)
@@ -159,7 +164,9 @@ public class BookingController {
     }
 
     @GetMapping("/hotel/{hotelId}")
-    public ResponseEntity<ResponseObject> getHotelBookingsByHotelId(@PathVariable Integer hotelId) {
+    @PreAuthorize("hasRole('COMPANY')")
+    public ResponseEntity<ResponseObject> getHotelBookingsByHotelId(
+            @PathVariable Integer hotelId) {
         try {
             List<BookingHotelResponseDTO> bookings = bookingService.getHotelBookingsByHotelId(hotelId);
             return ResponseEntity.ok(ResponseObject.builder()
@@ -167,8 +174,7 @@ public class BookingController {
                     .data(bookings)
                     .responseCode(HttpStatus.OK.value())
                     .build());
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(ResponseObject.builder()
                             .message("Failed to retrieve hotel bookings: " + e.getMessage())

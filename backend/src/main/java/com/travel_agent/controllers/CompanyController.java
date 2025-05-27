@@ -1,7 +1,7 @@
-
 package com.travel_agent.controllers;
 
 import com.travel_agent.services.CompanyService;
+import com.travel_agent.annotation.CurrentUserId;
 import com.travel_agent.dto.CompanyDTO;
 import com.travel_agent.dto.ResponseObject;
 import com.travel_agent.exceptions.ReflectionException;
@@ -55,9 +55,9 @@ public class CompanyController {
     //             .build());
     // }
 
-    @PutMapping("/{companyId}")
+    @PutMapping("/update")
     @PreAuthorize("hasRole('COMPANY')")
-    public ResponseEntity<ResponseObject> updateCompany(@PathVariable Integer companyId, @RequestBody CompanyDTO companyDTO)throws ReflectionException{
+    public ResponseEntity<ResponseObject> updateCompany(@CurrentUserId Integer companyId, @RequestBody CompanyDTO companyDTO)throws ReflectionException{
         CompanyDTO updatedCompany = companyService.updateCompany(companyId, companyDTO);
         return ResponseEntity.ok(ResponseObject.builder()
                 .message("Company updated successfully")
@@ -66,12 +66,23 @@ public class CompanyController {
                 .build());
     }
 
-    @DeleteMapping("/{companyId}")
+    @DeleteMapping("/delete")
     @PreAuthorize("hasRole('COMPANY')")
-    public ResponseEntity<ResponseObject> deleteCompany(@PathVariable Integer companyId) {
+    public ResponseEntity<ResponseObject> deleteCompany(@CurrentUserId Integer companyId) {
         companyService.deleteCompany(companyId);
         return ResponseEntity.ok(ResponseObject.builder()
                 .message("Company deleted successfully")
+                .responseCode(HttpStatus.OK.value())
+                .build());
+    }
+
+    @GetMapping("/current")
+    @PreAuthorize("hasRole('COMPANY')")
+    public ResponseEntity<ResponseObject> getCurrentCompany(@CurrentUserId Integer companyId) {
+        CompanyDTO company = companyService.getCompanyById(companyId);
+        return ResponseEntity.ok(ResponseObject.builder()
+                .message("Current company information retrieved successfully")
+                .data(company)
                 .responseCode(HttpStatus.OK.value())
                 .build());
     }

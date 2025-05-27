@@ -85,11 +85,31 @@ public class ShipService {
         // Lọc theo features nếu có
         if (features != null && !features.isEmpty()) {
             List<String> requiredFeatures = List.of(features.split(","));
+            System.out.println("Required features: " + requiredFeatures);
+            
+            // Lấy danh sách featureId từ tên feature
+            List<Integer> requiredFeatureIds = requiredFeatures.stream()
+                .map(featureName -> featureRepository.findByFeatureDescription(featureName)
+                    .map(feature -> feature.getFeatureId())
+                    .orElse(null))
+                .filter(Objects::nonNull)
+                .toList();
+            
+            System.out.println("Required feature IDs: " + requiredFeatureIds);
+            
             shipDtos = shipDtos.stream()
-                    .filter(ship -> ship.getFeatures() != null && 
-                            ship.getFeatures().stream()
-                                    .anyMatch(feature -> requiredFeatures.contains(feature)))
+                    .filter(ship -> {
+                        System.out.println("Checking ship: " + ship.getShipName());
+                        System.out.println("Ship feature IDs: " + ship.getFeatureIds());
+                        boolean matches = ship.getFeatureIds() != null && 
+                                requiredFeatureIds.stream()
+                                        .allMatch(reqId -> ship.getFeatureIds().contains(reqId));
+                        System.out.println("Matches: " + matches);
+                        return matches;
+                    })
                     .toList();
+            
+            System.out.println("Filtered ships count: " + shipDtos.size());
         }
 
         ResultPaginationDTO result = new ResultPaginationDTO();
@@ -650,5 +670,13 @@ public class ShipService {
                 .map(feature -> feature.getFeatureDescription())
                 .distinct()
                 .collect(Collectors.toList());
+    }
+
+    private String normalizeString(String input) {
+        if (input == null) return "";
+        return java.text.Normalizer.normalize(input, java.text.Normalizer.Form.NFD)
+                .replaceAll("\\p{M}", "")
+                .toLowerCase()
+                .trim();
     }
 }

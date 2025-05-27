@@ -47,47 +47,25 @@ const ManageBooking = () => {
 
   const fetchBookings = async () => {
     try {
-      // Lấy thông tin company hiện tại để biết họ quản lý khách sạn hay du thuyền nào
-      // const companyInfo = await axios.get("/api/admin/current");
-      const { type, id } = { type: "SHIP", id: 1 };
-      console.log("Fetching bookings for:", type, id);
-      console.log("API URL:", config.api.url);
+      const response = await axiosRequest({
+        url: `${config.api.url}/api/booking/company`,
+        method: "GET",
+      });
 
-      let response;
-      if (type === "HOTEL") {
-        console.log("Calling hotel API:", url);
-        response = await axiosRequest({
-          url: `${config.api.url}/api/booking/hotel/${id}`,
-          method: "GET",
-        });
-        console.log("Hotel booking response:", response.data);
-        if (response.data && response.data.data) {
-          const hotelBookings = response.data.data.map((booking) => ({
-            ...booking,
-            type: "hotel",
-            id: `hotel-${booking.bookingId}`,
-          }));
-          setBookings(hotelBookings);
-        } else {
-          setBookings([]);
-        }
-      } else if (type === "SHIP") {
-        console.log("Calling ship API:", url);
-        response = await axiosRequest({
-          url: `${config.api.url}/api/booking/ship/${id}`,
-          method: "GET",
-        });
-        console.log("Ship booking response:", response.data);
-        if (response.data && response.data.data) {
-          const shipBookings = response.data.data.map((booking) => ({
-            ...booking,
-            type: "ship",
-            id: `ship-${booking.bookingId}`,
-          }));
-          setBookings(shipBookings);
-        } else {
-          setBookings([]);
-        }
+      console.log("Booking response:", response.data);
+      console.log(
+        "Company ID from response:",
+        response.data?.data?.[0]?.companyId
+      );
+
+      if (response.data && response.data.data) {
+        const bookings = response.data.data.map((booking) => ({
+          ...booking,
+          id: `${booking.type.toLowerCase()}-${booking.bookingId}`,
+        }));
+        setBookings(bookings);
+      } else {
+        setBookings([]);
       }
 
       setLoading(false);
