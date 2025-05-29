@@ -18,7 +18,7 @@ import {
   ImageListItem,
 } from "@mui/material";
 import { axiosRequest } from "../../utils/axiosUtils";
-
+import config from "../../config";
 const CompanyDashboard = () => {
   const [companyInfo, setCompanyInfo] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
@@ -44,21 +44,18 @@ const CompanyDashboard = () => {
   const fetchCompanyInfo = async () => {
     try {
       const response = await axiosRequest({
-        url: "/api/company/current",
+        url: `${config.api.url}/api/company/current`,
         method: "GET",
       });
       setCompanyInfo(response.data.data);
       setEditForm({
-        companyName: response.data.data.companyName || "",
-        username: response.data.data.username || "",
-        address: response.data.data.address || "",
-        phone: response.data.data.phone || "",
-        email: response.data.data.email || "",
-        description: response.data.data.description || "",
-        hotelName: response.data.data.hotelName || "",
-        hotelPrice: response.data.data.hotelPrice || "",
-        city: response.data.data.city || "",
-        mapLink: response.data.data.mapLink || "",
+        companyName: response.data.data.companyName,
+        accommodationName:
+          response.data.data.hotelName || response.data.data.shipName,
+        address: response.data.data.address,
+        city: response.data.data.city,
+        hotelPrice: response.data.data.hotelPrice,
+        mapLink: response.data.data.mapLink,
       });
     } catch (error) {
       setError("Không thể tải thông tin doanh nghiệp");
@@ -76,7 +73,7 @@ const CompanyDashboard = () => {
   const handleSubmit = async () => {
     try {
       await axiosRequest({
-        url: "/api/company/update",
+        url: `${config.api.url}/api/company/update`,
         method: "PUT",
         data: editForm,
       });
@@ -267,11 +264,11 @@ const CompanyDashboard = () => {
             <Grid item xs={12} md={6}>
               <TextField
                 margin="dense"
-                name="hotelName"
+                name="accommodationName"
                 label="Tên khách sạn"
                 type="text"
                 fullWidth
-                value={editForm.hotelName}
+                value={editForm.accommodationName}
                 onChange={handleChange}
               />
             </Grid>

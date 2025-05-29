@@ -8,6 +8,9 @@ import com.travel_agent.mappers.HotelMapper;
 import com.travel_agent.models.entity.hotel.*;
 import com.travel_agent.repositories.*;
 import com.travel_agent.repositories.hotel.*;
+
+import jakarta.persistence.criteria.CriteriaBuilder.In;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -252,6 +255,33 @@ public class HotelService {
         return savedHotelDto;
     }
 
+    public HotelDTO updateHotelGeneralInfo(Integer hotelId, CompanyUpdateDTO companyUpdateDTO) {
+        HotelEntity hotelEntity = hotelRepository.findById(hotelId)
+                .orElseThrow(() -> new IllegalArgumentException("Hotel not found with ID: " + hotelId));
+    
+        if (companyUpdateDTO.getAccommodationName() != null) {
+            hotelEntity.setHotelName(companyUpdateDTO.getAccommodationName());
+        }
+        if (companyUpdateDTO.getCompanyName() != null) {
+            hotelEntity.setCompanyName(companyUpdateDTO.getCompanyName());
+        }
+        if (companyUpdateDTO.getAddress() != null) {
+            hotelEntity.setAddress(companyUpdateDTO.getAddress());
+        }
+        if (companyUpdateDTO.getCity() != null) {
+            hotelEntity.setCity(companyUpdateDTO.getCity());
+        }
+        if (companyUpdateDTO.getMapLink() != null) {
+            hotelEntity.setMapLink(companyUpdateDTO.getMapLink());
+        }
+    
+        // Lưu thay đổi
+        HotelEntity updatedHotel = hotelRepository.save(hotelEntity);
+    
+        // Chuyển đổi sang DTO để trả về
+        return hotelMapper.hotelToHotelDTO(updatedHotel);
+    }
+    
     // Update hotel
     public HotelDTO updateHotel(Integer hotelId, HotelDTO hotelDto) {
         HotelEntity hotelEntity = hotelRepository.findById(hotelId)

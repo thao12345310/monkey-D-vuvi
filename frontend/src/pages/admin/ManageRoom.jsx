@@ -85,6 +85,7 @@ export default function ManageRoom() {
         .filter(Boolean); // loại bỏ undefined
 
       const updatedData = {
+        roomId: editRoom.roomId,
         roomName: editRoom.roomName,
         roomPrice: editRoom.roomPrice,
         size: editRoom.size,
@@ -95,11 +96,7 @@ export default function ManageRoom() {
         images: editRoom.images || [],
       };
 
-      const type = companyId <= 217 ? "HOTEL" : "SHIP";
-      const url =
-        type === "HOTEL"
-          ? `${config.api.url}/api/hotel/${companyId}/${editRoom.roomId}`
-          : `${config.api.url}/api/ship/${companyId}/${editRoom.roomId}`;
+      const url = `${config.api.url}/api/company/rooms/update`;
 
       await axiosRequest({
         url: url,

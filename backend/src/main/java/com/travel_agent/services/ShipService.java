@@ -35,6 +35,12 @@ public class ShipService {
     private final ShipImageRepository shipImageRepository;
     private final ShipRoomImageRepository shipRoomImageRepository;
 
+    public ShipDTO getShipById(Integer shipId) {
+        ShipEntity shipEntity = shipRepository.findById(shipId)
+                .orElseThrow(() -> new IllegalArgumentException("Ship not found with ID: " + shipId));
+        return shipMapper.shipToShipDTO(shipEntity);
+    }
+
     public ResultPaginationDTO getAllShips(Pageable pageable) {
         Page<ShipEntity> pageShip = shipRepository.findAll(pageable);
         ResultPaginationDTO rs = new ResultPaginationDTO();
@@ -307,6 +313,28 @@ public class ShipService {
         savedShipDto.setImages(shipDto.getImages());
 
         return savedShipDto;
+    }
+
+    public ShipDTO updateShipGeneralInfo(Integer shipId, CompanyUpdateDTO companyUpdateDTO) {
+        ShipEntity shipEntity = shipRepository.findById(shipId)
+                .orElseThrow(() -> new IllegalArgumentException("Ship not found with ID: " + shipId));
+
+        if (companyUpdateDTO.getAccommodationName() != null) {
+            shipEntity.setShipName(companyUpdateDTO.getAccommodationName());
+        }
+        if (companyUpdateDTO.getAddress() != null) {
+            shipEntity.setAddress(companyUpdateDTO.getAddress());
+        }
+        if (companyUpdateDTO.getMapLink() != null) {
+            shipEntity.setMapLink(companyUpdateDTO.getMapLink());
+        }
+        if (companyUpdateDTO.getCompanyName() != null) {
+            shipEntity.setCompanyName(companyUpdateDTO.getCompanyName());
+        }
+        shipEntity = shipRepository.save(shipEntity);
+        
+        return shipMapper.shipToShipDTO(shipEntity);
+
     }
 
     // Update ship

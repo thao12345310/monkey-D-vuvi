@@ -5,6 +5,7 @@ import com.travel_agent.services.HotelService;
 import com.travel_agent.services.ShipService;
 import com.travel_agent.annotation.CurrentUserId;
 import com.travel_agent.dto.CompanyDTO;
+import com.travel_agent.dto.CompanyUpdateDTO;
 import com.travel_agent.dto.ResponseObject;
 import com.travel_agent.dto.hotel.HotelDTO;
 import com.travel_agent.dto.hotel.HotelRoomDTO;
@@ -68,14 +69,20 @@ public class CompanyController {
 
     @PutMapping("/update")
     @PreAuthorize("hasRole('COMPANY')")
-    public ResponseEntity<ResponseObject> updateCompany(@CurrentUserId Integer companyId, @RequestBody CompanyDTO companyDTO)throws ReflectionException{
-        CompanyDTO updatedCompany = companyService.updateCompany(companyId, companyDTO);
+    public ResponseEntity<ResponseObject> updateCompany(@CurrentUserId Integer companyId, @RequestBody CompanyUpdateDTO companyUpdateDTO) {
+        String type = companyId <= 217 ? "HOTEL" : "SHIP";
+        System.out.println("Company type: " + type);
+        if (type == "HOTEL") {
+            hotelService.updateHotelGeneralInfo(companyId, companyUpdateDTO);
+        } else {
+            ShipDTO shipDTO = shipService.updateShipGeneralInfo(companyId, companyUpdateDTO);
+        }
         return ResponseEntity.ok(ResponseObject.builder()
                 .message("Company updated successfully")
-                .data(updatedCompany)
                 .responseCode(HttpStatus.OK.value())
                 .build());
     }
+
 
     @DeleteMapping("/delete")
     @PreAuthorize("hasRole('COMPANY')")
@@ -130,6 +137,30 @@ public class CompanyController {
                     .responseCode(HttpStatus.OK.value())
                     .build());
         }
+    }
+
+    @PutMapping("/rooms/update")
+    @PreAuthorize("hasRole('COMPANY')")
+    public ResponseEntity<ResponseObject> updateRoom(@CurrentUserId Integer companyId, @RequestBody HotelRoomDTO roomDTO) {
+
+        String type = companyId <= 217 ? "HOTEL" : "SHIP";
+        System.out.println("Company type: " + type);
+        if (type == "HOTEL") {
+            hotelService.updateHotelRoom(companyId, roomDTO.getRoomId(), roomDTO);
+        } else {
+            ShipRoomDTO shipRoomDTO = new ShipRoomDTO();
+            shipRoomDTO.setRoomId(roomDTO.getRoomId());
+            shipRoomDTO.setRoomName(roomDTO.getRoomName());
+            shipRoomDTO.setRoomPrice(roomDTO.getRoomPrice());
+            shipRoomDTO.setSize(roomDTO.getSize());
+            shipRoomDTO.setMaxPersons(roomDTO.getMaxPersons());
+            shipRoomDTO.setImages(roomDTO.getImages());
+            shipService.updateShipRoom(companyId, roomDTO.getRoomId(), shipRoomDTO);
+        }
+        return ResponseEntity.ok(ResponseObject.builder()
+                .message("Room updated successfully")
+                .responseCode(HttpStatus.OK.value())
+                .build());
     }
 
     // @GetMapping
