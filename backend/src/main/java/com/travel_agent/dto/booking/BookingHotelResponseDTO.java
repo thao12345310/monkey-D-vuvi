@@ -14,6 +14,7 @@ import lombok.Setter;
 public class BookingHotelResponseDTO extends BookingResponseDTO {
     private HotelDTO hotel;
     private List<HotelRoomBooking> rooms;
+    private String status;
 
     @Data
     public static class HotelRoomBooking {

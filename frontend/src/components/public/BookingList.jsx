@@ -22,7 +22,7 @@ export default function BookingList({ bookings, onItemClick, type }) {
             booking={booking}
             specificInfo={specificInfo}
             onClick={onItemClick}
-            type={type}
+            type={booking.state}
           />
         );
       })}
