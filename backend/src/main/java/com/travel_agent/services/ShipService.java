@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import com.travel_agent.models.entity.FeatureEntity;
+
 @Service
 @RequiredArgsConstructor
 public class ShipService {
@@ -95,9 +97,10 @@ public class ShipService {
             
             // Lấy danh sách featureId từ tên feature
             List<Integer> requiredFeatureIds = requiredFeatures.stream()
-                .map(featureName -> featureRepository.findByFeatureDescription(featureName)
-                    .map(feature -> feature.getFeatureId())
-                    .orElse(null))
+                .map(featureName -> {
+                    List<FeatureEntity> featureList = featureRepository.findByFeatureDescription(featureName);
+                    return featureList.isEmpty() ? null : featureList.get(0).getFeatureId();
+                })
                 .filter(Objects::nonNull)
                 .toList();
             

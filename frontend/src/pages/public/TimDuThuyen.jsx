@@ -33,7 +33,7 @@ const TimDuThuyen = () => {
   const [trip, setTrip] = useState("");
   const [priceRangeOption, setPriceRangeOption] = useState(""); // dùng preset khoảng giá
   const [shipOptions, setShipOptions] = useState([]);
-  const [availableFeatures, setAvailableFeatures] = useState([]);
+  // const [availableFeatures, setAvailableFeatures] = useState([]);
 
   const DIA_DIEM_OPTIONS = [
     { value: "", label: "Tất cả địa điểm" },
@@ -46,6 +46,18 @@ const TimDuThuyen = () => {
     { label: "Từ 1 đến 3 triệu", value: "1000000-3000000" },
     { label: "Từ 3 đến 6 triệu", value: "3000000-6000000" },
     { label: "Trên 6 triệu", value: "6000000-999999999" },
+  ];
+
+  const availableFeatures = [
+    "Trà/cà phê trong tất cả các phòng",
+    "Giáp biển",
+    "Nhà hàng",
+    "Lễ tân 24h",
+    "Miễn phí kayaking",
+    "Nhìn ra biển",
+    "Phòng gia đình",
+    "Máy sấy tóc",
+    "Phòng có bồn tắm",
   ];
 
   const [searchParams, setSearchParams] = useState({
@@ -63,21 +75,21 @@ const TimDuThuyen = () => {
 
   const [selectedFeatures, setSelectedFeatures] = useState([]);
 
-  // Fetch available features when component mounts
-  useEffect(() => {
-    const fetchFeatures = async () => {
-      try {
-        const response = await axiosRequest({
-          url: `${config.api.url}/api/ship/features`,
-          method: "GET",
-        });
-        setAvailableFeatures(response.data.data || []);
-      } catch (error) {
-        console.error("Lỗi khi lấy danh sách features:", error);
-      }
-    };
-    fetchFeatures();
-  }, []);
+  // // Fetch available features when component mounts
+  // useEffect(() => {
+  //   const fetchFeatures = async () => {
+  //     try {
+  //       const response = await axiosRequest({
+  //         url: `${config.api.url}/api/ship/features`,
+  //         method: "GET",
+  //       });
+  //       setAvailableFeatures(response.data.data || []);
+  //     } catch (error) {
+  //       console.error("Lỗi khi lấy danh sách features:", error);
+  //     }
+  //   };
+  //   fetchFeatures();
+  // }, []);
 
   const fetchShips = async (page) => {
     try {

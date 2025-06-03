@@ -8,6 +8,7 @@ import com.travel_agent.mappers.HotelMapper;
 import com.travel_agent.models.entity.hotel.*;
 import com.travel_agent.repositories.*;
 import com.travel_agent.repositories.hotel.*;
+import com.travel_agent.models.entity.FeatureEntity;
 
 import jakarta.persistence.criteria.CriteriaBuilder.In;
 
@@ -59,6 +60,7 @@ public class HotelService {
             Integer minPrice,
             Integer maxPrice,
             String city,
+            String features,
             Pageable pageable) {
         
         Page<HotelEntity> hotelPage = hotelRepository.findByHotelNamePriceAndCity(
@@ -84,12 +86,43 @@ public class HotelService {
             return hotelDto;
         }).toList();
 
+        // Lọc theo features nếu có
+        if (features != null && !features.isEmpty()) {
+            List<String> requiredFeatures = List.of(features.split(","));
+            System.out.println("Required features: " + requiredFeatures);
+            
+            // Lấy danh sách featureId từ tên feature
+            List<Integer> requiredFeatureIds = requiredFeatures.stream()
+                .map(featureName -> {
+                    List<FeatureEntity> featureList = featureRepository.findByFeatureDescription(featureName);
+                    return featureList.isEmpty() ? null : featureList.get(0).getFeatureId();
+                })
+                .filter(Objects::nonNull)
+                .toList();
+            
+            System.out.println("Required feature IDs: " + requiredFeatureIds);
+            
+            hotelDtos = hotelDtos.stream()
+                    .filter(hotel -> {
+                        System.out.println("Checking hotel: " + hotel.getHotelName());
+                        System.out.println("Hotel feature IDs: " + hotel.getFeatureIds());
+                        boolean matches = hotel.getFeatureIds() != null && 
+                                requiredFeatureIds.stream()
+                                        .allMatch(reqId -> hotel.getFeatureIds().contains(reqId));
+                        System.out.println("Matches: " + matches);
+                        return matches;
+                    })
+                    .toList();
+            
+            System.out.println("Filtered hotels count: " + hotelDtos.size());
+        }
+
         ResultPaginationDTO result = new ResultPaginationDTO();
         result.setResult(hotelDtos);
         Meta meta = new Meta();
         meta.setPage(pageable.getPageNumber() + 1);
         meta.setPages(hotelPage.getTotalPages());
-        meta.setTotal(hotelPage.getTotalElements());
+        meta.setTotal(hotelDtos.size());
         result.setMeta(meta);
 
         return result;

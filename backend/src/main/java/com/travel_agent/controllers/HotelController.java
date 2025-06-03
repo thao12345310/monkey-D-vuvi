@@ -46,11 +46,12 @@ public class HotelController {
             @RequestParam(value = "minPrice", required = false) Integer minPrice,
             @RequestParam(value = "maxPrice", required = false) Integer maxPrice,
             @RequestParam(value = "city", required = false) String city,
+            @RequestParam(value = "features", required = false) String features,
             @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
             @RequestParam(value = "pageSize", defaultValue = "6") int pageSize) {
         
         Pageable pageable = PageRequest.of(currentPage - 1, pageSize);
-        ResultPaginationDTO result = hotelService.searchHotelsByNamePriceAndCity(name, minPrice, maxPrice, city, pageable);
+        ResultPaginationDTO result = hotelService.searchHotelsByNamePriceAndCity(name, minPrice, maxPrice, city, features, pageable);
 
         return ResponseEntity.ok(ResponseObject.builder()
                 .message("Hotels retrieved successfully")

@@ -4,9 +4,9 @@ import com.travel_agent.models.entity.FeatureEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import java.util.List;
 
 @Repository
 public interface FeatureRepository extends JpaRepository<FeatureEntity, Integer> {
-    Optional<FeatureEntity> findByFeatureDescription(String featureDescription);
+    List<FeatureEntity> findByFeatureDescription(String featureDescription);
 }

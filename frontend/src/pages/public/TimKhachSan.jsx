@@ -34,8 +34,14 @@ const TimKhachSan = () => {
   const [cities, setCities] = useState([]);
   const [priceRangeOption, setPriceRangeOption] = useState("");
   const [hotelOptions, setHotelOptions] = useState([]);
-  const [availableFeatures, setAvailableFeatures] = useState([]);
 
+  const availableFeatures = [
+    "Bồn tắm/Cabin tắm đứng",
+    "Quầy bar",
+    "Tivi",
+    "Điều hòa",
+    "Khu vực bãi tắm riêng",
+  ];
   const PRICE_OPTIONS = [
     { label: "Tất cả mức giá", value: "" },
     { label: "Từ 1 đến 3 triệu", value: "1000000-3000000" },
@@ -62,20 +68,20 @@ const TimKhachSan = () => {
     fetchCities();
   }, []);
 
-  useEffect(() => {
-    const fetchFeatures = async () => {
-      try {
-        const response = await axiosRequest({
-          url: `${config.api.url}/api/hotel/features`,
-          method: "GET",
-        });
-        setAvailableFeatures(response.data.data || []);
-      } catch (error) {
-        console.error("Lỗi khi lấy danh sách features:", error);
-      }
-    };
-    fetchFeatures();
-  }, []);
+  // useEffect(() => {
+  //   const fetchFeatures = async () => {
+  //     try {
+  //       const response = await axiosRequest({
+  //         url: `${config.api.url}/api/hotel/features`,
+  //         method: "GET",
+  //       });
+  //       setAvailableFeatures(response.data.data || []);
+  //     } catch (error) {
+  //       console.error("Lỗi khi lấy danh sách features:", error);
+  //     }
+  //   };
+  //   fetchFeatures();
+  // }, []);
 
   const [searchParams, setSearchParams] = useState({
     tenKhachSan: "",
@@ -88,13 +94,9 @@ const TimKhachSan = () => {
   const [filters, setFilters] = useState({
     giaRange: [0, 5000000],
     rating: 0,
-    tienIch: {
-      hoBoi: false,
-      wifi: false,
-      nhaHang: false,
-      spa: false,
-    },
   });
+
+  const [selectedFeatures, setSelectedFeatures] = useState([]);
 
   const fetchHotels = async (page) => {
     try {
@@ -111,8 +113,8 @@ const TimKhachSan = () => {
           currentPage: page,
           pageSize: 6,
           features:
-            availableFeatures.length > 0
-              ? availableFeatures.join(",")
+            selectedFeatures.length > 0
+              ? selectedFeatures.join(",")
               : undefined,
         },
       });
@@ -129,7 +131,7 @@ const TimKhachSan = () => {
 
   useEffect(() => {
     fetchHotels(currentPage);
-  }, [currentPage]);
+  }, [currentPage, searchParams, filters, selectedFeatures]);
 
   const handleSearch = () => {
     console.log("Tìm kiếm với params:", searchParams);
@@ -386,58 +388,30 @@ const TimKhachSan = () => {
             <Box sx={{ mb: 3 }}>
               <Typography gutterBottom>Tiện ích</Typography>
               <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={filters.tienIch.hoBoi}
-                      onChange={handleTienIchChange("hoBoi")}
-                      sx={{
-                        color: "#EC80B1",
-                        "&.Mui-checked": { color: "#EC80B1" },
-                      }}
-                    />
-                  }
-                  label="Hồ bơi"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={filters.tienIch.wifi}
-                      onChange={handleTienIchChange("wifi")}
-                      sx={{
-                        color: "#EC80B1",
-                        "&.Mui-checked": { color: "#EC80B1" },
-                      }}
-                    />
-                  }
-                  label="Wifi miễn phí"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={filters.tienIch.nhaHang}
-                      onChange={handleTienIchChange("nhaHang")}
-                      sx={{
-                        color: "#EC80B1",
-                        "&.Mui-checked": { color: "#EC80B1" },
-                      }}
-                    />
-                  }
-                  label="Nhà hàng"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={filters.tienIch.spa}
-                      onChange={handleTienIchChange("spa")}
-                      sx={{
-                        color: "#EC80B1",
-                        "&.Mui-checked": { color: "#EC80B1" },
-                      }}
-                    />
-                  }
-                  label="Spa"
-                />
+                {availableFeatures.map((feature) => (
+                  <FormControlLabel
+                    key={feature}
+                    control={
+                      <Checkbox
+                        checked={selectedFeatures.includes(feature)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setSelectedFeatures([...selectedFeatures, feature]);
+                          } else {
+                            setSelectedFeatures(
+                              selectedFeatures.filter((f) => f !== feature)
+                            );
+                          }
+                        }}
+                        sx={{
+                          color: "#EC80B1",
+                          "&.Mui-checked": { color: "#EC80B1" },
+                        }}
+                      />
+                    }
+                    label={feature}
+                  />
+                ))}
               </FormGroup>
             </Box>
           </Paper>
