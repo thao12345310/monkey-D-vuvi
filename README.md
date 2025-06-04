@@ -15,6 +15,76 @@ This project is developed as part of the **Software Engineering** course at our 
 - **User Engagement**: Review and rate hotels, yachts, and flights.
 - **Responsive Design**: Optimized for mobile and desktop viewing.
 
+## 📸 Demo Giao Diện
+
+### 🏠 Trang Chủ
+
+![Home Page](./assets/home_page.png)
+
+---
+
+### 🔍 Trang Duyệt Khách Sạn
+
+Cho phép người dùng tìm kiếm khách sạn theo địa điểm, giá, tiện nghi...
+
+![Browse Hotel Page](./assets/browse_hotel_page.png)
+
+---
+
+### ⛵ Trang Duyệt Du Thuyền
+
+Giao diện tìm kiếm và lựa chọn các du thuyền theo lịch trình.
+
+![Browse Yacht Page](./assets/browse_yatch_page.png)
+
+---
+
+### 🏨 Trang Chi Tiết Khách Sạn / Du Thuyền
+
+Hiển thị thông tin chi tiết của một khách sạn hoặc du thuyền.
+
+![Detail Page](./assets/detail_page.png)
+
+---
+
+### 🛏️ Danh Sách Phòng
+
+Hiển thị danh sách các phòng khách sạn hiện có để người dùng lựa chọn.
+
+![Rooms Page](./assets/rooms.png)
+
+---
+
+### 📦 Quản Lý Đặt Phòng (Admin)
+
+Cho phép quản trị viên xem và xử lý các đơn đặt phòng.
+
+![Manage Booking Admin](./assets/manage_booking_admin.png)
+
+---
+
+### 🏘️ Quản Lý Phòng (Admin)
+
+Hiển thị danh sách các phòng, giúp admin tạo/sửa/xóa thông tin phòng.
+
+![Manage Room Admin](./assets/manage_room_admin.png)
+
+---
+
+### 🛏️ Chi Tiết Phòng (Admin)
+
+Chi tiết từng phòng, bao gồm số lượng, loại phòng, giá cả...
+
+![Room Detail Admin](./assets/room_detail_admin.png)
+
+---
+
+### 📋 Chi Tiết Đặt Phòng (Admin)
+
+Chi tiết từng đơn đặt chỗ của khách hàng.
+
+![Booking Detail Admin](./assets/booking_detail_admin.png)
+
 ## Tech Stack
 
 - **Frontend**: React.js with Tailwind CSS for styling.
