@@ -77,14 +77,35 @@ Ensure you have the following installed:
 
 ## Contributors
 
-| **Name**           | **Student ID**               | **Responsibilities**               |
-|---------------------|------------------------|---------------------------|
-| Duong Phuong Thao       | 20226001     | Will be updated |
-| Trinh Thi Thuy Duong     | |
-| Doan Thi Thu Quyen | |
-| Hoang Khai Manh | |
-| Nguyen Thi Thu Huyen | |
-| Nguyen Cong Duy | 20215188 |
+This project was developed by the following team members. The member in bold is the team leader.
+
+Name	Student ID	Contributions
+Duong Phuong Thao	20226001	- Managed overall development process
+- Designed Entity-Relationship Diagram and Relational Schema
+- Implemented backend CRUD for company bookings
+- Built frontend for company dashboard
+- Finalized report and slides
+Hoang Khai Manh	20225984	- Implemented authentication and authorization
+- Developed backend CRUD for users and user bookings
+- Dockerized the application
+- Participated in testing and report writing
+Trinh Thi Thuy Duong	20226034	- Researched and trained AI recommendation model
+- Integrated Tavily/Google Search API
+- Built LangGraph Agent
+- Helped collect and preprocess restaurant data
+- Participated in testing and report writing
+Nguyen Cong Duy	20215188	- Crawled and preprocessed data
+- Refined database schema
+- Developed backend CRUD for hotels, cruises, rooms, and companies
+- Participated in testing and report writing
+Doan Thi Thu Quyen	20226063	- Built frontend for hotel/cruise search pages
+- Created frontend for Home and Contact pages
+- Designed overall page layout
+- Participated in testing and report writing
+Nguyen Thi Thu Huyen	20220073	- Developed frontend for hotel and cruise detail pages
+- Built booking history page
+- Prepared slides and presentation materials
+- Participated in testing and report writing
 
 ## License
 
