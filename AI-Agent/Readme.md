@@ -36,7 +36,8 @@ Answers questions related to travel tips, transportation, weather, and more.
 - Custom Recommendation System using multi-agent architecture
 
 - Overall architecture of Agent:
-<img src="image/Chatbot.drawio.png" alt="Chatbot 1" width="200"/>
+<img src="image/Chatbot.drawio.png" alt="Chatbot 1" />
+
 ## 📸 Screenshot (Demo)
 <p align="center">
   <img src="image/anh1.jpg" alt="Demo 1" width="200"/>
