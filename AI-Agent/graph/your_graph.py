@@ -44,13 +44,7 @@ trustcall_extractor = create_extractor(
 )
 
 # --- Tin nhắn hệ thống cho chatbot ---
-MODEL_SYSTEM_MESSAGE = """Bạn là một chatbot hữu ích. Bạn được thiết kế để trở thành người bạn đồng hành của người dùng.
 
-Bạn có bộ nhớ dài hạn theo dõi thông tin bạn tìm hiểu về người dùng theo thời gian.
-
-Bộ nhớ hiện tại (có thể bao gồm các ký ức được cập nhật từ cuộc trò chuyện này):
-
-{memory}"""
 
 TRUSTCALL_INSTRUCTION = """Hãy suy ngẫm về cuộc tương tác sau đây. Sử dụng các công cụ được cung cấp để lưu lại bất kỳ thông tin cần thiết nào về người dùng. 
 Hãy sử dụng gọi công cụ song song để xử lý việc cập nhật và chèn dữ liệu cùng lúc."""
@@ -63,11 +57,15 @@ def call_model(state: EntryGraphState, config: RunnableConfig):
     namespace = ("memories", user_id)
     memories = store.search(namespace)
 
-    info = "\n".join(f"- {mem.value['content']}" for mem in memories)
-    system_msg = MODEL_SYSTEM_MESSAGE.format(memory=info)
+    print(f"📌 Memories fetched from store for user_id {user_id}:")
+    for mem in memories:
+        print(f"🧠 {mem.value['content']}")
 
-    response = llm.invoke([SystemMessage(content=system_msg)] + state['messages'])
-    return {"messages": response}
+    info = "\n".join(f"- {mem.value['content']}" for mem in memories)
+
+
+    print("Response from LLM:", info)
+    return {"context": [info]}
 
 # Hàm write_memory cũng tương tự
 def write_memory(state: EntryGraphState, config: RunnableConfig):
@@ -112,14 +110,15 @@ def controller(state):
     prompt_template = """Bạn là một trợ lý ảo của web du lịch MonkeyDvuvi, một website hỗ trợ đặt phòng khách sạn, du thuyền trực tuyến. Nhiệm vụ của bạn là trả lời các câu hỏi của người dùng
     các kiến thức về các địa điểm du lịch, nhà hàng, khách sạn, du thuyền tại Việt Nam, ngoài ra có thể gợi ý tour và các lịch trình chi tiết phù hợp với nhu cầu người dùng.
     Dựa trên câu hỏi của người dùng, hãy quyết định subgraph nào nên được kích hoạt để Agent có thể đưa ra câu trả lời tốt nhất cho người dùng.
-    Hãy trả lời với một trong các subgraph sau: `Recommendation System`, `Search Wikipedia` và `Search Web`.
-    Nếu câu hỏi đưa vào liên quan tới yêu cầu xây dựng tour du lịch, hỏi đáp về nhà hàng, khách sạn cụ thể, hãy gọi tới `Recommendation System`.
-    Nếu câu hỏi đưa vào liên quan tới yêu cầu tìm kiếm thông tin từ wikipedia, hãy gọi tới `Search Wikipedia`.
-    Nếu câu hỏi đưa vào liên quan tới yêu cầu tìm kiếm thông tin từ google, hãy gọi tới `Search Web`.
-    Nếu không có subgraph nào phù hợp, hãy gọi tới `answer`.
+    Hãy trả lời với một trong các subgraph sau: Recommendation System, Search Wikipedia và Search Web.
+    Nếu câu hỏi đưa vào liên quan tới yêu cầu xây dựng tour du lịch, hỏi đáp về nhà hàng, khách sạn cụ thể, hãy gọi tới Recommendation System.
+    Nếu câu hỏi đưa vào liên quan tới yêu cầu tìm kiếm thông tin từ wikipedia, hãy gọi tới Search Wikipedia.
+    Nếu câu hỏi đưa vào liên quan tới yêu cầu tìm kiếm thông tin từ google, hãy gọi tới Search Web.
+    Nếu không có subgraph nào phù hợp, hãy gọi tới answer.
     LƯU Ý: CHỈ ĐƯA RA MỘT TRONG CÁC GIÁ TRỊ NÀY, KHÔNG ĐƯA RA CÁC GIÁ TRỊ KHÁC.
     Hãy đưa ra câu trả lời ngắn gọn và súc tích.
     Đây là câu hỏi của người dùng: {query}"""
+    print("The prior messages are:" , state['messages']) 
     messages = llm.invoke(prompt_template.format(query=state["query"]))
     if messages.content == "Recommendation System":
         print("Recommendation System")
@@ -134,13 +133,18 @@ def controller(state):
         return {"subgraph_name": "answer"}
 
 def answer(state):
-    
-    prompt_template = """
-Bạn là một trợ lý ảo của web du lịch MonkeyDvuvi, một website hỗ trợ đặt phòng khách sạn, du thuyền trực tuyến. Bạn hãy trả lời các câu hỏi tương tác với người
-dùng một cách tự nhiên và thân thiện, nếu cần thiết hãy vui tính.
+    prompt_template = f"""
+Bạn là một trợ lý ảo của web du lịch MonkeyDvuvi, một website hỗ trợ đặt phòng khách sạn, du thuyền trực tuyến. 
+Bạn hãy trả lời các câu hỏi tương tác với người dùng một cách tự nhiên và thân thiện, nếu cần thiết hãy vui tính.
+
+Ngữ cảnh hiện tại:
+{state['context']}
+Hãy trả lời câu hỏi của người dùng dựa trên ngữ cảnh hiện tại và các thông tin đã có trong bộ nhớ.
 """
+    print("The prior messages are:", state['messages']) 
     response = llm.invoke([SystemMessage(content=prompt_template)] + state['messages'])
     return {"messages": response}
+
 
 def condition_tools(state):
     if state['subgraph_name'] == "Recommendation System":
